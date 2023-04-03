@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../../../modules/task_1/bugrov_a_bin_marking/bin_marking.h"
+#include "../../../modules/task_2/bugrov_a_bin_marking/bin_marking.h"
 
 bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
                    int n, int m) {
@@ -30,7 +30,7 @@ bool CheckMarking(int N, const vector<vector<int>>& image,
       marks[i][j] = k_unnamed;
     }
   }
-  marking(image, N, N, &marks, k_unnamed);
+  par_marking(image, N, N, &marks, k_unnamed);
   return are_matrix_eq(marks, etalon, N, N);
 }
 
