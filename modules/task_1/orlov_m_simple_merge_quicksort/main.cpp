@@ -1,12 +1,12 @@
 // Copyright 2023 Maksim Orlov
 
-#include <iostream>
 #include <gtest/gtest.h>
-#include "quicksort_sequential.h"
+#include <iostream>
+#include "./quicksort_sequential.h"
 
 TEST(orlov_quicksort_sequential, incorrect_number_of_elements) {
     double* pd;
-    ASSERT_THROW(quicksortSequential(pd, 0));
+    EXPECT_ANY_THROW(quicksortSequential(pd, 0));
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array1) {
@@ -31,9 +31,14 @@ TEST(orlov_quicksort_sequential, can_sort_array3) {
     ASSERT_TRUE(compareArrays(pd, 1, sorted, 1));
 }
 
+TEST(orlov_quicksort_sequential, can_sort_array4) {
+    double arr[6] = { 0, -23090, 12239, 0.002, -1290, 0.0022 };
+    double sorted[6] = { -23090, -1290, 0, 0.002, 0.0022, 12239 };
+    quicksortSequential(pd, 6);
+    ASSERT_TRUE(compareArrays(pd, 6, sorted, 6));
+}
 
-int main()
-{
+int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

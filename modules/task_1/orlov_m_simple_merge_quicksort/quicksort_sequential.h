@@ -1,8 +1,10 @@
+// Copyright 2023 Maksim Orlov
+
 #pragma once
 
-void swap(double* a, double* b);
+void sw(double* a, double* b);
 int quicksortPartition(double* arr, int start, int finish);
-void push(int* stack, int& size, int elem);
-int pop(int* stack, int& size);
+void push(int* stack, int* size, int elem);
+int pop(int* stack, int* size);
 void quicksortSequential(double* arr, int n);
 bool compareArrays(double* a1, int n1, double* a2, int n2);
