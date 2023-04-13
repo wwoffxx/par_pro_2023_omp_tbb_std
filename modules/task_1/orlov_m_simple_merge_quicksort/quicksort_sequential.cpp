@@ -1,7 +1,7 @@
 // Copyright 2023 Maksim Orlov
 
 #include <cstdlib>
-#include "quicksort_sequential.h"
+#include "../../../modules/task_1/orlov_m_simple_merge_quicksort/quicksort_sequential.h"
 
 void sw(double* a, double* b) {
     double tmp = *a;

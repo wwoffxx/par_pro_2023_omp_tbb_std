@@ -5,7 +5,7 @@
 #include "./quicksort_sequential.h"
 
 TEST(orlov_quicksort_sequential, incorrect_number_of_elements) {
-    double* pd;
+    double* pd = new double;
     EXPECT_ANY_THROW(quicksortSequential(pd, 0));
 }
 
@@ -24,7 +24,7 @@ TEST(orlov_quicksort_sequential, can_sort_array2) {
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array3) {
-    double* pd;
+    double* pd = new double;
     *pd = 2;
     double sorted[1] = { 2 };
     quicksortSequential(pd, 1);
