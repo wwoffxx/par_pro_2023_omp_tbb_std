@@ -34,8 +34,8 @@ TEST(orlov_quicksort_sequential, can_sort_array3) {
 TEST(orlov_quicksort_sequential, can_sort_array4) {
     double arr[6] = { 0, -23090, 12239, 0.002, -1290, 0.0022 };
     double sorted[6] = { -23090, -1290, 0, 0.002, 0.0022, 12239 };
-    quicksortSequential(pd, 6);
-    ASSERT_TRUE(compareArrays(pd, 6, sorted, 6));
+    quicksortSequential(arr, 6);
+    ASSERT_TRUE(compareArrays(arr, 6, sorted, 6));
 }
 
 int main(int argc, char** argv) {

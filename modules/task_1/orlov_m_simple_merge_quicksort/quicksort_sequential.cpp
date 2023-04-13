@@ -1,7 +1,7 @@
 // Copyright 2023 Maksim Orlov
 
 #include <cstdlib>
-#include "./quicksort_sequential.h"
+#include "quicksort_sequential.h"
 
 void sw(double* a, double* b) {
     double tmp = *a;
@@ -51,7 +51,6 @@ void quicksortSequential(double* arr, int n) {
             push(stack, &size, pivotPos);
         }
     }
-
 }
 
 bool compareArrays(double* a1, int n1, double* a2, int n2, double eps = 0.00001) {
