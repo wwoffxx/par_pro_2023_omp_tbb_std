@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
-#include "./quicksort_sequential.h"
+#include "../../../modules/task_1/orlov_m_simple_merge_quicksort/quicksort_sequential.h"
 
 TEST(orlov_quicksort_sequential, incorrect_number_of_elements) {
     double* pd = new double;
