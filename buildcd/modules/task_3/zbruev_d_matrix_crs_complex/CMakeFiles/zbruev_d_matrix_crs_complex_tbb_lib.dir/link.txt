@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../../arch/libzbruev_d_matrix_crs_complex_tbb_lib.a CMakeFiles/zbruev_d_matrix_crs_complex_tbb_lib.dir/main.cpp.o CMakeFiles/zbruev_d_matrix_crs_complex_tbb_lib.dir/matrix_crs_complex.cpp.o
+/usr/bin/ranlib ../../../arch/libzbruev_d_matrix_crs_complex_tbb_lib.a

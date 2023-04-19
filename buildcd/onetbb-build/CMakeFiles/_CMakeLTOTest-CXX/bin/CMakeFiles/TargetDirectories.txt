@@ -1,0 +1,4 @@
+/mnt/c/Users/Lenovo/par_pro_2023_omp_tbb_std/buildcd/onetbb-build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/foo.dir
+/mnt/c/Users/Lenovo/par_pro_2023_omp_tbb_std/buildcd/onetbb-build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/boo.dir
+/mnt/c/Users/Lenovo/par_pro_2023_omp_tbb_std/buildcd/onetbb-build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Lenovo/par_pro_2023_omp_tbb_std/buildcd/onetbb-build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/rebuild_cache.dir
