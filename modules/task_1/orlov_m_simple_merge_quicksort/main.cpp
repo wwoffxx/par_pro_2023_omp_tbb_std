@@ -19,8 +19,8 @@ TEST(orlov_quicksort_sequential, can_sort_array1) {
 TEST(orlov_quicksort_sequential, can_sort_array2) {
     double arr[6] = { 0.3, 0, -0.4, 1.2, 0.3, -0.2};
     double sorted[6] = { -0.4, -0.2, 0, 0.3, 0.3, 1.2 };
-    quicksortSequential(arr, 7);
-    ASSERT_TRUE(compareArrays(arr, 7, sorted, 7));
+    quicksortSequential(arr, 6);
+    ASSERT_TRUE(compareArrays(arr, 6, sorted, 6));
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array3) {
