@@ -53,7 +53,7 @@ void quicksortSequential(double* arr, int n) {
     }
 }
 
-bool compareArrays(double* a1, int n1, double* a2, int n2, double eps = 0.00001) {
+bool compareArrays(double* a1, int n1, double* a2, int n2, double eps) {
     if (n1 != n2) return false;
     for (int i = 0; i < n1; i++) {
         if (std::abs(a1[i] - a2[i]) > eps) return false;
