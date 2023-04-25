@@ -42,7 +42,7 @@ void quicksortSequential(double* arr, int n) {
         finish = pop(stack, &size);
         start = pop(stack, &size);
         pivotPos = quicksortPartition(arr, start, finish);
-        if (finish - pivotPos > 1) {
+        if (finish - pivotPos > 2) {
             push(stack, &size, pivotPos);
             push(stack, &size, finish);
         }

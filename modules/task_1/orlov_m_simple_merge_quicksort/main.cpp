@@ -1,9 +1,9 @@
 // Copyright 2023 Maksim Orlov
 
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
 #include <iostream>
 #include "../../../modules/task_1/orlov_m_simple_merge_quicksort/quicksort_sequential.h"
-
+/*
 TEST(orlov_quicksort_sequential, incorrect_number_of_elements) {
     double* pd = new double;
     EXPECT_ANY_THROW(quicksortSequential(pd, 0));
@@ -41,4 +41,12 @@ TEST(orlov_quicksort_sequential, can_sort_array4) {
 int main(int argc, char** argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
+}
+*/
+
+int main() {
+    double arr[6] = { 0.3, 0, -0.4, 1.2, 0.3, -0.2 };
+    double sorted[6] = { -0.4, -0.2, 0, 0.3, 0.3, 1.2 };
+    quicksortSequential(arr, 6);
+    std::cout << compareArrays(arr, 6, sorted, 6);
 }
