@@ -17,11 +17,11 @@ TEST(uvarkin_min_hull_convex, test1) {
   };
 
   std::sort(pointsAct.begin(), pointsAct.end(), [&](Vector a, Vector b) {
-      return a.x > b.x || ( a.x == b.x && a.y > b.y) ;
+      return a.x > b.x || ( a.x == b.x && a.y > b.y);
   });
 
   std::sort(pointExp.begin(), pointExp.end(), [&](Vector a, Vector b) {
-      return a.x > b.x || ( a.x == b.x && a.y > b.y) ;
+      return a.x > b.x || ( a.x == b.x && a.y > b.y);
   });
 
   ASSERT_EQ(converter.convertVectorToString(pointExp),
@@ -71,7 +71,7 @@ TEST(uvarkin_min_hull_convex, test4) {
   auto converter = Converter();
   auto points = converter.convertMatrixToSTDVector(matrix, 5, 5);
   std::sort(points.begin(), points.end(), [&](Vector a, Vector b) {
-      return a.x > b.x || ( a.x == b.x && a.y > b.y) ;
+      return a.x > b.x || ( a.x == b.x && a.y > b.y);
   });
 
   auto MinConvexHull = convex_hull();
@@ -109,7 +109,7 @@ TEST(uvarkin_min_hull_convex, test5) {
   auto MinConvexHull = convex_hull();
 
   std::sort(points.begin(), points.end(), [&](Vector a, Vector b) {
-      return a.x > b.x || ( a.x == b.x && a.y > b.y) ;
+      return a.x > b.x || ( a.x == b.x && a.y > b.y);
   });
 
   auto hullAct = MinConvexHull.getMinConvexHull(points);
@@ -129,11 +129,11 @@ TEST(uvarkin_min_hull_convex, test5) {
       hullPoints, MinConvexHull.getFirstPoint(hullPoints));
 
   std::sort(hullAct.begin(), hullAct.end(), [&](Vector a, Vector b) {
-      return a.x > b.x || ( a.x == b.x && a.y > b.y) ;
+      return a.x > b.x || ( a.x == b.x && a.y > b.y);
   });
 
   std::sort(hullExp.begin(), hullExp.end(), [&](Vector a, Vector b) {
-      return a.x > b.x || ( a.x == b.x && a.y > b.y) ;
+      return a.x > b.x || ( a.x == b.x && a.y > b.y);
   });
 
   ASSERT_EQ(hullAct, hullExp);
