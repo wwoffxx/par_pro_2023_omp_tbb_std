@@ -61,8 +61,11 @@ TEST(uvarkin_min_hull_convex, test3) {
 
 TEST(uvarkin_min_hull_convex, test4) {
   std::vector<std::vector<int>> matrix = {
-      {1, 0, 1, 0, 1}, {0, 1, 1, 1, 1}, {0, 1, 0, 1, 0},
-      {0, 1, 1, 0, 0}, {1, 1, 0, 0, 0},
+      {1, 0, 1, 0, 1},
+      {0, 1, 1, 1, 1},
+      {0, 1, 0, 1, 0},
+      {0, 1, 1, 0, 0},
+      {1, 1, 0, 0, 0},
   };
 
   auto converter = Converter();
@@ -77,8 +80,11 @@ TEST(uvarkin_min_hull_convex, test4) {
   auto hullAct = MinConvexHull.deletePointNotIncludeToMCH(sortPoints);
 
   std::vector<std::vector<int>> matrixHull = {
-      {1, 0, 1, 0, 1}, {0, 0, 0, 0, 1}, {0, 0, 0, 1, 0},
-      {0, 0, 1, 0, 0}, {1, 1, 0, 0, 0},
+      {1, 0, 1, 0, 1},
+      {0, 0, 0, 0, 1},
+      {0, 0, 0, 1, 0},
+      {0, 0, 1, 0, 0},
+      {1, 1, 0, 0, 0},
   };
 
   std::vector<Vector> hullPoints =
