@@ -1,4 +1,5 @@
 // Copyright 2023 Goncharova Anna
+
 #include <algorithm>
 #include <random>
 #include <vector>
