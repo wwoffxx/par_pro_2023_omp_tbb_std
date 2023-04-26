@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
-#include "../../../modules/task_1/goncharova_a_sobel/goncharova_a_sobel.h"
+#include "../../../modules/task_2/goncharova_a_sobel/goncharova_a_sobel.h"
 #include "gtest/gtest.h"
 
 TEST(sobel, get_matrix) {

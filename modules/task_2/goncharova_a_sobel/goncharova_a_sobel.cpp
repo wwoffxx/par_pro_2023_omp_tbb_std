@@ -5,7 +5,7 @@
 #include <vector>
 #include <ctime>
 #include <iostream>
-#include "../../../modules/task_1/goncharova_a_sobel/goncharova_a_sobel.h"
+#include "../../../modules/task_2/goncharova_a_sobel/goncharova_a_sobel.h"
 
 image::image(int _width, int _height, std::vector<int>_matrix) {
   if ((_width <= 0) || (_height <= 0))
