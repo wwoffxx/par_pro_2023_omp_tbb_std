@@ -1,7 +1,8 @@
 get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
 
-if ( USE_OMP )
-    set(ProjectId "${ProjectId}_omp")
+
+if ( USE_SEQ )
+    set(ProjectId "${ProjectId}_seq")
     project( ${ProjectId} )
     message( STATUS "-- " ${ProjectId} )
 
@@ -15,7 +16,6 @@ if ( USE_OMP )
     target_link_libraries(${ProjectId} ${PACK_LIB})
     target_link_directories(${ProjectId} PUBLIC ${CMAKE_BINARY_DIR}/googletest-install/lib)
     target_link_libraries(${ProjectId} gtest gtest_main)
-    target_link_libraries(${ProjectId} ${OpenMP_libomp_LIBRARY})
 
     enable_testing()
     add_test(NAME ${ProjectId} COMMAND ${ProjectId})
@@ -54,6 +54,6 @@ if ( USE_OMP )
             ${ProjectId}
             ${ARGS_FOR_CHECK_COUNT_TESTS}
     )
-else( USE_OMP )
+else( USE_SEQ )
     message( STATUS "-- ${ProjectId} - NOT BUILD!"  )
-endif( USE_OMP )
+endif( USE_SEQ )
