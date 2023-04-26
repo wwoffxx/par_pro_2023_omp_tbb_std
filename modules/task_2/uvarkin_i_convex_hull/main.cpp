@@ -124,6 +124,7 @@ TEST(uvarkin_min_hull_convex, test5) {
 
   std::vector<Vector> hullPoints =
       converter.convertMatrixToSTDVector(matrixHull, 5, 5);
+
   auto hullExp = MinConvexHull.sortPointByPolarAngle(
       hullPoints, MinConvexHull.getFirstPoint(hullPoints));
 
