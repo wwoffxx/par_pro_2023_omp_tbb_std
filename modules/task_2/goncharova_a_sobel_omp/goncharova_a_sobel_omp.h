@@ -1,7 +1,7 @@
 // Copyright 2023 Goncharova Anna
 
-#ifndef MODULES_TASK_2_GONCHAROVA_A_SOBEL_OMP_GONCHAROVA_A_SOBEL_0MP_H_
-#define MODULES_TASK_2_GONCHAROVA_A_SOBEL_OMP_GONCHAROVA_A_SOBEL_0MP_H_
+#ifndef MODULES_TASK_2_GONCHAROVA_A_SOBEL_OMP_GONCHAROVA_A_SOBEL_OMP_H_
+#define MODULES_TASK_2_GONCHAROVA_A_SOBEL_OMP_GONCHAROVA_A_SOBEL_OMP_H_
 
 #include <vector>
 
@@ -38,4 +38,4 @@ image<uint8_t> sobelSequence(image<uint8_t> inImage);
 image<uint8_t> sobelOmp(image<uint8_t> inImage);
 image<uint8_t> randImage(size_t r, size_t c);
 
-#endif  // MODULES_TASK_2_GONCHAROVA_A_SOBEL_OMP_GONCHAROVA_A_SOBEL_0MP_H_
+#endif  // MODULES_TASK_2_GONCHAROVA_A_SOBEL_OMP_GONCHAROVA_A_SOBEL_OMP_H_
