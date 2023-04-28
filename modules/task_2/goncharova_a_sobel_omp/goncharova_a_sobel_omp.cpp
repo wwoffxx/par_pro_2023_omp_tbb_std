@@ -22,7 +22,8 @@ image<uint8_t> randImage(size_t columns, size_t rows) {
 }
 
 image<uint8_t> sobelSequence(image<uint8_t> inImage) {
-    if (inImage._rows == 0 || inImage._columns == 0 || inImage._matrix.empty()) {
+    if (inImage._rows == 0 || inImage._columns == 0 ||
+        inImage._matrix.empty()) {
         throw - 1;
     }
     image<uint8_t> result(inImage._columns, inImage._rows);
@@ -33,17 +34,21 @@ image<uint8_t> sobelSequence(image<uint8_t> inImage) {
             int indexKernel = 0;
             for (int ki = -1; ki <= 1; ki++)
                 for (int kj = -1; kj <= 1; kj++) {
-                    resX += KERNEL_X._matrix[indexKernel] * inImage._matrix[(i + ki) * inImage._columns + j + kj];
-                    resY += KERNEL_Y._matrix[indexKernel] * inImage._matrix[(i + ki) * inImage._columns + j + kj];
+                    resX += KERNEL_X._matrix[indexKernel] *
+                        inImage._matrix[(i + ki) * inImage._columns + j + kj];
+                    resY += KERNEL_Y._matrix[indexKernel] *
+                        inImage._matrix[(i + ki) * inImage._columns + j + kj];
                     indexKernel++;
                 }
-            result._matrix[index] = sqrt(resX * resX + resY * resY) > 255 ? 255 : sqrt(resX * resX + resY * resY);
+            result._matrix[index] = sqrt(resX * resX + resY * resY) >
+                255 ? 255 : sqrt(resX * resX + resY * resY);
         }
     return result;
 }
 
 image<uint8_t> sobelOmp(image<uint8_t> inImage) {
-    if (inImage._rows == 0 || inImage._columns == 0 || inImage._matrix.empty()) {
+    if (inImage._rows == 0 || inImage._columns == 0 ||
+        inImage._matrix.empty()) {
         throw - 1;
     }
     image<uint8_t> result(inImage._columns, inImage._rows);
@@ -55,11 +60,16 @@ image<uint8_t> sobelOmp(image<uint8_t> inImage) {
             int indexKernel = 0;
             for (int ki = -1; ki <= 1; ki++)
                 for (int kj = -1; kj <= 1; kj++) {
-                    resX += KERNEL_X._matrix[indexKernel] * inImage._matrix[(i + ki) * inImage._columns + j + kj];
-                    resY += KERNEL_Y._matrix[indexKernel] * inImage._matrix[(i + ki) * inImage._columns + j + kj];
+                    resX += KERNEL_X._matrix[indexKernel] *
+                        inImage._matrix[(i + ki)
+                        * inImage._columns + j + kj];
+                    resY += KERNEL_Y._matrix[indexKernel] *
+                        inImage._matrix[(i + ki)
+                        * inImage._columns + j + kj];
                     indexKernel++;
                 }
-            result._matrix[index] = sqrt(resX * resX + resY * resY) > 255 ? 255 : sqrt(resX * resX + resY * resY);
+            result._matrix[index] = sqrt(resX * resX + resY * resY) >
+                255 ? 255 : sqrt(resX * resX + resY * resY);
         }
     return result;
 }
