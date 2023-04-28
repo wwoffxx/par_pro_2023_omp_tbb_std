@@ -5,6 +5,7 @@
 
 #include <vector>
 
+
 template <class T>
 struct image {
     std::vector<T> _matrix;
