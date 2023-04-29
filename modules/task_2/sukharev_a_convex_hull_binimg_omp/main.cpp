@@ -145,7 +145,7 @@ TEST(Parallel_Operations_OpenMP, Test_Nested_Components) {
     ASSERT_EQ(res, expRes);
 }
 
-//TEST(Parallel_Operations_OpenMP, Test_Time) {
+// TEST(Parallel_Operations_OpenMP, Test_Time) {
 //    int n = 3002;
 //    std::vector<std::vector<int>> g(n, std::vector<int>(n, 0));
 //
@@ -173,7 +173,7 @@ TEST(Parallel_Operations_OpenMP, Test_Nested_Components) {
 //    t2 = omp_get_wtime()-t2;
 //    std::cout << t1 << " " << t2 << std::endl;
 //    ASSERT_EQ(res1, res2);
-//}
+// }
 
 
 int main(int argc, char **argv) {
