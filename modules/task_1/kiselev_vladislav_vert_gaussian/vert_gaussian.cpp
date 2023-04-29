@@ -19,8 +19,6 @@ std::vector<std::vector<double>> createGaussian() {
                    / (2 * M_PI * sigma * sigma);
             norm += kernel[i + radius][j + radius];
         }
-
-    
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++)
             kernel[i][j] /= norm;
