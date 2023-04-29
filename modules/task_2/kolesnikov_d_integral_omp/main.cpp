@@ -4,7 +4,7 @@
 #include <vector>
 #include <utility>
 #include <cmath>
-#include "../../../modules/task_1/kolesnikov_d_integral_seq/integral.h"
+#include "../../../modules/task_2/kolesnikov_d_integral_omp/integral.h"
 
 double f1(std::vector<double> par) {
   double x = par[0];
