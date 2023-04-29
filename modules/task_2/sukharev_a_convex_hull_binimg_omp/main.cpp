@@ -151,19 +151,11 @@ TEST(Parallel_Operations_OpenMP, Test_Nested_Components) {
 //
 //    for (int i = 0; i < n; i++) {
 //        for (int j = 0; j < n; j++) {
-//            if ((i + j) / 20 % 3 == 0) {
+//            if ((i + j) / 5 % 3 == 0) {
 //                g[i][j] = 1;
 //            }
 //        }
 //    }
-//    /*
-//    1 0 0 1 0 0 ...
-//    0 0 1 0 0 1 ...
-//    0 1 0 0 1 0 ...
-//    1 0 0 1 0 0 ...
-//    0 0 1 0 0 1 ...
-//    ...
-//    */
 //    double t1 = 0, t2 = 0;
 //    t1 = omp_get_wtime();
 //    std::vector<std::vector<int>> res1 = build_convhull_img(g);
