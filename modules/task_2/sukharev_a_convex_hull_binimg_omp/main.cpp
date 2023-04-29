@@ -146,7 +146,7 @@ TEST(Parallel_Operations_OpenMP, Test_Nested_Components) {
 }
 
 // TEST(Parallel_Operations_OpenMP, Test_Time) {
-//    int n = 3002;
+//    int n = 4002;
 //    std::vector<std::vector<int>> g(n, std::vector<int>(n, 0));
 //
 //    for (int i = 0; i < n; i++) {
