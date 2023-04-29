@@ -34,7 +34,7 @@ double f5(std::vector<double> par) {
   return (sqrt(x*x) + 2*(y+z));
 }
 
-TEST(Seq, test_1) {
+TEST(Omp, test_1) {
   std::vector<std::pair<double, double>> bounds(3);
   bounds[0] = {0, 5};
   bounds[1] = {0, 5};
@@ -46,7 +46,7 @@ TEST(Seq, test_1) {
   ASSERT_NEAR(calc_res, res, tolerance);
 }
 
-TEST(Seq, test_2) {
+TEST(Omp, test_2) {
   std::vector<std::pair<double, double>> bounds(3);
   bounds[0] = {0, 5};
   bounds[1] = {0, 1};
@@ -58,7 +58,7 @@ TEST(Seq, test_2) {
   ASSERT_NEAR(calc_res, res,  tolerance);
 }
 
-TEST(Seq, test_3) {
+TEST(Omp, test_3) {
   std::vector<std::pair<double, double>> bounds(3);
   bounds[0] = {0, 5};
   bounds[1] = {1, 3};
@@ -70,7 +70,7 @@ TEST(Seq, test_3) {
   ASSERT_NEAR(calc_res, res, tolerance);
 }
 
-TEST(Seq, test_4) {
+TEST(Omp, test_4) {
   std::vector<std::pair<double, double>> bounds(3);
   bounds[0] = {0, 5};
   bounds[1] = {0, 5};
@@ -84,7 +84,7 @@ TEST(Seq, test_4) {
 
 
 
-TEST(Seq, test_5) {
+TEST(Omp, test_5) {
   std::vector<std::pair<double, double>> bounds(3);
   bounds[0] = {0, 3};
   bounds[1] = {0, 2};
