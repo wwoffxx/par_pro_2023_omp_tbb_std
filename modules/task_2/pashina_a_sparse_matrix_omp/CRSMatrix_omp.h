@@ -1,6 +1,6 @@
 // Copyright 2023 Pashina Alina
-#ifndef PAR_PRO_2023_OMP_TBB_STD_MODULES_TASK_2_PASHINA_A_SPARSE_MATRIX_OMP_CRSMATRIX_OMP_H_
-#define PAR_PRO_2023_OMP_TBB_STD_MODULES_TASK_2_PASHINA_A_SPARSE_MATRIX_OMP_CRSMATRIX_OMP_H_
+#ifndef MODULES_TASK_2_PASHINA_A_SPARSE_MATRIX_OMP_CRSMATRIX_OMP_H_
+#define MODULES_TASK_2_PASHINA_A_SPARSE_MATRIX_OMP_CRSMATRIX_OMP_H_
 
 #include <string>
 #include <vector>
@@ -28,4 +28,4 @@ std::vector<std::vector<double>> multiplyVecMatrix(
     std::vector<std::vector<double>> myFirstMatrix,
     std::vector<std::vector<double>> mySecondMatrix);
 
-#endif  // PAR_PRO_2023_OMP_TBB_STD_MODULES_TASK_2_PASHINA_A_SPARSE_MATRIX_OMP_CRSMATRIX_OMP_H_
+#endif  // MODULES_TASK_2_PASHINA_A_SPARSE_MATRIX_OMP_CRSMATRIX_OMP_H_
