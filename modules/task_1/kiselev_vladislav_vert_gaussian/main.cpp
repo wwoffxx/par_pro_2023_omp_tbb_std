@@ -42,6 +42,7 @@ TEST(Gaussian, can_process_image_2) {
     EXPECT_FALSE(imgEquivalent(sourceImg, resultImg));
 }
 
+
 TEST(Gaussian, can_process_image_correctly) {
     std::vector<std::vector<int>> sourceImg = getRandomImg(10, 10);
     std::vector<std::vector<int>> resultImg1 = GaussianFilter(sourceImg);
