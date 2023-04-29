@@ -17,7 +17,7 @@ bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
   return true;
 }
 
-bool CheckMarking(int N, vector<vector<int>>& image,
+bool CheckMarking(int N, const vector<vector<int>>& image,
                   const vector<vector<int>>& etalon) {
   vector<vector<int>> marks(N);
   for (int i = 0; i < N; i++) {
@@ -30,7 +30,7 @@ bool CheckMarking(int N, vector<vector<int>>& image,
       marks[i][j] = k_unnamed;
     }
   }
-  par_marking(image, N, N, marks, k_unnamed);
+  par_marking(image, N, N, &marks, k_unnamed);
   /*if (N < 20) {
     std::cout << "\n total:\n";
     for (int i = 0; i < N; i++) {
@@ -86,7 +86,7 @@ TEST(bin_marking, can_mark_image_with_many_central_components) {
   ASSERT_EQ(true, CheckMarking(n, image, etalon));
 }
 
- TEST(bin_marking, can_mark_general_image) {
+TEST(bin_marking, can_mark_general_image) {
   const int n = 5;
   vector<vector<int>> image = {{
                                    1,
@@ -147,7 +147,7 @@ TEST(bin_marking, can_mark_image_with_many_central_components) {
 //  par_marking(image, n, n, marks, k_unnamed);
 //}
 
- TEST(bin_marking, can_mark_staggered_image) {
+TEST(bin_marking, can_mark_staggered_image) {
   const int n = 8;
   vector<vector<int>> image = {
       {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},

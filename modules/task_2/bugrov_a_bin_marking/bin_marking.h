@@ -17,13 +17,10 @@ using std::vector;
 
 void seq_marking(const vector<vector<int>>& image, const int n, const int m,
                  vector<vector<int>>* marks, const int k_unnamed);
-// void par_marking(const vector<vector<int>>& image, const int n, const int m,
-//                 vector<vector<int>>& marks, const int k_unnamed);
-
 bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
                    int n, int m);
-void par_marking(vector<vector<int>>& image, const int n, const int m,
-                 vector<vector<int>>& marks, const int k_unnamed);
+void par_marking(const vector<vector<int>>& image, const int n, const int m,
+                 vector<vector<int>>* marks, const int k_unnamed);
 struct R {
   // label
   size_t L;
@@ -63,20 +60,20 @@ struct CardR {
     card.resize(size_);
   }
   R& operator[](size_t i) { return card[i]; }
-  const CardR& operator=(CardR& card_) {
+  const CardR& operator=(const CardR& card_) {
     card = card_.card;
     size_ = card_.size_;
     return *this;
   }
 };
 
-void first_par_pass(int** p_image, CardR& card, int n, int m, const int k_back);
-void second_par_pass(CardR& card, int n, int m);
-void third_par_pass(CardR& card, int n, int m);
+// void first_par_pass(int** p_image, CardR& card, int n, int m, const int
+// k_back); void second_par_pass(CardR& card, int n, int m); void
+// third_par_pass(CardR& card, int n, int m);
 
-struct EqLabel {
-  size_t label;
-
- public:
-  EqLabel(size_t label_ = 0) : label(label_) {}
-};
+// struct EqLabel {
+//  size_t label;
+//
+// public:
+//  EqLabel(size_t label_ = 0) : label(label_) {}
+// };
