@@ -347,7 +347,7 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
   //  }
   //}
 
-  //#pragma omp parallel for shared(n, m, (*card), p_marks, w)
+  // #pragma omp parallel for shared(n, m, (*card), p_marks, w)
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < w; j++) {
       if ((*card)[i * w + j].L == 0) {
