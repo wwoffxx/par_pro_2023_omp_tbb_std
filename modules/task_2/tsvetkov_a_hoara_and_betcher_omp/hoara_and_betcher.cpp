@@ -6,8 +6,6 @@
 #include <algorithm>
 #include <random>
 
-
-
 void GetMas(int* a, int n, int kol) {
     // a = new int[n];
     std::default_random_engine rnd{std::random_device { } ()};
@@ -47,6 +45,7 @@ void HoaraSort(int* a, int start, int finish) {
     if (l < finish)
         HoaraSort(a, l, finish);
 }
+
 void PerfectUnshuffle(int a[], int b[], int size1, int size2, int* res) {
     int i1, i2, k = 0;
     for (i1 = 0, i2 = 0; i1 < size1 && i2 < size2; ) {
@@ -92,7 +91,8 @@ void PerfectUnshuffle(int a[], int b[], int size1, int size2, int* res) {
         }
     }
 }
-void PerfectShuffle(int* res, int size, int kol) {  // первая половина в четные, вторая в нечетнык
+
+void PerfectShuffle(int* res, int size, int kol) {
     int k = size / 2;
     int buf;
      int i, j;
@@ -104,11 +104,11 @@ void PerfectShuffle(int* res, int size, int kol) {  // первая полови
     // }
     #pragma omp parallel num_threads(kol)
     {
-    #pragma omp for  // первая в четные
+    #pragma omp for
     for (int i = 0; i < k; i++) {
         tmp[i+i] = res[i];
     }
-    #pragma omp for  // вторая в нечетные
+    #pragma omp for
     for (int i = 0; i < k; i++) {
         tmp[i+i+1] = res[k+i];
     }
@@ -129,6 +129,7 @@ void PerfectShuffle(int* res, int size, int kol) {  // первая полови
         }
     }
 }
+
 void BetcherSort(int a[], int b[], int size1, int size2, int* res) {
     int newsize = size1 + size2;
     PerfectUnshuffle(a, b, size1, size2, res);

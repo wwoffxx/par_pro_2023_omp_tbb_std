@@ -2,9 +2,6 @@
 #include <gtest/gtest.h>
 #include "./hoara_and_betcher.h"
 
-// в гетмас 3 параметр- кол-во потоков
-
-
 TEST(HoaraBetcher, Test_1_Hoara_10_elems) {
 int array[10];
 GetMas(array, 10, 4);
