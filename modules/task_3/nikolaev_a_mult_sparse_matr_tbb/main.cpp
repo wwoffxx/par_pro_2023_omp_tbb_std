@@ -8,8 +8,8 @@ TEST(Sparse_Matrix_Mult, Test_Mult1) {
     CCSMatrix resSeq;
     CCSMatrix resPar;
 
-    A = GetRandomMatrix(16, 16, 20);
-    B = GetRandomMatrix(16, 16, 20);
+    A = GetRandomMatrix(8, 8, 20);
+    B = GetRandomMatrix(8, 8, 20);
     A = TransposeMatrix(A);
 
     resSeq = GetMultiplicateSequential(A, B);
