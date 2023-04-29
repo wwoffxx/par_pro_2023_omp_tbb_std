@@ -67,15 +67,15 @@ void mergeMatrix(std::vector<double> *mtx, const std::vector<double> &a, const s
   unsigned int sz = size / 2;
   for (unsigned int i = 0; i < sz; i++) {
     for (unsigned int j = i * sz; j < i * sz + sz; j++)
-      mtx->push_back(a[j]);
+      mtx->push_back(round(a[j]*100)/100);
     for (unsigned int j = i * sz; j < i * sz + sz; j++)
-      mtx->push_back(b[j]);
+      mtx->push_back(round(b[j]*100)/100);
   }
   for (unsigned int i = 0; i < sz; i++) {
     for (unsigned int j = i * sz; j < i * sz + sz; j++)
-      mtx->push_back(c[j]);
+      mtx->push_back(round(c[j]*100)/100);
     for (unsigned int j = i * sz; j < i * sz + sz; j++)
-      mtx->push_back(d[j]);
+      mtx->push_back(round(d[j]*100)/100);
   }
 }
 
