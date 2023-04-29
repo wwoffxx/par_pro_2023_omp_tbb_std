@@ -47,7 +47,7 @@ void HoaraSort(int* a, int start, int finish) {
     if (l < finish)
         HoaraSort(a, l, finish);
 }
-void PerfectUnshuffle(int a[], int b[], int size1, int size2, int* res) {  
+void PerfectUnshuffle(int a[], int b[], int size1, int size2, int* res) {
     int i1, i2, k = 0;
     for (i1 = 0, i2 = 0; i1 < size1 && i2 < size2; ) {
         if (a[i1] <= b[i2]) {
@@ -102,7 +102,6 @@ void PerfectShuffle(int* res, int size, int kol) {  // первая полови
     //     tmp[i] = res[j];
     //     tmp[i + 1] = res[k+j];
     // }
-    
     #pragma omp parallel num_threads(kol)
     {
     #pragma omp for  // первая в четные
