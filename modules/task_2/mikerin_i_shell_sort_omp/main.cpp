@@ -40,7 +40,7 @@ TEST(Omp_Merge, Test_Merge_Sort_rand) {
     }
 
     ASSERT_TRUE(nice);
-   // ASSERT_TRUE(ompt < seqt);
+//  ASSERT_TRUE(ompt < seqt);
 }
 
 TEST(Omp_Shell, Test_Shell_Sort) {
@@ -88,7 +88,7 @@ TEST(Omp_Shell, Test_Shell_Sort_rand) {
     }
 
     ASSERT_TRUE(nice);
-   // ASSERT_TRUE(ompt < seqt);
+//  ASSERT_TRUE(ompt < seqt);
 }
 
 
