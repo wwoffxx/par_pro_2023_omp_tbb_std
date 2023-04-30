@@ -78,5 +78,4 @@ bool isEqual(const std::vector<dot>& lhs, const std::vector<dot>& rhs) {
         if (rhs.at(i) != lhs.at(i)) return false;
     }
     return true;
-    
 }
