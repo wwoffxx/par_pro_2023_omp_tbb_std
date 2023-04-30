@@ -13,7 +13,7 @@ TEST(OMP, Test_Size_0) {
 TEST(OMP, Test_Size_1) {
     std::vector<int> v{1};
     std::vector<int> ref{1};
-    radSortParMerge(&v);
+    v = radSortParMerge(&v);
     ASSERT_EQ(v, ref);
 }
 
@@ -22,7 +22,7 @@ TEST(OMP, Test_Size_100) {
     auto vec = getRndVector(N);
     auto ref = std::vector<int>(vec);
     std::stable_sort(ref.begin(), ref.end());
-    radSortParMerge(&vec);
+    vec = radSortParMerge(&vec);
 
     ASSERT_EQ(vec, ref);
 }
@@ -32,7 +32,7 @@ TEST(OMP, Test_Size_1000) {
     auto vec = getRndVector(N);
     auto ref = std::vector<int>(vec);
     std::stable_sort(ref.begin(), ref.end());
-    radSortParMerge(&vec);
+    vec = radSortParMerge(&vec);
 
     ASSERT_EQ(vec, ref);
 }
@@ -42,7 +42,7 @@ TEST(OMP, Test_Size_100000) {
     auto vec = getRndVector(N);
     auto ref = std::vector<int>(vec);
     std::stable_sort(ref.begin(), ref.end());
-    radSortParMerge(&vec);
+    vec = radSortParMerge(&vec);
 
     ASSERT_EQ(vec, ref);
 }
