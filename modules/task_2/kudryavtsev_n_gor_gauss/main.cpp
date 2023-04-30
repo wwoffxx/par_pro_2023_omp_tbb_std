@@ -4,132 +4,59 @@
 #include<iostream>
 #include "./gor_gauss.h"
 
-TEST(Sequential_Gaus_Filter_Test, Test_Throw_Work) {
-    int rows = 0;
-    int cols = -2;
-    ASSERT_ANY_THROW(getRandomMatrix(rows, cols));
+TEST(ParallelOMP, No_throw_when_empty_image) {
+  const int countRows = 0;
+  const int countColumns = 0;
+  auto image = genImage(countRows, countColumns);
+  ASSERT_NO_THROW(gaussianFilterOmpParallel(image, countRows, countColumns));
 }
 
-TEST(Sequential_Gaus_Filter_Test, Test_Matrix_3x3) {
-    int rows = 3;
-    int cols = 3;
-    double alpha = 5;
-    int radius = 1;
-    ASSERT_NO_THROW(getRandomMatrix(rows, cols));
-    Matrix gausFilterSeq(rows, std::vector<double>(cols));
-    Matrix gausFilterPar(rows, std::vector<double>(cols));
-    Matrix img(rows, std::vector<double>(cols));
-    Matrix kernelMat = genMatrixKernel(radius, alpha);
-    img = getRandomMatrix(rows, cols);
-    gausFilterSeq = SequentialGausFilter(img, rows, cols, radius, alpha);
-    gausFilterPar = ParallelGausFilter(img, rows, cols, radius, alpha);
-    printMatrix(kernelMat, 2 * radius + 1, 2 * radius + 1);
-    printMatrix(img, rows, cols);
-    printMatrix(gausFilterSeq, rows, cols);
-    printMatrix(gausFilterPar, rows, cols);
-    ASSERT_NO_THROW(getRandomMatrix(rows, cols));
+TEST(ParallelOMP, Invalid_count_rows_or_columns) {
+  const int countRows = 5;
+  const int countColumns = 5;
+  vector<intensityType> image = { 54, 251, 169, 80, 159, 95, 251, 220, 90 };
+  ASSERT_ANY_THROW(gaussianFilterOmpParallel(image, countRows, countColumns));
 }
 
-TEST(Sequential_Gaus_Filter_Test, Test_Matrix_Static_3x3) {
-    int rows = 3;
-    int cols = 3;
-
-    double alpha = 1;
-    int radius = 1;
-    Matrix imgDef(rows, std::vector<double>(cols));
-    Matrix gausFilterSeq(rows, std::vector<double>(cols));
-    Matrix gausFilterPar(rows, std::vector<double>(cols));
-    Matrix imgControl(rows, std::vector<double>(cols));
-    Matrix kernelMat = genMatrixKernel(radius, alpha);
-
-    imgDef[0][0] = 187;
-    imgDef[0][1] = 234;
-    imgDef[0][2] = 59;
-    imgDef[1][0] = 126;
-    imgDef[1][1] = 235;
-    imgDef[1][2] = 215;
-    imgDef[2][0] = 118;
-    imgDef[2][1] = 131;
-    imgDef[2][2] = 42;
-
-    imgControl[0][0] = 192;
-    imgControl[0][1] = 215;
-    imgControl[0][2] = 125;
-    imgControl[1][0] = 134;
-    imgControl[1][1] = 178;
-    imgControl[1][2] = 178;
-    imgControl[2][0] = 117;
-    imgControl[2][1] = 105;
-    imgControl[2][2] = 78;
-
-    gausFilterSeq = SequentialGausFilter(imgDef, rows, cols, radius, alpha);
-    gausFilterPar = ParallelGausFilter(imgDef, rows, cols, radius, alpha);
-    ASSERT_EQ(imgControl, gausFilterSeq);
-    ASSERT_EQ(imgControl, gausFilterPar);
+TEST(ParallelOMP, Works_with_3x3_image) {
+  const int countRows = 3;
+  const int countColumns = 3;
+  vector<intensityType> image = { 54, 251, 169, 80, 159, 95, 251, 220, 90 };
+  vector<intensityType> referenceValue = { 102, 166, 169, 136, 155, 133, 207, 177, 119 };
+  vector<intensityType> result = gaussianFilterOmpParallel(image, countRows, countColumns);
+  ASSERT_EQ(result, referenceValue);
 }
 
-TEST(Sequential_Gaus_Filter_Test, Test_Matrix_1000x500x60thr) {
-    int rows = 1000;
-    int cols = 500;
-    double alpha = 7;
-    int radius = 2;
-    Matrix gausFilterSeq(rows, std::vector<double>(cols));
-    Matrix gausFilterPar(rows, std::vector<double>(cols));
-    Matrix img(rows, std::vector<double>(cols));
-    Matrix kernelMat = genMatrixKernel(radius, alpha);
-    img = getRandomMatrix(rows, cols);
-    double start = omp_get_wtime();
-    gausFilterSeq = SequentialGausFilter(img, rows, cols, radius, alpha);
-    double end = omp_get_wtime();
-    std::cout << "Sequential time: " << end - start << std::endl;
-    start = omp_get_wtime();
-    omp_set_num_threads(60);
-    gausFilterPar = ParallelGausFilter(img, rows, cols, radius, alpha);
-    end = omp_get_wtime();
-    std::cout << "Parallel time: " << end - start << std::endl;
-    ASSERT_EQ(gausFilterSeq, gausFilterPar);
+TEST(ParallelOMP, Works_with_4x3_image) {
+  const int countRows = 4;
+  const int countColumns = 3;
+  vector<intensityType> image = { 93, 51, 79, 119, 150, 31, 33, 244, 34, 28, 109, 150 };
+  vector<intensityType> referenceValue = { 93, 79, 69, 105, 108, 70, 86, 122, 93, 57, 108, 126 };
+  vector<intensityType> result = gaussianFilterOmpParallel(image, countRows, countColumns);
+  ASSERT_EQ(result, referenceValue);
 }
 
-TEST(Sequential_Gaus_Filter_Test, Test_Matrix_300x300x30thr) {
-    int rows = 300;
-    int cols = 300;
-    double alpha = 7;
-    int radius = 2;
-    Matrix gausFilterSeq(rows, std::vector<double>(cols));
-    Matrix gausFilterPar(rows, std::vector<double>(cols));
-    Matrix img(rows, std::vector<double>(cols));
-    Matrix kernelMat = genMatrixKernel(radius, alpha);
-    img = getRandomMatrix(rows, cols);
-    double start = omp_get_wtime();
-    gausFilterSeq = SequentialGausFilter(img, rows, cols, radius, alpha);
-    double end = omp_get_wtime();
-    std::cout << "Sequential time: " << end - start << std::endl;
-    start = omp_get_wtime();
-    omp_set_num_threads(30);
-    gausFilterPar = ParallelGausFilter(img, rows, cols, radius, alpha);
-    end = omp_get_wtime();
-    std::cout << "Parallel time: " << end - start << std::endl;
-    ASSERT_EQ(gausFilterSeq, gausFilterPar);
+TEST(ParallelOMP, Works_with_full_black_image) {
+  const int countRows = 3;
+  const int countColumns = 3;
+  vector<intensityType> image = { 255, 255, 255, 255, 255, 255, 255, 255, 255 };
+  vector<intensityType> referenceValue = { 255, 255, 255, 255, 255, 255, 255, 255, 255 };
+  vector<intensityType> result = gaussianFilterOmpParallel(image, countRows, countColumns);
+  ASSERT_EQ(result, referenceValue);
 }
 
-TEST(Sequential_Gaus_Filter_Test, Test_Matrix_1500x1000x20thr) {
-    int rows = 1500;
-    int cols = 1000;
-    double alpha = 7;
-    int radius = 2;
-    Matrix gausFilterSeq(rows, std::vector<double>(cols));
-    Matrix gausFilterPar(rows, std::vector<double>(cols));
-    Matrix img(rows, std::vector<double>(cols));
-    Matrix kernelMat = genMatrixKernel(radius, alpha);
-    img = getRandomMatrix(rows, cols);
-    double start = omp_get_wtime();
-    gausFilterSeq = SequentialGausFilter(img, rows, cols, radius, alpha);
-    double end = omp_get_wtime();
-    std::cout << "Sequential time: " << end - start << std::endl;
-    start = omp_get_wtime();
-    omp_set_num_threads(20);
-    gausFilterPar = ParallelGausFilter(img, rows, cols, radius, alpha);
-    end = omp_get_wtime();
-    std::cout << "Parallel time: " << end - start << std::endl;
-    ASSERT_EQ(gausFilterSeq, gausFilterPar);
+TEST(ParallelOMP, Works_with_full_white_image) {
+  const int countRows = 3;
+  const int countColumns = 3;
+  vector<intensityType> image = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  vector<intensityType> referenceValue = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  vector<intensityType> result = gaussianFilterOmpParallel(image, countRows, countColumns);
+  ASSERT_EQ(result, referenceValue);
+}
+
+TEST(ParallelOMP, Can_calculate_150x177_image) {
+  const int countRows = 150;
+  const int countColumns = 177;
+  vector<intensityType> image = genImage(countRows, countColumns);
+  ASSERT_NO_THROW(gaussianFilterOmpParallel(image, countRows, countColumns));
 }

@@ -1,98 +1,38 @@
 // Copyright 2023 Kudryavtsev Nikita
 #include "../../../modules/task_2/kudryavtsev_n_gor_gauss/gor_gauss.h"
-Matrix getRandomMatrix(int rows, int cols) {
-    if (rows <= 0 || cols <= 0)
-        throw std::invalid_argument("Fix size of Matrix");
-    std::mt19937 gen;
-    gen.seed(static_cast<int>(time(0)));
-    Matrix def(rows, std::vector<double>(cols));
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            def[i][j] = gen() % 255;
-        }
-    }
-    return def;
+vector<intensityType> genImage(int rows, int columns) {
+  std::random_device dev;
+  std::mt19937 gen(dev());
+  vector<intensityType> image(rows * columns);
+  for (size_t i = 0; i < rows * columns; ++i) {
+    image[i] = gen() % 256;
+  }
+  return image;
 }
 
-template <class T>
-T clamp(T tmp, int max, int min) {
-    return (tmp > max) ? max : (tmp < min) ? min : tmp;
+vector<intensityType> gaussianFilterOmpParallel(const vector<intensityType>& image,
+  int rows, int columns) {
+  if (image.size() != rows * columns)
+    throw std::string("Error with values rows or columns");
+  vector<intensityType> resultImage(rows * columns);
+  char radius = kernelSize / 2;
+#pragma omp parallel for
+  for (int i = 0; i < rows; ++i) {
+    for (int j = 0; j < columns; ++j) {
+      int curPixIntens = 0;
+      char gausMatrixIndex = 0;
+      for (int xKernel = -radius; xKernel <= radius; ++xKernel) {
+        for (int yKernel = -radius; yKernel <= radius; ++yKernel) {
+          int neighboorPixelX = std::max(0, std::min(i + xKernel, rows - 1));
+          int neighboorPixelY = std::max(0, std::min(j + yKernel, columns - 1));
+          curPixIntens += image[neighboorPixelX * columns + neighboorPixelY]
+            * kernel[gausMatrixIndex];
+          gausMatrixIndex++;
+        }
+      }
+      resultImage[i * columns + j] = curPixIntens / kernelSum;
+    }
+  }
+  return resultImage;
 }
 
-void printMatrix(Matrix img, int rows, int cols) {
-    std::cout << "Matrix" << std::endl;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            std::cout << img[i][j] << " ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-}
-
-Matrix genMatrixKernel(int radius, double alpha) {
-    const int size = 2 * radius + 1;
-    double normSum = 0;
-    Matrix vecKernel(size, std::vector<double>(size));
-    for (int i = -radius; i <= radius; i++) {
-        for (int j = -radius; j <= radius; j++) {
-            vecKernel[i + radius][j + radius] =
-            exp(-(i * i + j * j) / (alpha * alpha));
-            normSum += vecKernel[i + radius][j + radius];
-        }
-    }
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < size; j++) {
-            vecKernel[i][j] /= normSum;
-        }
-    }
-    return vecKernel;
-}
-
-Matrix ParallelGausFilter(Matrix img, int rows, int cols,
-    int radius, double alpha) {
-    Matrix resImg(rows, std::vector<double>(cols));
-    Matrix vecKernel = genMatrixKernel(radius, alpha);
-#pragma omp parallel
-    {
-        #pragma omp for collapse(2) schedule(static)
-        for (int x = 0; x < rows; x++) {
-            for (int y = 0; y < cols; y++) {
-                int resValue = 0;
-                for (int i = -radius; i <= radius; i++) {
-                    for (int j = -radius; j <= radius; j++) {
-                        int x_ = clamp(x + j, rows - 1, 0);
-                        int y_ = clamp(y + j, cols - 1, 0);
-                        double value = img[x_][y_];
-                        resValue += value * vecKernel[i + radius][j + radius];
-                    }
-                }
-                resValue = clamp(resValue, 255, 0);
-                resImg[x][y] = resValue;
-            }
-        }
-    }
-    return resImg;
-}
-
-Matrix SequentialGausFilter(Matrix img, int rows, int cols,
-    int radius, double alpha) {
-    Matrix resImg(rows, std::vector<double>(cols));
-    Matrix vecKernel = genMatrixKernel(radius, alpha);
-    for (int x = 0; x < rows; x++) {
-        for (int y = 0; y < cols; y++) {
-            int resValue = 0;
-            for (int i = -radius; i <= radius; i++) {
-                for (int j = -radius; j <= radius; j++) {
-                    int x_ = clamp(x + j, rows - 1, 0);
-                    int y_ = clamp(y + j, cols - 1, 0);
-                    double value = img[x_][y_];
-                    resValue += value * vecKernel[i + radius][j + radius];
-                }
-            }
-            resValue = clamp(resValue, 255, 0);
-            resImg[x][y] = resValue;
-        }
-    }
-    return resImg;
-}
