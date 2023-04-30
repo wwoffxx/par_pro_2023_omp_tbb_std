@@ -231,7 +231,7 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
 
     // use this network to merge these parts
     for (int i = 0; i < steps.size(); ++i) {
-        #pragma omp parallel for num_threads(numParts/2)
+        #pragma omp parallel for num_threads(steps[i].size())
         for (int j = 0; j < steps[i].size(); ++j)
             compExch(&(partsPtrs[steps[i][j].part1]), &(partsPtrs[steps[i][j].part2]),
                         &(tmpPartsPtrs[steps[i][j].part1]), &(tmpPartsPtrs[steps[i][j].part2]), sizePart);
