@@ -1,6 +1,6 @@
 // Copyright 2023 Smirnov Nick
-#ifndef MODULES_TASK_2_SMIRNOV_N_DIJKSTRA_OMP_DIJKSTRA_OMP_H_
-#define MODULES_TASK_2_SMIRNOV_N_DIJKSTRA_OMP_DIJKSTRA_OMP_H_
+#ifndef MODULES_TASK_2_SMIRNOV_N_DIJKSTRA_DIJKSTRA_H_
+#define MODULES_TASK_2_SMIRNOV_N_DIJKSTRA_DIJKSTRA_H_
 
 #include <gtest/gtest.h>
 #include <omp.h>
@@ -18,4 +18,4 @@ std::vector<int> getSequentialDijkstra(
     const std::vector<std::vector<int>>& graf);
 std::vector<int> getParallelDijkstra(const std::vector<std::vector<int>>& graf);
 
-#endif  // MODULES_TASK_2_SMIRNOV_N_DIJKSTRA_OMP_DIJKSTRA_OMP_H_
+#endif  // MODULES_TASK_2_SMIRNOV_N_DIJKSTRA_DIJKSTRA_H_
