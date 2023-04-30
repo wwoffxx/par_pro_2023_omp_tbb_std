@@ -1,6 +1,6 @@
 // Copyright 2023 Grachev Valentin
 #include <gtest/gtest.h>
-#include "../../../modules/task_2/grachev_v_mult_rare_matrix/mult_rare_matrix.h"
+#include "../../../modules/task_3/grachev_v_mult_rare_matrix/mult_rare_matrix.h"
 
 TEST(Mult_rare_matrix_parallel, Test_1_2x2_and_2x2) {
     MatrixCRS matr(2, 2);
