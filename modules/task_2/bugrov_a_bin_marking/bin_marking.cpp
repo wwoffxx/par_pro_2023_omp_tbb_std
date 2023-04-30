@@ -57,7 +57,7 @@ void seq_marking(const vector<vector<int>>& image, const int n, const int m,
 void first_par_pass(const vector<vector<int>>& p_image, CardR* card, int n,
                     int m, const int k_back) {
 #pragma omp parallel for shared(p_image, card) /*private(i, j)*/
-  for (long long i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     size_t R_n = 0;
     R tmp;
     for (size_t j = 0; j < m; j++) {
