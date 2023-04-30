@@ -1,6 +1,6 @@
 // Copyright 2023 Kruglikova Valeriia
-#ifndef MODULES_TASK_2_KRUGLIKOVA_V_SPARSE_MATRIX_CRS_SPARSE_MATRIX_CRS_OMP_H_
-#define MODULES_TASK_2_KRUGLIKOVA_V_SPARSE_MATRIX_CRS_SPARSE_MATRIX_CRS_OMP_H_
+#ifndef MODULES_TASK_2_KRUGLIKOVA_V_SPARSE_MATRIX_CRS_OMP_SPARSE_MATRIX_CRS_OMP_H_
+#define MODULES_TASK_2_KRUGLIKOVA_V_SPARSE_MATRIX_CRS_OMP_SPARSE_MATRIX_CRS_OMP_H_
 #include <memory.h>
 #include <iostream>
 #include <iomanip>
@@ -47,4 +47,4 @@ Matrix generateMatrix(const size_t& rows, const size_t& cols, const size_t& coef
 
 void print(const Matrix& matrix);
 
-#endif  // MODULES_TASK_2_KRUGLIKOVA_V_SPARSE_MATRIX_CRS_SPARSE_MATRIX_CRS_OMP_H_
+#endif  // MODULES_TASK_2_KRUGLIKOVA_V_SPARSE_MATRIX_CRS_OMP_SPARSE_MATRIX_CRS_OMP_H_
