@@ -8,7 +8,7 @@ int D[] = {1, 4, 10, 23, 57, 132, 301, 701, 1750};
 std::vector<double> getRandomVector(int  sz) {
     std::vector<double> vec(sz);
 
-    srand(std::time(nullptr));
+    srand(time(nullptr));
     for (int  i = 0; i < sz; i++) { vec[i] = static_cast<double>(rand()) * 100 / RAND_MAX - 50; } //NOLINT
     return vec;
 }
