@@ -8,7 +8,7 @@ Matrix omp_crs_mult(Matrix A, Matrix B) {
     B.transponse();
     Matrix result;
     int resIndex = 0;
-#pragma omp parallel for ordered
+#pragma omp parallel for ordered schedule(dynamic, 1)
     for (int i = 0; i < A.pointer.size() - 1; i++) {
         for (int j = 0; j < B.pointer.size() - 1; j++) {
             int sumVal = 0;
