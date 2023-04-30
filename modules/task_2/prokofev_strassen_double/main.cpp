@@ -44,7 +44,7 @@ TEST(test5, test5) {
     std::vector<double> b = rndMat(3);
 
     EXPECT_EQ(sMult_NoCastToPowerOfTwo(a, b, 3), mMult(a, b, 3));
-} 
+}
 
 
 int main(int argc, char **argv) {
