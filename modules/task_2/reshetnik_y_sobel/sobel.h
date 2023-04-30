@@ -13,11 +13,11 @@
 #include <vector>
 
 class Image {
-   public:
+public:
     int width = 0, height = 0;
     std::vector<int> matrix;
+    explicit Image(const std::vector<int>& mat);
     Image(int _width, int _height);
-    Image(const std::vector<int>& mat);
     bool EqualTo(const Image& img2);
 };
 
