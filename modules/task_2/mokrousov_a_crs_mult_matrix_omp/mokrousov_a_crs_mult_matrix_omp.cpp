@@ -21,12 +21,15 @@ Matrix omp_crs_mult(Matrix A, Matrix B) {
                     }
                 }
             }
-            if (result.pointer.size() == i)
-                result.pointer.push_back(resIndex);
-            if (sumVal > 0) {
-                result.values.push_back(sumVal);
-                result.colums.push_back(j);
-                resIndex++;
+#pragma omp critical
+            {
+                if (result.pointer.size() == i)
+                    result.pointer.push_back(resIndex);
+                if (sumVal > 0) {
+                    result.values.push_back(sumVal);
+                    result.colums.push_back(j);
+                    resIndex++;
+                }
             }
         }
     }
