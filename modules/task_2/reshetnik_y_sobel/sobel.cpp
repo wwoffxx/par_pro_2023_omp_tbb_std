@@ -13,8 +13,8 @@ Image::Image(int _wdth, int _hgt) {
 }
 
 Image::Image(const std::vector<int>& mat) {
-  matrix.resize(mat.size());
-  for (int i = 0; i < mat.size(); ++i) matrix[i] = mat[i];
+    matrix.resize(mat.size());
+    for (int i = 0; i < mat.size(); ++i) matrix[i] = mat[i];
 }
 
 Image getRandomImage(int _wdth, int _hgt) {
@@ -34,8 +34,7 @@ bool Image::EqualTo(const Image& img2) {
         throw "Unequal sizes";
 
     for (int i = 0; i < img2.width * img2.height; i++) {
-        if (this->matrix[i] != img2.matrix[i])
-            return false;
+        if (this->matrix[i] != img2.matrix[i]) return false;
     }
 
     return true;
@@ -70,8 +69,7 @@ Image SobelSeq(Image start) {
             }
             if (sqrt(X * X + Y * Y) > 255) {
                 result.matrix[ind] = 255;
-            }
-            else {
+            } else {
                 result.matrix[ind] = sqrt(X * X + Y * Y);
             }
             ++j;
@@ -94,17 +92,18 @@ Image SobelOMP(Image start) {
             for (int a = 0; a < 3; ++a) {
                 for (int b = 0; b < 3; ++b) {
                     X = Gx[Ind_G] *
-                            start.matrix[(i + a) * start.height + j + b] + X;
+                            start.matrix[(i + a) * start.height + j + b] +
+                        X;
                     Y = Gy[Ind_G] *
-                            start.matrix[(i + a) * start.height + j + b] + Y;
+                            start.matrix[(i + a) * start.height + j + b] +
+                        Y;
                     Ind_G++;
                 }
             }
 
             if (sqrt(X * X + Y * Y) > 255) {
                 result.matrix[ind] = 255;
-            }
-            else {
+            } else {
                 result.matrix[ind] = sqrt(X * X + Y * Y);
             }
         }
