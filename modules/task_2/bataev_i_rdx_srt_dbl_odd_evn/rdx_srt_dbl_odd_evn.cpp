@@ -1,4 +1,5 @@
 // Copyright 2023 Bataev Ivan
+#include <omp.h>
 #include <iostream>
 #include <vector>
 #include <cstdint>
@@ -99,13 +100,41 @@ struct Comparator {
     int part2;
 };
 
-// void printVector(const std::vector<Comparator>& v, const std::string& prefix) {
-//     if (v.size() == 0) { return; }
-//     std::cout << prefix << "[";
-//     for (int i = 0; i < v.size() - 1; i++)
-//         std::cout << "(" << v[i].part1 << ", " << v[i].part2 << "), ";
-//     std::cout << "(" << v[v.size() - 1].part1 << ", " << v[v.size() - 1].part2 << ")]\n";
-// }
+std::vector<std::vector<Comparator>> getSteps(const std::vector<Comparator>& comprtrs, const int numParts) {
+    std::vector<std::vector<Comparator>> steps;
+    std::vector<int> partIndxs(numParts, 0);
+
+    for (int i = 0; i < comprtrs.size(); ++i) {
+        int stepIndx = (partIndxs[comprtrs[i].part1] > partIndxs[comprtrs[i].part2]) ?
+                          partIndxs[comprtrs[i].part1] : partIndxs[comprtrs[i].part2];
+
+        if (stepIndx < steps.size())
+            steps[stepIndx].push_back(comprtrs[i]);
+        else
+            steps.push_back({comprtrs[i]});
+
+        partIndxs[comprtrs[i].part1] = stepIndx + 1;
+        partIndxs[comprtrs[i].part2] = stepIndx + 1;
+    }
+
+    return steps;
+}
+
+void printVector(const std::vector<Comparator>& v, const std::string& prefix) {
+    if (v.size() == 0) { return; }
+    std::cout << prefix << "{";
+    for (int i = 0; i < v.size() - 1; i++)
+        std::cout << "(" << v[i].part1 << ", " << v[i].part2 << "), ";
+    std::cout << "(" << v[v.size() - 1].part1 << ", " << v[v.size() - 1].part2 << ")}";
+}
+void printVector(const std::vector<std::vector<Comparator>>& v, const std::string& prefix) {
+    if (v.size() == 0) { return; }
+    std::cout << prefix << "[";
+    printVector(v[0], "");
+    for (int i = 1; i < v.size(); i++)
+        printVector(v[i], ", ");
+    std::cout << "]\n";
+}
 
 void mrgNets(const std::vector<int>& upParts, const std::vector<int>& downParts, std::vector<Comparator>* comprtrs) {
     size_t sumSize = upParts.size() + downParts.size();  // n + m
@@ -136,12 +165,12 @@ void mrgNets(const std::vector<int>& upParts, const std::vector<int>& downParts,
     mrgNets(upOddParts, downOddParts, comprtrs);
     mrgNets(upEvenParts, downEvenParts, comprtrs);
 
-    std::vector<int> unionParts(sumSize);
-    std::memcpy(unionParts.data(), upParts.data(), upParts.size()*sizeof(int));
-    std::memcpy(unionParts.data() + upParts.size(), downParts.data(), downParts.size()*sizeof(int));
+    std::vector<int> joinedParts(sumSize);
+    std::memcpy(joinedParts.data(), upParts.data(), upParts.size()*sizeof(int));
+    std::memcpy(joinedParts.data() + upParts.size(), downParts.data(), downParts.size()*sizeof(int));
 
     for (int i = 1; i < sumSize - 1; i += 2)
-        (*comprtrs).push_back({ unionParts[i], unionParts[i + 1] });
+        (*comprtrs).push_back({ joinedParts[i], joinedParts[i + 1] });
 }
 
 void bldNet(const std::vector<int>& parts, std::vector<Comparator>* comprtrs) {
@@ -173,7 +202,7 @@ void compExch(double** part1, double** part2, double** tmpPart1, double** tmpPar
             (*tmpPart2)[k] = (*part1)[j--];
     }
 
-    // swap ptrs (inside ptrs, thanks cpplint!)
+    // swap ptrs (inside ptrs)
     std::swap(*tmpPart1, *part1);
     std::swap(*tmpPart2, *part2);
 }
@@ -189,20 +218,26 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
         tmpPartsPtrs.push_back((*tmpBuf).data() + shift);
     }
 
-    std::vector<Comparator> comprtrs;
+    // build Batcher's sotrting network for parts of buffer
     std::vector<int> parts;
     for (int i = 0; i < numParts; i++)
         parts.push_back(i);
-    // build Batcher's sotrting network for parts of buffer
+    std::vector<Comparator> comprtrs;
     bldNet(parts, &comprtrs);
+    std::vector<std::vector<Comparator>> steps = getSteps(comprtrs, numParts);
 
     // printVector(comprtrs, "Comparators: ");
+    // printVector(steps, "\nSteps: ");
 
-    // use the network to merge these parts
+
+
+    // use this network to merge these parts
     for (int i = 0; i < comprtrs.size(); ++i)
         compExch(&(partsPtrs[comprtrs[i].part1]), &(partsPtrs[comprtrs[i].part2]),
                     &(tmpPartsPtrs[comprtrs[i].part1]), &(tmpPartsPtrs[comprtrs[i].part2]), sizePart);
-        // compare-exchange for each comparator from sorting network
+        // compare-exchange for each comparator from the sorting network
+
+
 
     // if partPtr points to part of tmpBuf copy this part to buf
     for (int i = 0; i < numParts; i++)
@@ -210,7 +245,10 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
             std::memcpy((*buf).data() + i*sizePart, (*tmpBuf).data() + i*sizePart, sizePart*sizeof(double));
 }
 
-void seqRdxSrt(std::vector<double>* buf, const int size, const int numParts) {
+void parRdxSrt(std::vector<double>* buf, const int size, const int numParts) {
+    omp_set_num_threads(numParts);
+    double start = omp_get_wtime();
+
     // all sorted parts must be the same size for Batcher's merge
     // add temp max elems to the end of buf while it's not
     while ((*buf).size()%numParts)
@@ -220,11 +258,19 @@ void seqRdxSrt(std::vector<double>* buf, const int size, const int numParts) {
     std::vector<double> tmpBuf((*buf).size());
     int sizePart = (*buf).size()/numParts;
 
-    // sort each part separately with radix sort
-    for (int shift = 0; shift < (*buf).size(); shift += sizePart)
-        dblRdxSrt(reinterpret_cast<uint8_t*>((*buf).data() + shift),
-                    reinterpret_cast<uint8_t*>(tmpBuf.data() + shift), sizePart*sizeof(double));
-    // printVector(*buf);
+    #pragma omp parallel
+        {
+            // sort each part separately with radix sort
+
+            // for (int shift = 0; shift < (*buf).size(); shift += sizePart)
+            //     dblRdxSrt(reinterpret_cast<uint8_t*>((*buf).data() + shift),
+            //                 reinterpret_cast<uint8_t*>(tmpBuf.data() + shift), sizePart*sizeof(double));
+
+            int partNum = omp_get_thread_num();
+            int shift = partNum * sizePart;
+            dblRdxSrt(reinterpret_cast<uint8_t*>((*buf).data() + shift),
+                        reinterpret_cast<uint8_t*>(tmpBuf.data() + shift), sizePart*sizeof(double));
+        }
 
     // merging parts together
     oddEvnMerge(buf, &tmpBuf, numParts, sizePart);
@@ -232,5 +278,8 @@ void seqRdxSrt(std::vector<double>* buf, const int size, const int numParts) {
     // delete temp elems
     while ((*buf).size() - size)
         (*buf).pop_back();
+
+    double finish = omp_get_wtime();
+    std::cout << "How measure time in OpenMP: " << finish - start << std::endl;
 }
 
