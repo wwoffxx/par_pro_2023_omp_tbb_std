@@ -22,6 +22,7 @@ class Image {
 };
 
 Image getRandomImage(int _width, int _height);
+
 Image SobelSeq(Image Start);
 Image SobelOMP(Image Start);
 
