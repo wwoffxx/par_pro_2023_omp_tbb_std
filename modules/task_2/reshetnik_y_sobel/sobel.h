@@ -13,7 +13,7 @@
 #include <vector>
 
 class Image {
-   public:
+ public:
     int width = 0, height = 0;
     std::vector<int> matrix;
     explicit Image(const std::vector<int>& mat);
