@@ -3,6 +3,7 @@
 #include "../../../modules/task_1/chernishev_n_jarvis_seq/chernishev_n_jarvis_seq.h"
 
 
+
 std::vector<dot> JarvisSeq(std::vector<dot> Dots) {
     std::vector<dot> res;
 
