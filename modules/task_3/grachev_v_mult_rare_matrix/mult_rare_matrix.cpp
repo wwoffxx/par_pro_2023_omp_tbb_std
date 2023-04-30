@@ -55,7 +55,7 @@ MatrixCRS MatrixCRS::MultipleParallel(const MatrixCRS &matrix) const {
     MatrixCRS res = MatrixCRS(strQuant, matrix.colQuant);
     MatrixCRS mTrans = matrix.GetTranspose();
 
-    tbb::parallel_for(tbb::blocked_range<int>(0, strQuant, 1), 
+    tbb::parallel_for(tbb::blocked_range<int>(0, strQuant, 1),
     [&](tbb::blocked_range<int> range) {
         for (int i = range.begin(); i < range.end(); i++) {
             for (int j = 0; j < mTrans.values.size(); j++) {
