@@ -1,20 +1,11 @@
 // Copyright 2023 me
 #include "../../../modules/task_2/krolevets_n_jarvis_algorithm/jarvis_algorithm.h"
 
-#include <set>
-
-#include "math.h"
-#include "omp.h"
-
 point_orientation orientation(Point p, Point q, Point r) {
   int val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
   if (val == 0) return point_orientation::colliniar;
   return (val > 0) ? point_orientation::clockwise
                    : point_orientation::counterclockwsise;
-}
-
-float dist(Point a, Point b) {
-  return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
 }
 
 std::vector<Point> get_convex_hull_omp(const std::vector<Point>& points) {

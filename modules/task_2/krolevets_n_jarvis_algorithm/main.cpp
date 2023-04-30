@@ -1,10 +1,6 @@
 // Copyright 2023 me
 #include <gtest/gtest.h>
 
-#include <algorithm>
-#include <random>
-#include <set>
-
 #include "../../../modules/task_2/krolevets_n_jarvis_algorithm/jarvis_algorithm.h"
 
 void fill_vec(std::vector<Point>* vec, uint32_t size) {
@@ -35,9 +31,8 @@ TEST(convex_hull_test, return_empty_vector) {
   std::vector<Point> input;
   auto output = get_convex_hull(input);
   auto output2 = get_convex_hull_omp(input);
-  EXPECT_TRUE(output.size() == output2.size());
-  EXPECT_TRUE(output == output2);
   EXPECT_EQ(output.size(), 0);
+  EXPECT_EQ(output2.size(), 0);
 }
 
 TEST(convex_hull_test, hull_of_three) {
@@ -45,9 +40,12 @@ TEST(convex_hull_test, hull_of_three) {
   fill_vec(&input, 3);
   auto output = get_convex_hull(input);
   auto output2 = get_convex_hull_omp(input);
-  EXPECT_TRUE(output.size() == output2.size());
-  EXPECT_TRUE(output.size() == 3);
-  EXPECT_TRUE(output == output2);
+  bool dumb_lint1 = output.size() == output2.size();
+  bool dumb_lint2 = output == output2;
+  bool dumb_lint3 = output.size() == 3;
+  EXPECT_EQ(dumb_lint1, true);
+  EXPECT_EQ(dumb_lint2, true);
+  EXPECT_EQ(dumb_lint3, true);
 }
 
 TEST(convex_hull_test, hull_of_ten) {
@@ -58,8 +56,10 @@ TEST(convex_hull_test, hull_of_ten) {
   if (output.size() != output2.size()) {
     print_vecs(output, output2);
   }
-  EXPECT_TRUE(output.size() == output2.size());
-  EXPECT_TRUE(output == output2);
+  bool dumb_lint1 = output.size() == output2.size();
+  bool dumb_lint2 = output == output2;
+  EXPECT_EQ(dumb_lint1, true);
+  EXPECT_EQ(dumb_lint2, true);
 }
 
 TEST(convex_hull_test, hull_of_hundred) {
@@ -70,8 +70,10 @@ TEST(convex_hull_test, hull_of_hundred) {
   if (output.size() != output2.size()) {
     print_vecs(output, output2);
   }
-  EXPECT_TRUE(output.size() == output2.size());
-  EXPECT_TRUE(output == output2);
+  bool dumb_lint1 = output.size() == output2.size();
+  bool dumb_lint2 = output == output2;
+  EXPECT_EQ(dumb_lint1, true);
+  EXPECT_EQ(dumb_lint2, true);
 }
 
 TEST(convex_hull_test, hull_of_thousand) {
@@ -79,6 +81,8 @@ TEST(convex_hull_test, hull_of_thousand) {
   fill_vec(&input, 1000);
   auto output = get_convex_hull(input);
   auto output2 = get_convex_hull_omp(input);
-  EXPECT_TRUE(output.size() == output2.size());
-  EXPECT_TRUE(output == output2);
+  bool dumb_lint1 = output.size() == output2.size();
+  bool dumb_lint2 = output == output2;
+  EXPECT_EQ(dumb_lint1, true);
+  EXPECT_EQ(dumb_lint2, true);
 }

@@ -2,10 +2,14 @@
 #ifndef MODULES_TASK_2_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
 #define MODULES_TASK_2_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
 
+#include <omp.h>
+
 #include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <limits>
+#include <random>
+#include <set>
 #include <utility>
 #include <vector>
 
