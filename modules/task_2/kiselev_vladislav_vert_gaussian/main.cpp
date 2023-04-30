@@ -28,6 +28,7 @@ TEST(Gaussian, can_create_kernel) {
     EXPECT_TRUE(imgEquivalent(sourceKernel, kernel));
 }
 
+
 TEST(Gaussian, can_process_image_1) {
     std::vector<std::vector<int>> sourceImg = getRandomImg(10, 10);
 
