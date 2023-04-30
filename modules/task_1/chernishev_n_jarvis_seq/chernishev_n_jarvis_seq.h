@@ -33,7 +33,7 @@ struct dot {
 
     friend double getRotate(const dot& a, const dot& b) {
         double res = atan2(b.y - a.y, b.x - a.x);
-        if (res < 0) res += 2 * M_PI;
+        if (res < 0) res += 2 * 3.14159265358979323846;
         return res;
     }
 
