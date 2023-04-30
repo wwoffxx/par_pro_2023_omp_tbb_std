@@ -33,4 +33,4 @@ std::vector<Point> get_convex_hull(const std::vector<Point>& points);
 std::vector<Point> get_convex_hull_omp(const std::vector<Point>& points);
 float dist(Point, Point);
 
-#endif  // MODULES_TASK_2_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHMH_
+#endif  // MODULES_TASK_2_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_"
