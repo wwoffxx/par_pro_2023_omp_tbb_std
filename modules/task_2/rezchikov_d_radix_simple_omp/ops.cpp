@@ -121,9 +121,10 @@ std::vector<int> radSortParMerge(std::vector<int> * vec) {
     }
     int size = vec->size();
     std::vector<int> result;
-    #pragma omp parallel shared(vec, result)
+    int diff;
+    #pragma omp parallel shared(diff, vec, result)
     {
-        int diff;
+        
         #pragma omp single
         {
             diff = size - (size/omp_get_num_threads())*omp_get_num_threads();
