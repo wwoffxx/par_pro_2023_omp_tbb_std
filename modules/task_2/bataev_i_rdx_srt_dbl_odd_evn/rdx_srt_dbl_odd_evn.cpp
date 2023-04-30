@@ -231,7 +231,7 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
 
     // use this network to merge these parts
     for (int i = 0; i < steps.size(); ++i) {
-        #pragma omp parallel for
+        #pragma omp parallel for num_threads(numParts/2)
         for (int j = 0; j < steps[i].size(); ++j)
             compExch(&(partsPtrs[steps[i][j].part1]), &(partsPtrs[steps[i][j].part2]),
                         &(tmpPartsPtrs[steps[i][j].part1]), &(tmpPartsPtrs[steps[i][j].part2]), sizePart);
@@ -245,7 +245,6 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
 }
 
 void parRdxSrt(std::vector<double>* buf, const int size, const int numParts) {
-    omp_set_num_threads(numParts);
     double start = omp_get_wtime();
 
     // all sorted parts must be the same size for Batcher's merge
@@ -258,13 +257,13 @@ void parRdxSrt(std::vector<double>* buf, const int size, const int numParts) {
     int sizePart = (*buf).size()/numParts;
 
     // sort each part separately with radix sort
-    #pragma omp parallel
-        {
-            int partNum = omp_get_thread_num();
-            int shift = partNum * sizePart;
-            dblRdxSrt(reinterpret_cast<uint8_t*>((*buf).data() + shift),
-                        reinterpret_cast<uint8_t*>(tmpBuf.data() + shift), sizePart*sizeof(double));
-        }
+    #pragma omp parallel num_threads(numParts)
+    {
+        int partNum = omp_get_thread_num();
+        int shift = partNum * sizePart;
+        dblRdxSrt(reinterpret_cast<uint8_t*>((*buf).data() + shift),
+                    reinterpret_cast<uint8_t*>(tmpBuf.data() + shift), sizePart*sizeof(double));
+    }
 
     // merging parts together
     oddEvnMerge(buf, &tmpBuf, numParts, sizePart);
