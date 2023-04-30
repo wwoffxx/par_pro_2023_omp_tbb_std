@@ -115,6 +115,5 @@ TEST(Parallel_Dijkstra, Test_Parallel_Dijkstra_With_Seq_Random) {
             check = false;
         }
     }
-
     ASSERT_EQ(check, true);
 }
