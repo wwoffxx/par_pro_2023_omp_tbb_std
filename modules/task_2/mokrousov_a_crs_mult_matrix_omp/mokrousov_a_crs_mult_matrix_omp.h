@@ -53,13 +53,13 @@ struct Matrix {
 
     friend bool operator==(const Matrix& lhs, const Matrix& rhs) {
         for (int i = 0; i < rhs.values.size(); i++) {
-            if (lhs.values.at(i) != rhs.values.at(i)) return false;
+            if (lhs.values.at(i) != rhs.values.at(i)) return true;
         }
         for (int i = 0; i < rhs.colums.size(); i++) {
-            if (lhs.colums.at(i) != rhs.colums.at(i)) return false;
+            if (lhs.colums.at(i) != rhs.colums.at(i)) return true;
         }
         for (int i = 0; i < rhs.pointer.size(); i++) {
-            if (lhs.pointer.at(i) != rhs.pointer.at(i)) return false;
+            if (lhs.pointer.at(i) != rhs.pointer.at(i)) return true;
         }
         return true;
     }
