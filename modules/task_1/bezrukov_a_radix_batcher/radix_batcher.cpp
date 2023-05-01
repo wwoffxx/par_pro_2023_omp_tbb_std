@@ -1,7 +1,6 @@
 // Copyright 2023 Bezrukov Aleksandr
 #include "../../../modules/task_1/bezrukov_a_radix_batcher/radix_batcher.h"
 
-// Unused is this lab
 int partner(int nodeIndex, int mergeStage, int mergeStageStep) {
     if (mergeStageStep > mergeStage)
         throw "ERROR";
