@@ -51,7 +51,6 @@ MatrixCRS MatrixCRS::Multiple(const MatrixCRS &matrix) const {
     return res;
 }
 
-
 MatrixCRS MatrixCRS::MultipleParallel(const MatrixCRS &matrix) const {
     MatrixCRS res = MatrixCRS(strQuant, matrix.colQuant);
     MatrixCRS mTrans = matrix.GetTranspose();
