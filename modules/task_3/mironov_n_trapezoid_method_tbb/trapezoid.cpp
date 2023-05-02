@@ -72,7 +72,7 @@ class d2_functor{
 
             result += 0.5 * (f({bounds[0].first, y}) +
             f({bounds[0].second, y}));
-            for (int j = r.cols().begin(); j < J_end; j++) {
+            for (j = r.cols().begin(); j < J_end; j++) {
                 x = bounds[0].first + hx * i;
                 y = bounds[1].first + hy * j;
 
