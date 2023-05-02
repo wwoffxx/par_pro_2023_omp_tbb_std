@@ -73,6 +73,7 @@ class d2_functor{
             result += 0.5 * (f({bounds[0].first, y}) +
             f({bounds[0].second, y}));
             for (int j = r.cols().begin(); j < J_end; j++) {
+                x = bounds[0].first + hx * i;
                 y = bounds[1].first + hy * j;
 
                 result += f({x, y});
@@ -153,6 +154,8 @@ class d3_functor{
                 f({x, y, bounds[2].second}));
 
                 for (s = r.cols().begin(); s < S_end; s++) {
+                    x = bounds[0].first + hx * i;
+                    y = bounds[1].first + hy * j;
                     z = bounds[2].first + hz * s;
 
                     result += f({x, y, z});
@@ -184,7 +187,7 @@ double trapezoid_method(
         double h = (bounds[0].second-bounds[0].first)/N;
 
         d1_functor d1(h, bounds[0].first, f);
-        tbb::parallel_reduce(tbb::blocked_range<int>(0, N), d1);
+        tbb::parallel_reduce(tbb::blocked_range<int>(1, N), d1);
         double res = d1.get_result();
         res += (h/2.0) * (f({bounds[0].first}) + f({bounds[0].second}));
         return res;
@@ -194,7 +197,7 @@ double trapezoid_method(
         double hy = (bounds[1].second-bounds[1].first)/N;
 
         d2_functor d2(hx, hy, bounds, f);
-        tbb::parallel_reduce(tbb::blocked_range2d<int>(0, N, 0, N), d2);
+        tbb::parallel_reduce(tbb::blocked_range2d<int>(1, N, 1, N), d2);
         double res = d2.get_result();
         res += 0.25 *
         (f({bounds[0].first, bounds[1].first}) +
@@ -210,7 +213,7 @@ double trapezoid_method(
         double hz = (bounds[2].second-bounds[2].first)/N;
 
         d3_functor d3(hx, hy, hz, bounds, f);
-        tbb::parallel_reduce(tbb::blocked_range3d<int>(0, N, 0, N, 0, N), d3);
+        tbb::parallel_reduce(tbb::blocked_range3d<int>(1, N, 1, N, 1, N), d3);
         double res = d3.get_result();
         res += 0.125 *
         (f({bounds[0].first, bounds[1].first, bounds[2].first}) +
