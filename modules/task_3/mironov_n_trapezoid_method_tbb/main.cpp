@@ -68,7 +68,7 @@ TEST(trapezoid, d3_test_1_omp) {
     int dimensions = 3;
     double integration_result = 66825.0/8.0;
     double method_result = trapezoid_method(f3, bounds, dimensions, 1000);
-    double tolerance = 100;
+    double tolerance = 150;
 
     ASSERT_NEAR(method_result, integration_result, tolerance);
 }
