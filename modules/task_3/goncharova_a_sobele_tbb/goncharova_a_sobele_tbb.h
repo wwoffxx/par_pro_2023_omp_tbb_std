@@ -33,17 +33,17 @@ image<T>::image(int r, int c) {
 
 template<class T>
 image<T>::image(int r, int c, std::vector<T> d) {
-    size = r * c;
     rows = r;
     cols = c;
+    size = r * c;
     data = d;
 }
 
 template<class T>
 image<T>::image(const image<T>& img) {
-    size = img.size;
     rows = img.rows;
     cols = img.cols;
+    size = img.size;
     data = img.data;
 }
 
