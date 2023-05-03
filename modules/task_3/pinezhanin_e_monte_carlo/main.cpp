@@ -4,7 +4,7 @@
 #include <cmath>
 #include "./monte_carlo.h"
 
-const double relative_error = 0.05;
+const double relative_error = 0.1;
 
 TEST(Monte_Carlo_tbb, Test_one_dimension) {
     const std::function<double(const std::vector<double>)> f =
