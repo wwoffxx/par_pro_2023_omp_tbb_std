@@ -68,6 +68,7 @@ int* destVec, int* count) {
     for (int i = 0; i < 128; ++i, ++countPointer) {
       tmp = *countPointer;
       *countPointer = sum;
+      sum += tmp;
     }
   } else {
     countPointer = count;
