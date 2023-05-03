@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "./radix.h"
+#include "../../../modules/task_1/voronov_a_radix_sort/radix.h"
 
 TEST(RadixSort, 321) {
   std::vector<int> a = {3, 2, 1};
