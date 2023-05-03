@@ -33,18 +33,18 @@ image<T>::image(int r, int c) {
 
 template<class T>
 image<T>::image(int r, int c, std::vector<T> d) {
+    data = d;
     rows = r;
     cols = c;
     size = r * c;
-    data = d;
 }
 
 template<class T>
 image<T>::image(const image<T>& img) {
+    data = img.data;
     rows = img.rows;
     cols = img.cols;
     size = img.size;
-    data = img.data;
 }
 
 template<class T>
@@ -52,6 +52,7 @@ bool image<T>::operator==(const image<T>& img) const {
     if (rows == img.rows && cols == img.cols &&
         size == img.size && data == img.data)
         return true;
+
     else
         return false;
 }
