@@ -15,7 +15,7 @@ struct image {
     int size{ 0 };
     image() {}
     image(int r, int c);
-    image(int r, int c, std::vector<T> d);
+    image(int r, int c, const std::vector<T>& d);
     image(const image<T>& img);
     void randImage(int r, int c);
     bool operator== (const image<T>& img) const;
