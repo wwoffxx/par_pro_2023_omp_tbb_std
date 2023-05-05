@@ -32,7 +32,7 @@ image<T>::image(int r, int c) {
 }
 
 template<class T>
-image<T>::image(int r, int c, std::vector<T> d) {
+image<T>::image(int r, int c, const std::vector<T>& d) {
     data = d;
     rows = r;
     cols = c;
