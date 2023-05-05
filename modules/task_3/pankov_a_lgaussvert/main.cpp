@@ -1,4 +1,4 @@
-﻿// Copyright 2023 Pankov Anatoliy
+// Copyright 2023 Pankov Anatoliy
 #include "./lgaussvert.h"
 
 TEST(LGaussVerticalTBB, MatrixMN0Test) {
