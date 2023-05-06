@@ -1,7 +1,7 @@
 // Copyright 2023 Pinezhanin Evgeny
-#include <tbb/tbb.h>
 #include <random>
-#include "../../../modules/task_3/pinezhanin_e_monte_carlo/monte_carlo.h"
+#include <iostream>
+#include "../../../modules/task_4/pinezhanin_e_monte_carlo/monte_carlo.h"
 #include "../../../3rdparty/unapproved/unapproved.h"
 
 double getIntegralMonteCarlo(const std::function<double(const std::vector<double>&)>& f,
@@ -41,34 +41,32 @@ double getIntegralMonteCarloStd(const std::function<double(const std::vector<dou
     }
 
     const int numberThreads = std::thread::hardware_concurrency();
-    std::vector<std::promise<int>> promises(numberThreads);
-    std::vector<std::future<int>> futures(nthreads);
     std::vector<std::thread> threads(numberThreads);
+    std::vector<std::promise<double>> promises(numberThreads);
+    std::vector<std::future<double>> futures(numberThreads);
 
     for (int i = 0; i < numberThreads; i++) {
         futures[i] = promises[i].get_future();
-        threads[i] = std::thread([] () {
+        threads[i] = std::thread([&, pr = std::move(promises[i])] () mutable {
+            double res = 0.0;
+            int size = number_points / numberThreads + ((i < number_points % numberThreads) ? 1 : 0);
+            std::vector<double> point(dimension);
+            std::mt19937 gen;
 
-        }, tmp_vec, ops, std::move(promises[i]));
-        threads[i].join();
-        result += futures[i].get();
-    }
-
-    result = tbb::parallel_reduce(tbb::blocked_range<size_t>(0, number_points), 0.0,
-        [&] (tbb::blocked_range<size_t> range, double res) {
-
-            for (size_t i = range.begin(); i != range.end(); ++i) {
+            for (int j = 0; j < size; j++) {
                 for (int j = 0; j < dimension; j++) {
                     point[j] = uniform_distribution[j](gen);
                 }
                 res += f(point);
             }
-            return res;
-        },
-        [] (double x, double y) -> double {
-            return x + y;
-        },
-        tbb::auto_partitioner());
+            pr.set_value(res);
+        });
+    }
+
+    for (int i = 0; i < numberThreads; i++) {
+        threads[i].join();
+        result += futures[i].get();
+    }
 
     for (int i = 0; i < dimension; i++) {
         result *= (b[i] - a[i]);
