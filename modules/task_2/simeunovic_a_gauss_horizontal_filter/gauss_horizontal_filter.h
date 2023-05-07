@@ -15,4 +15,4 @@ std::vector<uint8_t> Filter(std::vector<uint8_t> srcVec, int offset,
 std::vector<uint8_t> ParFilter(std::vector<uint8_t> srcVec, int offset,
     int pixelHeight, int threads = 2, double sigma = 1.0);
 
-#endif  // _MODULES_TASK_2_SIMEUNOVIC_A_GAUSS_HORIZONTAL_FILTER_GAUSS_HORIZONTAL_FILTER_H_
+#endif  // MODULES_TASK_2_SIMEUNOVIC_A_GAUSS_HORIZONTAL_FILTER_GAUSS_HORIZONTAL_FILTER_H_
