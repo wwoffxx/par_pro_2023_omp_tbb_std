@@ -2,11 +2,10 @@
 #ifndef MODULES_TASK_3_GOSTEEVA_E_DIJKSTRA_TBB_DIJKSTRA_H_
 #define MODULES_TASK_3_GOSTEEVA_E_DIJKSTRA_TBB_DIJKSTRA_H_
 
+#include <tbb/tbb.h>
 #include <queue>
 #include <climits>
 #include <vector>
-#include <tbb/tbb.h>
-#include <tbb/mutex.h>
 
 std::vector<int> DijkstraSeq(std::vector<int> graph,
     int source, int size);

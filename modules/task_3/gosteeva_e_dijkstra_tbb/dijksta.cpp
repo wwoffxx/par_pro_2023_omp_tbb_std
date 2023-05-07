@@ -34,7 +34,7 @@ std::vector<int> DijkstraParallel(std::vector<int> graph,
 
     int current_vertex;
     int current_dist;
-    tbb::mutex mutex;
+    //tbb::mutex mutex;
     std::vector<int> dist(size);
     std::priority_queue<std::pair<int, int>> queue;
     dist.at(source) = 0;
@@ -54,9 +54,9 @@ std::vector<int> DijkstraParallel(std::vector<int> graph,
                 if (dist.at(current_vertex) + dist_curr_v < dist.at(i)) {
                     dist.at(i) = dist.at(current_vertex) + dist_curr_v;
                     std::pair<int, int> pair = std::make_pair((-1) * dist.at(i), i);
-                    mutex.lock();
+                    //mutex.lock();
                     queue.push(pair);
-                    mutex.unlock();
+                    //mutex.unlock();
                 }
             }
         });
