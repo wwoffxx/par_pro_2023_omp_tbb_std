@@ -61,9 +61,11 @@ double TrapezIntegral3DParallel(double fromX, double fromY, double fromZ,
 
     double result = 0;
 
-#pragma omp parallel for
     for (int stepX = 0; stepX < steps; stepX++)
-        for (int stepY = 0; stepY < steps; stepY++)
+        for (int stepY = 0; stepY < steps; stepY++) {
+            double *results = new double[steps];
+
+#pragma omp parallel for
             for (int stepZ = 0; stepZ < steps; stepZ++) {
                 double xPrev = fromX + dx * stepX;
                 double yPrev = fromY + dy * stepY;
@@ -73,10 +75,15 @@ double TrapezIntegral3DParallel(double fromX, double fromY, double fromZ,
                 double yNext = fromY + dy * (stepY + 1);
                 double zNext = fromZ + dz * (stepZ + 1);
 
-                result +=
+                results[stepZ] = 0;
+                results[stepZ] =
                     dx * dy * dz *
                     (func(xPrev, yPrev, zPrev) + func(xNext, yNext, zNext)) / 2;
             }
+
+            for (int i = 0; i < steps; i++)
+                result += results[i];
+        }
 
     return result;
 }
