@@ -1,5 +1,5 @@
 // Copyright 2023 Artemev Alexej
-#include "../../../modules/task_2/artemev_alexej_conj_grad/artemev_alexej_conj_grad.h"
+#include "../../../modules/task_3/artemev_alexej_conj_grad/artemev_alexej_conj_grad.h"
 
 std::vector<double> den_vec(const std::vector<double>& vec) {
     size_t size = vec.size();
