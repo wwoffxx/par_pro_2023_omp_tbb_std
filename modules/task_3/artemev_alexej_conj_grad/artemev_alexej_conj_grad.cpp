@@ -116,7 +116,7 @@ const std::vector<double>& vec, int n) {
 
 std::vector<double> par_mult_matrix_by_vec(const std::vector<std::vector<double>>& M,
 const std::vector<double>& vec, int n) {
-    size_t count = vec.size();
+    int count = vec.size();
     std::vector<double> res(count);
     int gsize = count / n;
     tbb::task_scheduler_init init(n);
