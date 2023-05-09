@@ -32,7 +32,7 @@ std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
 std::vector<int> DijkstraParallel(std::vector<int> graph,
     int source, int size) {
 
-    std::vector<int> dist(size, INT_MAX);   
+    std::vector<int> dist(size, INT_MAX);
     std::vector<bool> visited(size, false);
 
     dist.at(source) = 0;
