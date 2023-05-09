@@ -8,6 +8,8 @@
 #include "tbb/tbb.h"
 #include "tbb/parallel_for.h"
 #include "tbb/blocked_range.h"
+#include "tbb/task_scheduler_init.h"
+
 
 double vecs_mult(const std::vector<double>& vec1, const std::vector<double>& vec2);
 std::vector<double> mult_matrix_by_vec(const std::vector<std::vector<double>>& M,
