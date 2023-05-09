@@ -119,7 +119,7 @@ const std::vector<double>& vec, int n) {
     int count = vec.size();
     std::vector<double> res(count);
     int gsize = count / n;
-    tbb::task_scheduler_init init(n);
+    tbb::task_scheduler_init int(n);
     tbb::blocked_range<int> range(0, count, gsize);
     tbb::parallel_for(range, [&](const tbb::blocked_range<int>& r) {
         for (int i = r.begin(); i < r.end(); i++) {
