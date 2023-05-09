@@ -52,7 +52,7 @@ std::vector<int> merge(const std::vector<int>& vec_1,
 
 void ShellSortParallel(std::vector<int>* vec) {
     std::vector<std::vector<int>> proc_res;
-    tbb::mutex push_mutex;
+    std::mutex push_mutex;
     tbb::parallel_for(
         tbb::blocked_range<std::vector<int>::iterator>(
             vec->begin(), vec->end(), vec->size() / 3),
