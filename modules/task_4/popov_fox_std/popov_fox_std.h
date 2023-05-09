@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 using Matrix = std::vector<std::vector<double>>;
 

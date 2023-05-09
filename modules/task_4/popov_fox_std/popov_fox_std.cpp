@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <random>
+#include <algorithm>
 #include <cmath>
 #include <iostream>
 #include "../../../modules/task_4/popov_fox_std/popov_fox_std.h"

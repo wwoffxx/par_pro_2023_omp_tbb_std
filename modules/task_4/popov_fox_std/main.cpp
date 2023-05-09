@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <cmath>
 #include "../../../3rdparty/unapproved/unapproved.h"
 #include "../popov_fox_std/popov_fox_std.h"
