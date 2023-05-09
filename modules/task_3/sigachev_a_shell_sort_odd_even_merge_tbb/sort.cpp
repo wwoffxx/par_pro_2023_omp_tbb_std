@@ -1,6 +1,5 @@
 // Copyright 2023 Sigachev Anton
-#include 
-"../../../modules/task_3/sigachev_a_shell_sort_odd_even_merge_tbb/sort.h"
+#include "../../../modules/task_3/sigachev_a_shell_sort_odd_even_merge_tbb/sort.h"
 #include <random>
 
 typedef std::vector<int>::size_type vec_size_t;
