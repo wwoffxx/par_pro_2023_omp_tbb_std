@@ -6,8 +6,21 @@
 #include <string>
 #include <cmath>
 
-std::vector<int> getrandvect(int  size);
-int getappropOps(std::vector<int> vector, const std::string& operate);
-int getserialOps(std::vector<int> vector, const std::string& operate);
+using Matrix = std::vector<std::vector<double>>;
+
+inline bool isSquare(const Matrix& M) noexcept {
+  return M.size() == M[0].size();
+}
+
+inline bool doublechecking(const double& x, const double& y) noexcept {
+  return std::abs(x - y) <= 0.001 * std::abs(x + y);
+}
+
+Matrix getrandM(const int& num);
+Matrix artlessmultiply(const Matrix& M1, const Matrix& M2);
+Matrix modularmultiply(const Matrix& M1, const Matrix& M2);
+bool matrixchecking(const Matrix& M1, const Matrix& M2);
+
+Matrix algorhythm_fox_parallel(const Matrix& M1, const Matrix& M2);
 
 #endif  // MODULES_TASK_4_POPOV_FOX_STD_POPOV_FOX_STD_H_
