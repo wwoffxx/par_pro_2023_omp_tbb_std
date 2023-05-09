@@ -32,35 +32,36 @@ std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
 std::vector<int> DijkstraParallel(std::vector<int> graph,
     int source, int size) {
 
-    int current_vertex;
-    int current_dist;
-    //tbb::mutex mutex;
-    std::vector<int> dist(size);
-    std::priority_queue<std::pair<int, int>> queue;
+    std::vector<int> dist(size, INT_MAX);   
+    std::vector<bool> visited(size, false);
+
     dist.at(source) = 0;
 
-    queue.push(std::make_pair(0, 0));
-    while (!queue.empty()) {
-        current_vertex = queue.top().second;
-        current_dist = (-1) * queue.top().first;
-        queue.pop();
-        if (current_dist > dist[current_vertex]) continue;
+    tbb::parallel_for(tbb::blocked_range<int>(0, size),
+        [&](const tbb::blocked_range<int>& r) {
+        for (int i = r.begin(); i != r.end(); ++i) {
+            int minDist = INT_MAX;
+            int minIndex = 0;
 
-        tbb::parallel_for(
-            tbb::blocked_range<int>(0, size),
-            [&](const tbb::blocked_range<int>& range) {
-            for (int i = range.begin(); i != range.end(); i++) {
-                int dist_curr_v = graph.at(current_vertex * size + i);
-                if (dist.at(current_vertex) + dist_curr_v < dist.at(i)) {
-                    dist.at(i) = dist.at(current_vertex) + dist_curr_v;
-                    std::pair<int, int> pair = std::make_pair((-1) * dist.at(i), i);
-                    //mutex.lock();
-                    queue.push(pair);
-                    //mutex.unlock();
+            for (int j = 0; j < size; ++j) {
+                if (!visited.at(j) && dist.at(j) <= minDist) {
+                    minDist = dist.at(j);
+                    minIndex = j;
                 }
             }
-        });
-    }
+
+            visited[minIndex] = true;
+
+            for (int j = 0; j < size; ++j) {
+                if (!visited.at(j) && graph.at(minIndex * size + j) &&
+                    dist.at(minIndex) != INT_MAX &&
+                    dist.at(minIndex) + graph.at(minIndex * size + j) <
+                    dist.at(j)) {
+                    dist.at(j) = dist.at(minIndex) + graph.at(minIndex * size + j);
+                }
+            }
+        }
+    });
 
     return dist;
 }
