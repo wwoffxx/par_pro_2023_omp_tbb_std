@@ -1,6 +1,6 @@
 // Copyright 2023 Artemev Alexej
-#ifndef MODULES_TASK_2_ARTEMEV_ALEXEJ_CONJ_GRAD_ARTEMEV_ALEXEJ_CONJ_GRAD_H_
-#define MODULES_TASK_2_ARTEMEV_ALEXEJ_CONJ_GRAD_ARTEMEV_ALEXEJ_CONJ_GRAD_H_
+#ifndef MODULES_TASK_3_ARTEMEV_ALEXEJ_CONJ_GRAD_ARTEMEV_ALEXEJ_CONJ_GRAD_H_
+#define MODULES_TASK_3_ARTEMEV_ALEXEJ_CONJ_GRAD_ARTEMEV_ALEXEJ_CONJ_GRAD_H_
 
 
 #include <iostream>
@@ -25,4 +25,4 @@ const std::vector<double>& vec, int n);
 std::vector<double> par_conj_grad_method(const std::vector<std::vector<double>>& M,
 const std::vector<double>& vec, int n);
 
-#endif  // MODULES_TASK_2_ARTEMEV_ALEXEJ_CONJ_GRAD_ARTEMEV_ALEXEJ_CONJ_GRAD_H_
+#endif  // MODULES_TASK_3_ARTEMEV_ALEXEJ_CONJ_GRAD_ARTEMEV_ALEXEJ_CONJ_GRAD_H_
