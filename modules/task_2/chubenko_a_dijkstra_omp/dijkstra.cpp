@@ -51,12 +51,14 @@ std::vector<int> get_dists_dijkstra_parallel(std::vector<int> graph,
                 min_vertex = j;
             }
         }
+        if (min_dist != INT_MAX) {
         used[min_vertex] = true;
-        for (j = 0; j < size; j++) {
-            if (graph[min_vertex * size + j] != 0) {
-                int new_dist = dists[min_vertex] + graph[min_vertex * size + j];
-                if (new_dist < dists[j]) {
-                    dists[j] = new_dist;
+            for (j = 0; j < size; j++) {
+                if (graph[min_vertex * size + j] != 0) {
+                    int new_dist = dists[min_vertex] + graph[min_vertex * size + j];
+                    if (new_dist < dists[j]) {
+                        dists[j] = new_dist;
+                    }
                 }
             }
         }
