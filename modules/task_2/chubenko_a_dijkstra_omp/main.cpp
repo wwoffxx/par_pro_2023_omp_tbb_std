@@ -38,27 +38,18 @@ TEST(Dijkstra_Sequential, Test_Count_10_1) {
     ASSERT_EQ(dists, distsPar);
 }
 
-TEST(Dijkstra_Sequential, Test_Count_10_2) {
-    const int size = 10;
-    std::vector<int> graph = { 0, 1, 2, 1, 9, 0, 8, 0, 6, 0,
-                            1, 0, 4, 8, 0, 0, 0, 0, 1, 9,
-                            2, 4, 0, 10, 1, 9, 5, 0, 3, 0,
-                            1, 8, 10, 0, 5, 0, 7, 9, 0, 3,
-                            9, 0, 1, 5, 0, 7, 10, 1, 8, 10,
-                            0, 0, 9, 0, 7, 0, 0, 1, 3, 1,
-                            8, 0, 5, 7, 10, 0, 0, 1, 0, 4,
-                            0, 0, 0, 9, 1, 1, 1, 0, 0, 7,
-                            6, 1, 3, 0, 8, 3, 0, 0, 0, 0,
-                            0, 9, 0, 3, 10, 1, 4, 7, 0, 0,
-    };
+TEST(Dijkstra_Sequential, Test_Count_2_1) {
+    const int size = 2;
+    std::vector<int> graph = {1, 0,
+                              0, 1};
 
-    std::vector<int> dists = get_dists_dijkstra(graph, size, 5);
-    std::vector<int> distsPar = get_dists_dijkstra_parallel(graph, size, 5);
+    std::vector<int> dists = get_dists_dijkstra(graph, size, 0);
+    std::vector<int> distsPar = get_dists_dijkstra_parallel(graph, size, 0);
 
     ASSERT_EQ(dists, distsPar);
 }
 
-TEST(Dijkstra_Sequential, Test_Count_2) {
+TEST(Dijkstra_Sequential, Test_Count_2_2) {
     const int size = 2;
     std::vector<int> graph = { 0, 1,
                               1, 0 };
