@@ -77,5 +77,7 @@ double f, int n, const std::function<double(double, double, double)> &fun) {
         int end = delta*nthreads + n % nthreads;
         res += calc_seq(a, c, e, hx, hy, hz, n, begin, end, fun);
     }
+    delete []promises;
+    delete []futures;
     return res;
 }
