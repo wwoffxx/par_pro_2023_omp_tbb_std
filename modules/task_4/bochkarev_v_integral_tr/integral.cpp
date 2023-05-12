@@ -5,8 +5,9 @@
 // #include <mutex>
 // #include <future>
 #include "../../../modules/task_4/bochkarev_v_integral_tr/integral.h"
+#include "../../../3rdparty/unapproved/unapproved.h"
 
-std::mutex critic;
+// std::mutex critic;
 
 double calc_seq(double a, double c, double e,
 const double hx, const double hy, const double hz,
