@@ -4,11 +4,11 @@
 #include "../../../modules/task_3/tarasova_a_integral_rectangle/integral_tbb.h"
 
 class CalculationXY {
-private: 
+ private:
     double my_h;
     double my_a;
     std::vector<double>* my_x1;
-public: 
+ public:
     void operator()(const tbb::blocked_range<size_t>& r) const {
         for (size_t i = r.begin(); i < r.end(); i++)
             (*my_x1)[i] = my_a + i * my_h + my_h / 2;
@@ -21,14 +21,14 @@ public:
 };
 
 class Sum {
-private: 
+ private:
     double my_x;
     double my_y;
     double my_a;
     double* my_sum;
     double my_h;
     double (*my_f)(double, double, double);
-public: 
+ public:
     void operator()(const tbb::blocked_range<size_t>& r) const {
         for (size_t i = r.begin(); i < r.end(); i++) {
             double z = my_a + i * my_h + my_h / 2;
