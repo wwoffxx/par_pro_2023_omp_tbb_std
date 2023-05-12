@@ -26,7 +26,7 @@ TEST(Par, Test1) {
     double c = 0, d = 2;
     double e = 0, f = 1;
     double ans = 28;
-    double res = integral3D(a, b, c, d, e, f, 100, fun);
+    double res = integral3D(a, b, c, d, e, f, 150, fun);
     ASSERT_NEAR(ans, res, 0.0014);
 }
 
@@ -37,7 +37,7 @@ TEST(Par, Test2) {
     double c = 2, d = 3;
     double e = 3, f = 4;
     double ans = 13.125;
-    double res = integral3D(a, b, c, d, e, f, 100, fun);
+    double res = integral3D(a, b, c, d, e, f, 150, fun);
     ASSERT_NEAR(ans, res, 0.0003);
 }
 
@@ -48,7 +48,7 @@ TEST(Par, Test3) {
     double c = 0, d = 1;
     double e = 0, f = 1;
     double ans = 0.25;
-    double res = integral3D(a, b, c, d, e, f, 100, fun);
+    double res = integral3D(a, b, c, d, e, f, 150, fun);
     ASSERT_NEAR(ans, res, 0.0003);
 }
 
@@ -59,7 +59,7 @@ TEST(Par, Test4) {
     double c = 0, d = 1;
     double e = 0, f = 1;
     double ans = 0.5;
-    double res = integral3D(a, b, c, d, e, f, 100, fun);
+    double res = integral3D(a, b, c, d, e, f, 150, fun);
     ASSERT_NEAR(ans, res, 0.0003);
 }
 
@@ -70,7 +70,7 @@ TEST(Par, Test5) {
     double c = 0, d = 5;
     double e = 0, f = 5;
     double ans = 312.5;
-    double res = integral3D(a, b, c, d, e, f, 100, fun);
+    double res = integral3D(a, b, c, d, e, f, 150, fun);
     ASSERT_NEAR(ans, res, 0.0075);
 }
 
