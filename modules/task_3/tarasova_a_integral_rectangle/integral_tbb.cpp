@@ -35,7 +35,8 @@ class Sum {
             *my_sum += my_f(my_x, my_y, z) * my_h * my_h * my_h;
         }
     }
-    Sum(const double& x, const double& y, const double& a, const double& h, double* sum, double f(double, double, double)) {
+    Sum(const double& x, const double& y, const double& a, const double& h,
+double* sum, double f(double, double, double)) {
         my_x = x;
         my_y = y;
         my_a = a;
