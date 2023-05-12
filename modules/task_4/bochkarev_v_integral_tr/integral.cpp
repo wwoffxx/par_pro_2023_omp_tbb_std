@@ -1,9 +1,9 @@
 // Copyright 2023 Bochkarev Vladimir
 #include <functional>
 #include <vector>
-#include <thread>
-#include <mutex>
-#include <future>
+// #include <thread>
+// #include <mutex>
+// #include <future>
 #include "../../../modules/task_4/bochkarev_v_integral_tr/integral.h"
 
 std::mutex critic;
@@ -47,7 +47,7 @@ const std::function<double(double, double, double)> &fun) {
                 const double z1 = e + k*hz;
                 const double z2 = e + (k+1)*hz;
 
-                //std::lock_guard<std::mutex> lock(critic);
+                // std::lock_guard<std::mutex> lock(critic);
                 local_res+=0.5*(x2-x1)*(y2-y1)*(z2-z1)*(fun(x1, y1, z1)+fun(x2, y2, z2));
             }
     pr.set_value(local_res);
