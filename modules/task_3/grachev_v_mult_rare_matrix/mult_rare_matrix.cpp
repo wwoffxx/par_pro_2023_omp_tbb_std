@@ -1,5 +1,5 @@
 // Copyright 2023 Grachev Valentin
-#include "../../../modules/task_2/grachev_v_mult_rare_matrix/mult_rare_matrix.h"
+#include "../../../modules/task_3/grachev_v_mult_rare_matrix/mult_rare_matrix.h"
 
 MatrixCRS::MatrixCRS(int strs, int cols)
     : strQuant(strs), colQuant(cols),
@@ -55,16 +55,18 @@ MatrixCRS MatrixCRS::MultipleParallel(const MatrixCRS &matrix) const {
     MatrixCRS res = MatrixCRS(strQuant, matrix.colQuant);
     MatrixCRS mTrans = matrix.GetTranspose();
 
-#pragma omp parallel for
-    for (int i = 0; i < strQuant; i++) {
-        for (int j = 0; j < mTrans.values.size(); j++) {
-            double value = ScalarMultiple(values[i], mTrans.values[j]);
-            MatrixValue mValue(value, j);
+    tbb::parallel_for(tbb::blocked_range<int>(0, strQuant, 2),
+    [&](tbb::blocked_range<int> range) {
+        for (int i = range.begin(); i < range.end(); i++) {
+            for (int j = 0; j < mTrans.values.size(); j++) {
+                double value = ScalarMultiple(values[i], mTrans.values[j]);
+                MatrixValue mValue(value, j);
 
-            if (abs(value) > eps)
-                res.values[i].push_back(mValue);
+                if (abs(value) > eps)
+                    res.values[i].push_back(mValue);
+            }
         }
-    }
+    });
 
     return res;
 }
