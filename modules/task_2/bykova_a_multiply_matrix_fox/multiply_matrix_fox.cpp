@@ -77,9 +77,12 @@ bool algFoxMatrixMultiply(const matrix &a, const matrix &b, matrix *out) {
             uint blockSize = size / grid;
 
             std::vector<double> aBlock(blockSize, 0.0);
-            matrix bBlock;
-            matrix cBlock;
-
+            matrix bBlock(100);
+            matrix cBlock(100);
+            for (uint i = 0; i < 100; i++) {
+                bBlock[i].reserve(1000);
+                cBlock[i].reserve(1000);
+            }
             prepareOutMatrix(&cBlock, blockSize, blockSize);
             prepareOutMatrix(&bBlock, blockSize, blockSize);
 
