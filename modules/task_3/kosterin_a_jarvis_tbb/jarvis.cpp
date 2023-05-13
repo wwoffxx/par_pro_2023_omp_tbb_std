@@ -109,7 +109,9 @@ std::vector<SPoint> tbbJarvis(const std::vector<SPoint>& points) {
       [&points](tbb::blocked_range<size_t>& r, SPoint localStart) -> SPoint {
         auto begin = r.begin(), end = r.end();
         for (auto i = begin; i != end; i++) {
-          if ((points[i].y < localStart.y) || (points[i].y == localStart.y && points[i].x < localStart.x)) localStart = points[i];
+          if ((points[i].y < localStart.y) || (points[i].y == localStart.y && points[i].x < localStart.x)) {
+            localStart = points[i];
+          }
         }
         return localStart;
       },
