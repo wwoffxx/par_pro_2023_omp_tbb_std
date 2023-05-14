@@ -2,7 +2,6 @@
 #ifndef MODULES_TASK_3_PIKIN_I_SPARSE_MATRIX_MULT_SPARSE_MATRIX_MULT_H_
 #define MODULES_TASK_3_PIKIN_I_SPARSE_MATRIX_MULT_SPARSE_MATRIX_MULT_H_
 
-#include <omp.h>
 #include <tbb/tbb.h>
 #include <set>
 #include <ctime>
@@ -56,7 +55,6 @@ class CRSMatrixMultiplicator {
 CRSMatrix getTransposed(const CRSMatrix& A);
 CRSMatrix getRandCRSMatrix(int n, int cntInRow);
 CRSMatrix getProductSeq(const CRSMatrix& A, const CRSMatrix& B);
-CRSMatrix getProductOMP(const CRSMatrix& A, const CRSMatrix& B);
 CRSMatrix getProductTBB(const CRSMatrix& A, const CRSMatrix& B);
 
 #endif  // MODULES_TASK_3_PIKIN_I_SPARSE_MATRIX_MULT_SPARSE_MATRIX_MULT_H_
