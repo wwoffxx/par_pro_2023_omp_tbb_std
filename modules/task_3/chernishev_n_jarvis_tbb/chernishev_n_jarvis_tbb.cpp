@@ -62,12 +62,9 @@ struct JarvisBody {
 std::vector<dot> JarvisTBB(const std::vector<dot>& Dots, int threadsNom) {
     std::vector<dot> res;
 
-    tbb::task_arena arena(threadsNom);  // Инициализация пула потоков TBB
+    tbb::task_arena arena(threadsNom);
 
-    // Создаем контейнер с результатами для каждого потока
     std::vector<std::vector<dot>> localResults(threadsNom);
-
-    // Запускаем параллельное выполнение алгоритма JarvisSeq для каждого потока
     arena.execute([&]() {
         tbb::parallel_for(
             tbb::blocked_range<size_t>(0, Dots.size()),
@@ -77,13 +74,9 @@ std::vector<dot> JarvisTBB(const std::vector<dot>& Dots, int threadsNom) {
                 body(range);
             });
     });
-
-    // Собираем результаты из всех потоков в один контейнер
     for (const auto& localRes : localResults) {
         res.insert(res.end(), localRes.begin(), localRes.end());
     }
-
-    // Выполняем JarvisSeq на итоговом контейнере точек
     return JarvisSeq(res);
 }
 
