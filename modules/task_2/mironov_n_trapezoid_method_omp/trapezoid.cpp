@@ -34,9 +34,9 @@ double d2_method_Openmp(
 
     double firsLoopRes = 0;
     double secondLoopRes = 0;
-    #pragma omp parallel default(none), shared(N, h_for_x, h_for_y,\
+    #pragma omp parallel default(none), shared(N, h_for_x, h_for_y, \
     firsLoopRes, secondLoopRes)
-        {
+     {
         #pragma omp for nowait reduction(+: firsLoopRes)
             for (int i = 1; i < N; i++) {
                 double x = bounds[0].first + h_for_x * i;
