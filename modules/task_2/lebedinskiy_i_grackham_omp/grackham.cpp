@@ -101,8 +101,7 @@ std::vector<std::pair<double, double>> grackham_omp(
 
         if (t_number == n_threads - 1) {
             local_scan = grackham_seq(beg + step * t_number, end);
-        }
-        else {
+        } else {
             local_scan = grackham_seq(beg + step * t_number, beg + step * (t_number + 1));
         }
 #pragma omp critical
