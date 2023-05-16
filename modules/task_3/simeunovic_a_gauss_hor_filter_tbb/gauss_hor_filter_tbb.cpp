@@ -58,4 +58,4 @@ img getGaussTBB(const img& image, int width, int height) {
       });
 
   return new_image;
-
+}
