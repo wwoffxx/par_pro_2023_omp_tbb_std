@@ -29,6 +29,19 @@ TEST(grackham_seq, test_size_100) {
     ASSERT_EQ(seq_res, seq_res);
 }
 
+TEST(grackham_seq, test_size_500) {
+    std::vector<std::pair<double, double>> dots;
+    int size = 500;
+    dots = gen_dots(size);
+    std::vector<std::pair<double, double>> seq_res;
+    std::vector<std::pair<double, double>> omp_res;
+
+    seq_res = grackham_seq(dots.begin(), dots.end());
+    omp_res = grackham_omp(dots.begin(), dots.end(), THREAD_NUM);
+
+    ASSERT_EQ(seq_res, seq_res);
+}
+
 TEST(grackham_seq, test_size_1000) {
     std::vector<std::pair<double, double>> dots;
     int size = 1000;
