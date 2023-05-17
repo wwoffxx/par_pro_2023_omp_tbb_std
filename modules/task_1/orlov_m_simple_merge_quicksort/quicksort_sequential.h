@@ -1,8 +1,8 @@
 // Copyright 2023 Maksim Orlov
 
 #pragma once
+#include <utility>
 
-void sw(double* a, double* b);
 int quicksortPartition(double* arr, int start, int finish);
 void quicksortSequentialRecursive(double* arr, int start, int finish);
 void quicksortSequential(double* arr, int n);
