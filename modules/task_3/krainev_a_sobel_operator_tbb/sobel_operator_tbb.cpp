@@ -19,7 +19,13 @@ bool Pixel::operator==(const Pixel& o) const {
 }
 
 static int clamp(int value, int min, int max) {
-    return max(min, min(value, max));
+    if (value < min) {
+        return min;
+    }
+    if (value > max) {
+        return max;
+    }
+    return value;
 }
 
 static Pixel get_pixel(const Image& image, int x, int y) {
