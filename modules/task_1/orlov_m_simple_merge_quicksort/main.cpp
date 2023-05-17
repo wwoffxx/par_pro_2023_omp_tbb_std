@@ -2,6 +2,8 @@
 
 #include <gtest/gtest.h>
 #include <iostream>
+#include <cstdlib>
+#include <algorithm>
 #include "../../../modules/task_1/orlov_m_simple_merge_quicksort/quicksort_sequential.h"
 
 TEST(orlov_quicksort_sequential, incorrect_number_of_elements) {
@@ -24,11 +26,18 @@ TEST(orlov_quicksort_sequential, can_sort_array2) {
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array3) {
-    double* pd = new double;
-    *pd = 2;
-    double sorted[1] = { 2 };
-    quicksortSequential(pd, 1);
-    ASSERT_TRUE(compareArrays(pd, 1, sorted, 1));
+    int n = 5000;
+    double* arr1 = new double[n];
+    double* arr2 = new double[n];
+    for (int i = 0; i < n; i++) {
+        arr1[i] = 1.0 * rand() / RAND_MAX;
+        arr2[i] = arr1[i];
+    }
+    quicksortSequential(arr1, n);
+    std::sort(arr2, arr2 + n);
+    ASSERT_TRUE(compareArrays(arr1, n, arr2, n));
+    delete[] arr1;
+    delete[] arr2;
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array4) {

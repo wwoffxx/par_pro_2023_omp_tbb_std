@@ -22,35 +22,16 @@ int quicksortPartition(double* arr, int start, int finish) {
     return largeElem;
 }
 
-void push(int* stack, int* size, int elem) {
-    stack[(*size)++] = elem;
-}
-
-int pop(int* stack, int* size) {
-    return stack[--(*size)];
+void quicksortSequentialRecursive(double* arr, int start, int finish) {
+    if (finish <= start + 1) return;
+    int pivotPos = quicksortPartition(arr, start, finish);
+    quicksortSequentialRecursive(arr, start, pivotPos);
+    quicksortSequentialRecursive(arr, pivotPos + 1, finish);
 }
 
 void quicksortSequential(double* arr, int n) {
     if (n < 1) throw "Too few elements";
-    int* stack = new int[n];
-    int size = 0;
-    int start, finish, pivotPos;
-
-    push(stack, &size, 0);
-    push(stack, &size, n);
-    while (size > 0) {
-        finish = pop(stack, &size);
-        start = pop(stack, &size);
-        pivotPos = quicksortPartition(arr, start, finish);
-        if (finish - pivotPos > 2) {
-            push(stack, &size, pivotPos);
-            push(stack, &size, finish);
-        }
-        if (pivotPos - start > 1) {
-            push(stack, &size, start);
-            push(stack, &size, pivotPos);
-        }
-    }
+    quicksortSequentialRecursive(arr, 0, n);
 }
 
 bool compareArrays(double* a1, int n1, double* a2, int n2, double eps) {
