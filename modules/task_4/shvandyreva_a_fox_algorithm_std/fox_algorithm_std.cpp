@@ -58,7 +58,7 @@ matrix std_multiply(const matrix& A, const matrix& B, int tasks_by_dim) {
     }
     matrix result(A.size(), std::vector<double>(B[0].size()));
 
-    const int p = A.size() / td; // portion
+    const int p = A.size() / td;  // portion
     const int real_workers_count = std::thread::hardware_concurrency();
     std::vector<std::thread> workers;
     std::mutex lock;
@@ -87,24 +87,21 @@ matrix std_multiply(const matrix& A, const matrix& B, int tasks_by_dim) {
     int free_workers = 0;
     for (size_t w = 0; w < real_workers_count; w++) {
         workers.emplace_back([&]() {
-            while (true)
-            {
+            while (true) {
                 lock.lock();
                 free_workers++;
                 if (task_counter == 0) {
                     if (free_workers == real_workers_count && iter_counter != 0) {
                         iter_counter--;
                         task_counter = td * td;
-                    }
-                    else {
+                    } else {
                         while (task_counter == 0) {
                             if (iter_counter == 0) {
                                 lock.unlock();
                                 return;
                             }
                             lock.unlock();
-                            using namespace std::chrono_literals;
-                            std::this_thread::sleep_for(1ms);
+                            std::this_thread::sleep_for(std::chrono::milliseconds(1));
                             lock.lock();
                         }
                     }
