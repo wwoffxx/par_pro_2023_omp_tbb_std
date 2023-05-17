@@ -2,10 +2,9 @@
 
 #pragma once
 #include <omp.h>
-#include <iostream>
+#include <utility>
 
-void sw(double* a, double* b);
-int quicksortPartition(double* arr, int& start, int& finish);
+int quicksortPartition(double* arr, int start, int finish);
 void push(int* stack, int* size, int elem);
 int pop(int* stack, int* size);
 void quicksortSequentialRecursive(double* arr, int start, int finish);

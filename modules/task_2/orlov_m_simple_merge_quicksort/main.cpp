@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <random>
 #include "../../../modules/task_2/orlov_m_simple_merge_quicksort/quicksort_parallel.h"
 
 TEST(orlov_quicksort_Parallel, incorrect_number_of_elements) {
@@ -31,8 +32,10 @@ TEST(orlov_quicksort_Parallel, can_sort_array3) {
     double* arr1 = new double[n];
     double* arr2 = new double[n];
     double* arr3 = new double[n];
+    std::mt19937 gen;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
     for (int i = 0; i < n; i++) {
-        arr1[i] = 1.0 * rand() / RAND_MAX;
+        arr1[i] = distribution(gen);
         arr2[i] = arr1[i];
         arr3[i] = arr1[i];
     }
@@ -42,8 +45,6 @@ TEST(orlov_quicksort_Parallel, can_sort_array3) {
     begin_time = omp_get_wtime();
     quicksortParallel(arr1, n);
     double parallel_time = omp_get_wtime() - begin_time;
-    
-    
     std::cout << "Sequential time: " << sequential_time << std::endl << \
         "Parallel time: " << parallel_time << std::endl << \
         "Ratio: " << sequential_time / parallel_time << std::endl;
