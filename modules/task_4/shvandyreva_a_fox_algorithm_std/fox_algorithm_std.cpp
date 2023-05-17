@@ -1,7 +1,4 @@
 // Copyright 2023 Shvandyreva Alina
-#include <chrono>
-#include <thread>
-#include <mutex>
 #include "../../../modules/task_4/shvandyreva_a_fox_algorithm_std/fox_algorithm_std.h"
 
 static matrix sum_block(const matrix& A, const matrix& B) {
@@ -51,18 +48,14 @@ matrix seq_multiply(const matrix& A, const matrix& B) {
     return multiply_block(A, B);
 }
 
-matrix std_multiply(const matrix& A, const matrix& B, int tasks_by_dim) {
-    const int td = tasks_by_dim < 1 ? 1 : tasks_by_dim;
+matrix std_multiply(const matrix& A, const matrix& B, int thread_by_dim) {
+    int td = thread_by_dim < 1 ? 1 : thread_by_dim;
     if (td == 1) {
         return multiply_block(A, B);
     }
     matrix result(A.size(), std::vector<double>(B[0].size()));
 
-    const int p = A.size() / td;  // portion
-    const int real_workers_count = std::thread::hardware_concurrency();
-    std::vector<std::thread> workers;
-    std::mutex lock;
-    std::mutex iter_lock;
+    int p = A.size() / td;  // portion
     std::vector<std::pair<int, int>> a(td * td);
     std::vector<std::pair<int, int>> b(td * td);
     for (size_t ind = 0; ind != td * td; ind++) {
@@ -82,34 +75,10 @@ matrix std_multiply(const matrix& A, const matrix& B, int tasks_by_dim) {
             b[ind].second -= td;
         }
     }
-    int task_counter = td * td;
-    int iter_counter = td - 1;
-    int free_workers = 0;
-    for (size_t w = 0; w < real_workers_count; w++) {
-        workers.emplace_back([&]() {
-            while (true) {
-                lock.lock();
-                free_workers++;
-                if (task_counter == 0) {
-                    if (free_workers == real_workers_count && iter_counter != 0) {
-                        iter_counter--;
-                        task_counter = td * td;
-                    } else {
-                        while (task_counter == 0) {
-                            if (iter_counter == 0) {
-                                lock.unlock();
-                                return;
-                            }
-                            lock.unlock();
-                            std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                            lock.lock();
-                        }
-                    }
-                }
-                int ind = --task_counter;
-                free_workers--;
-                lock.unlock();
-
+    for (int iter = 0; iter < td; iter++) {
+        std::vector<std::thread> threads;
+        for (int ind = 0; ind < td * td; ind++) {
+            threads.emplace_back([ind, &a, &b, &result, &A, &B, p, td]() {
                 int& a_x = a[ind].first;
                 int& a_y = a[ind].second;
                 int& b_x = b[ind].first;
@@ -120,7 +89,7 @@ matrix std_multiply(const matrix& A, const matrix& B, int tasks_by_dim) {
                     for (int j = 0; j < p; j++) {
                         for (int k = 0; k < p; k++) {
                             result[i + y * p][j + x * p]
-                                += A[i + a_y * p][k + a_x * p] * B[k + b_y * p][j + b_x * p];
+                            += A[i + a_y * p][k + a_x * p] * B[k + b_y * p][j + b_x * p];
                         }
                     }
                 }
@@ -131,12 +100,11 @@ matrix std_multiply(const matrix& A, const matrix& B, int tasks_by_dim) {
                 if (++b_y >= td) {
                     b_y = 0;
                 }
-            }
             });
+        }
+        for (auto& thread : threads) {
+            thread.join();
+        }
     }
-    for (size_t w = 0; w < real_workers_count; w++) {
-        workers[w].join();
-    }
-
     return result;
 }

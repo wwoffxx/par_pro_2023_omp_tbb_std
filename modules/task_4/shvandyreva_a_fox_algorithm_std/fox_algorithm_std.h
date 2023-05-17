@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <random>
+#include "../../../3rdparty/unapproved/unapproved.h"
 
 using matrix = std::vector<std::vector<double>>;
 
@@ -13,6 +14,6 @@ matrix generate_identity_matrix(size_t size);
 
 matrix seq_multiply(const matrix& A, const matrix& B);
 
-matrix std_multiply(const matrix& A, const matrix& B, int tasks_by_dim);
+matrix std_multiply(const matrix& A, const matrix& B, int thread_by_dim);
 
 #endif  // MODULES_TASK_4_SHVANDYREVA_A_FOX_ALGORITHM_STD_FOX_ALGORITHM_STD_H_
