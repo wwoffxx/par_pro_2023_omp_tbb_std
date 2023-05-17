@@ -1,6 +1,6 @@
 // Copyright 2023 Maksim Orlov
 
-#include <gtest.h>
+#include <gtest/gtest.h>
 #include <omp.h>
 #include <iostream>
 #include <cstdlib>
