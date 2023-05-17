@@ -11,6 +11,7 @@
 TEST(orlov_quicksort_Parallel, incorrect_number_of_elements) {
     double* pd = new double;
     EXPECT_ANY_THROW(quicksortParallel(pd, 0));
+    delete pd;
 }
 
 TEST(orlov_quicksort_Parallel, can_sort_array1) {
