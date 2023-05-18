@@ -14,4 +14,3 @@ std::vector<std::vector<double>> split(const std::vector<double>& data, int n);
 std::vector<double> radixMergeSortOmp(const std::vector<double>& data, int n);
 
 #endif  // MODULES_TASK_2_LABINSKAYA_M_RADIX_MERGE_SORT_OMP_RADIX_MERGE_SORT_OMP_H_
- 
