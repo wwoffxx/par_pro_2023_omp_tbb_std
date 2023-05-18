@@ -146,7 +146,6 @@ std::vector<double> multiplyStrassenOmp(const std::vector<double>& A, const std:
             V2 = multiplyStrassenOmp(blockA[0],
                 diffMatrix(blockB[1], blockB[3]), false);
         }
-        
         std::vector<double> block11(block_size);
         std::vector<double> block12(block_size);
         std::vector<double> block21(block_size);
