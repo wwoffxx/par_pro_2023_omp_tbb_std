@@ -35,7 +35,7 @@ double d2_method_Openmp(
     double firsLoopRes = 0;
     double secondLoopRes = 0;
 
-    #pragma omp parallel for nowait reduction(+: firsLoopRes)
+    #pragma omp parallel for reduction(+: firsLoopRes)
         for (int i = 1; i < N; i++) {
             double x = bounds[0].first + h_for_x * i;
             double y = bounds[1].first + h_for_y * i;
@@ -127,7 +127,7 @@ double d3_method_Openmp(
             }
         }
 
-    #pragma omp for parallel collapse(3) reduction(+: thirdLoopRes)
+    #pragma omp parallel for collapse(3) reduction(+: thirdLoopRes)
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 for (s = 0; s < N; s++) {
