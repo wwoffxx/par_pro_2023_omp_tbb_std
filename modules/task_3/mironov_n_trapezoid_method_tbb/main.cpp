@@ -1,6 +1,6 @@
 // Copyright 2023 Mironov Nikita
 #include <gtest/gtest.h>
-#include "../../../modules/task_2/mironov_n_trapezoid_method_omp/trapezoid.h"
+#include "../../../modules/task_3/mironov_n_trapezoid_method_tbb/trapezoid.h"
 
 double f1(std::vector<double> values) {
     double x = values[0];
