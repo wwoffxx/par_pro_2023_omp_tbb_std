@@ -36,8 +36,7 @@ std::vector<double> merge(const std::vector<double>& v1,
         if (v1[idx1] > v2[idx2]) {
             res[i] = v2[idx2];
             idx2++;
-        }
-        else {
+        } else {
             if (v1[idx1] <= v2[idx2]) {
                 res[i] = v1[idx1];
                 idx1++;
