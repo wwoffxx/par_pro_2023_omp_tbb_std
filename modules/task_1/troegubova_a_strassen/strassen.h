@@ -9,7 +9,6 @@ std::vector<double> multiplyNaive(const std::vector<double>& A, const std::vecto
 std::vector<double> sumMatrix(const std::vector<double>& A, const std::vector<double>& B);
 std::vector<double> diffMatrix(const std::vector<double>& A, const std::vector<double>& B);
 std::vector<std::vector<double>> getBlockMatrix(const std::vector<double>& A);
-std::vector<double> multiplyStrassenSeq(const std::vector<double>& A, const std::vector<double>& B); 
+std::vector<double> multiplyStrassenSeq(const std::vector<double>& A, const std::vector<double>& B);
 
 #endif  // MODULES_TASK_1_TROEGUBOVA_A_STRASSEN_STRASSEN_H_
-

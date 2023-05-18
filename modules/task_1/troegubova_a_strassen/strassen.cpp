@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <string>
-#include "./strassen.h"
+#include "../../../modules/task_1/troegubova_a_strassen/strassen.h"
 
 std::vector<double> getRandomMatrix(int n) {
     std::mt19937 gen(std::random_device().operator()());
@@ -82,9 +82,7 @@ std::vector<double> multiplyStrassenSeq(const std::vector<double>& A, const std:
         res[3] = D + D2 + V2 - H2;
 
         return res;
-    }
-    else {
-
+    } else {
         std::vector<std::vector<double>> blockA = getBlockMatrix(A);
         std::vector<std::vector<double>> blockB = getBlockMatrix(B);
 
@@ -121,8 +119,6 @@ std::vector<double> multiplyStrassenSeq(const std::vector<double>& A, const std:
                 res[(n * n / 2) + i * n + j] = block21[i * n / 2 + j];
                 res[(n * n / 2) + i * n + n / 2 + j] = block22[i * n / 2 + j];
             }
-
-
         }
         return res;
     }
