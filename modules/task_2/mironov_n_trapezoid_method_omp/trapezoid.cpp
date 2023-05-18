@@ -11,7 +11,7 @@ double d1_method_Openmp(
 
     double result = 0;
         #pragma omp parallel for reduction(+: result)
-        for (int i = 0; i < N; i++) {
+        for (int i = 1; i < N; i++) {
             double x = bounds[0].first + h * i;
             result += h * f({x});
         }
@@ -36,7 +36,7 @@ double d2_method_Openmp(
     double secondLoopRes = 0;
 
     #pragma omp parallel for reduction(+: firsLoopRes)
-        for (int i = 0; i < N; i++) {
+        for (int i = 1; i < N; i++) {
             double x = bounds[0].first + h_for_x * i;
             double y = bounds[1].first + h_for_y * i;
 
@@ -48,8 +48,8 @@ double d2_method_Openmp(
         }
 
     #pragma omp parallel for collapse(2) reduction(+: secondLoopRes)
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        for (int i = 1; i < N; i++) {
+            for (int j = 1; j < N; j++) {
                 double x = bounds[0].first + h_for_x * i;
                 double y = bounds[1].first + h_for_y * j;
 
@@ -87,7 +87,7 @@ double d3_method_Openmp(
     double thirdLoopRes = 0;
 
     #pragma omp parallel for reduction(+: firstLoopRes)
-        for (int i = 0; i < N; i++) {
+        for (int i = 1; i < N; i++) {
             double x = bounds[0].first + h_for_x * i;
             double y = bounds[1].first + h_for_y * i;
             double z = bounds[2].first + h_for_z * i;
@@ -106,8 +106,8 @@ double d3_method_Openmp(
         }
 
     #pragma omp parallel for collapse(2) reduction(+: secondLoopRes)
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
+        for (int i = 1; i < N; i++) {
+            for (int j = 1; j < N; j++) {
                 double x = bounds[0].first + h_for_x * i;
                 double y = bounds[1].first + h_for_y * i;
                 double z = bounds[2].first + h_for_z * j;
@@ -128,9 +128,9 @@ double d3_method_Openmp(
         }
 
     #pragma omp parallel for collapse(3) reduction(+: thirdLoopRes)
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                for (int s = 0; s < N; s++) {
+        for (int i = 1; i < N; i++) {
+            for (int j = 1; j < N; j++) {
+                for (int s = 1; s < N; s++) {
                     double x = bounds[0].first + h_for_x * i;
                     double z = bounds[2].first + h_for_z * s;
                     double y = bounds[1].first + h_for_y * j;
