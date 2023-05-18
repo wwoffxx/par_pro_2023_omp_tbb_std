@@ -1,6 +1,6 @@
 // Copyright 2023 Mironova Ekaterina
 #include <gtest/gtest.h>
-#include "radix_batcher.h"
+#include "../../../modules/task_1/mironova_e_radix_batcher/radix_batcher.h"
 
 TEST(radix_batcher, sort_mixed_array_len_6) {
     std::vector<double> unsorted = {1.1, -125.67, 101.2, 53.9, -27.6, 0.008};

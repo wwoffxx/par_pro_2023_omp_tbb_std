@@ -1,30 +1,15 @@
 // Copyright 2023 Mironova Ekaterina
-#include "radix_batcher.h"
-
+#include "../../../modules/task_1/mironova_e_radix_batcher/radix_batcher.h"
 #include <vector>
 #include <cstdint>
 #include <limits>
 #include <cstring>
+#include <utility>
 
-void compexch(double& x, double& y) {
-    if (y < x) {
-        std::swap(x, y);
+void compexch(double* x, double* y) {
+    if (*y < *x) {
+        std::swap(*x, *y);
     }
-}
-
-std::vector<double> batcherMerge(const std::vector<double>& firstPart, const std::vector<double>& secondPart) {
-    int size = firstPart.size() + secondPart.size();
-    std::vector<double> fullData(size);
-    for (int i = 0, j = 0; i < size; j++, i += 2) {
-        fullData[i] = firstPart[j];
-        fullData[i + 1] = secondPart[j];
-    }
-    for (int i = 0; i < size; i += 2)
-        compexch(fullData[i], fullData[i + 1]);
-    int hsize = (secondPart.size() - firstPart.size() + 1) / 2 - 1;
-    for (int i = firstPart.size() + 1; i + hsize < secondPart.size(); i++)
-        compexch(fullData[i], fullData[i + 1]);
-    return fullData;
 }
 
 std::vector<double> radixSort(std::vector<double> data, int exp) {
@@ -68,6 +53,23 @@ std::vector<double> fullRadixSort(std::vector<double> unsortedData) {
         sortedData[j] = nonNegativePart[i];
     }
     return sortedData;
+}
+
+std::vector<double> batcherMerge(const std::vector<double>& firstPart, const std::vector<double>& secondPart) {
+    int size = firstPart.size() + secondPart.size();
+    std::vector<double> fullData(size);
+    for (int i = 0, j = 0; i < size; j++, i += 2) {
+        fullData[i] = firstPart[j];
+        fullData[i + 1] = secondPart[j];
+    }
+    for (int i = 0; i < size; i += 2)
+        compexch(&fullData[i], &fullData[i + 1]);
+    for (int i = 1; i < size - 1; i += 2)
+        compexch(&fullData[i], &fullData[i + 1]);
+    int hsize = size / 2;
+    for (int i = 0; i + hsize < size; i++)
+        compexch(&fullData[i], &fullData[i + hsize]);
+    return fullData;
 }
 
 std::vector<double> radixSortBatcherMerge(const std::vector<double>& data) {
