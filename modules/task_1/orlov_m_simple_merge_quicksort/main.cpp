@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <algorithm>
+#include <random>
 #include "../../../modules/task_1/orlov_m_simple_merge_quicksort/quicksort_sequential.h"
 
 TEST(orlov_quicksort_sequential, incorrect_number_of_elements) {
@@ -26,11 +27,10 @@ TEST(orlov_quicksort_sequential, can_sort_array2) {
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array3) {
-    int n = 5000;
-    double* arr1 = new double[n];
-    double* arr2 = new double[n];
+    std::mt19937 gen;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
     for (int i = 0; i < n; i++) {
-        arr1[i] = 1.0 * rand() / RAND_MAX;
+        arr1[i] = distribution(gen);
         arr2[i] = arr1[i];
     }
     quicksortSequential(arr1, n);
