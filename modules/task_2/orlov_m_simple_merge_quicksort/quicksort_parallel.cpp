@@ -56,7 +56,7 @@ Borders pop(Borders* stack, int* size) {
 void quicksortParallelRecursive(double* arr, int start, int finish) {
     if (finish <= start + 1) return;
     int pivotPos = quicksortPartition(arr, start, finish);
-#pragma omp parallel sections
+#pragma omp parallel sections firstprivate(arr)
     {
 #pragma omp section
         {
