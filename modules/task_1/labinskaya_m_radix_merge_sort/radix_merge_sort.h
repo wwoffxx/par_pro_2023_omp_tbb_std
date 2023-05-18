@@ -7,7 +7,7 @@
 std::vector<double> merge(const std::vector<double>& v1,
     const std::vector<double>& v2);
 std::vector<double> radixMergeSort(const std::vector<double>& data);
-bool bitwiseSortLast(const std::vector<double>& in, std::vector<double>& out, int size);
+bool bitwiseSortLast(double* in, double* out, int size);
 void bitwiseSort(double* in, double* out, int size, int byteNum);
 std::vector<double> getRandVec(int size, int a, int b);
 

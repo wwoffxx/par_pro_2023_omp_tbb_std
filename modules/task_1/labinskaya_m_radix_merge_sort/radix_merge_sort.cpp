@@ -37,9 +37,11 @@ std::vector<double> merge(const std::vector<double>& v1,
             res[i] = v2[idx2];
             idx2++;
         }
-        else if (v1[idx1] <= v2[idx2]) {
-            res[i] = v1[idx1];
-            idx1++;
+        else {
+            if (v1[idx1] <= v2[idx2]) {
+                res[i] = v1[idx1];
+                idx1++;
+            }
         }
     }
     return res;
@@ -63,7 +65,7 @@ void bitwiseSort(double* in, double* out, int size, int byteNum) {
     }
 }
 
-bool bitwiseSortLast(const std::vector<double>& in, std::vector<double>& out, int size) {
+bool bitwiseSortLast(double* in, double* out, int size) {
     int negativeIdx = -1, positiveIdx = -1;
     for (int i = 0; i < size; i++) {
         if ((negativeIdx != -1) && (positiveIdx != -1)) {
@@ -88,14 +90,15 @@ bool bitwiseSortLast(const std::vector<double>& in, std::vector<double>& out, in
             }
         }
         return true;
-    }
-    else if (positiveIdx == -1) {
-        int j = size - 1;
-        for (int i = 0; j >= 0; i++) {
-            out[i] = in[j];
-            j--;
+    } else {
+        if (positiveIdx == -1) {
+            int j = size - 1;
+            for (int i = 0; j >= 0; i++) {
+                out[i] = in[j];
+                j--;
+            }
+            return true;
         }
-        return true;
     }
     return false;
 }
@@ -117,14 +120,14 @@ std::vector<double> radixMergeSort(const std::vector<double>& data) {
         bitwiseSort(arr1.data(), res1.data(), size1, 2 * j);
         bitwiseSort(res1.data(), arr1.data(), size1, 2 * j + 1);
     }
-    if (!bitwiseSortLast(arr1, res1, size1)) {
+    if (!bitwiseSortLast(arr1.data(), res1.data(), size1)) {
         arr1.swap(res1);
     }
     for (int j = 0; j < 4; j++) {
         bitwiseSort(arr2.data(), res2.data(), size2, 2 * j);
         bitwiseSort(res2.data(), arr2.data(), size2, 2 * j + 1);
     }
-    if (!bitwiseSortLast(arr2, res2, size2)) {
+    if (!bitwiseSortLast(arr2.data(), res2.data(), size2)) {
         arr2.swap(res2);
     }
     return merge(res1, res2);
