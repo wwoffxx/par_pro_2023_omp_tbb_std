@@ -8,8 +8,9 @@ double f1(std::vector<double> values) {
 }
 
 double f2(std::vector<double> values) {
+    double x = values[0];
     double y = values[1];
-    return y;
+    return x*y;
 }
 
 double f3(std::vector<double> values) {
@@ -27,8 +28,8 @@ double f4(std::vector<double> values) {
 }
 
 double f5(std::vector<double> values) {
-    double x = values[0];
-    return x*x;
+    double y = values[1];
+    return y;
 }
 
 TEST(trapezoid, d1_test_1_omp) {
