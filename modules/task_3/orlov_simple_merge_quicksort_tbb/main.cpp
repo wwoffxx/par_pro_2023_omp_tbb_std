@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <algorithm>
 #include <random>
-#include "../../../modules/task_3/orlov_m_simple_merge_quicksort/quicksort_parallel.h"
+#include "../../../modules/task_3/orlov_m_simple_merge_quicksort_tbb/quicksort_parallel.h"
 
 TEST(orlov_quicksort_TBB, incorrect_number_of_elements) {
     double* pd = new double;

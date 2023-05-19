@@ -1,6 +1,6 @@
 // Copyright 2023 Maksim Orlov
 
-#include "../../../modules/task_3/orlov_m_simple_merge_quicksort/quicksort_parallel.h"
+#include "../../../modules/task_3/orlov_m_simple_merge_quicksort_tbb/quicksort_parallel.h"
 
 int quicksortPartition(double* arr, int start, int finish) {
     int pivot = finish - 1;
