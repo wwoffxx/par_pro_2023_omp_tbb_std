@@ -21,7 +21,7 @@ double trapezoid_method(
 
                     double y_start = bounds[1].first + j * h_for_y;
                     double y_end = bounds[1].first + (j + 1) * h_for_y;
-                    
+
                     double z_start = bounds[2].first + s * h_for_z;
                     double z_end = bounds[2].first + (s + 1)* h_for_z;
 
