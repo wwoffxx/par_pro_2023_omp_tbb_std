@@ -1,192 +1,43 @@
 // Copyright 2023 Mironov Nikita
 #include "../../../modules/task_3/mironov_n_trapezoid_method_tbb/trapezoid.h"
 
-double d1_method_Openmp(
+double trapezoid_method(
     double (*f)(std::vector<double>),
     const std::vector<std::pair<double, double>>& bounds,
     int N) {
-    double doubleStepsCount = N;
 
-    double h = (bounds[0].second - bounds[0].first)/doubleStepsCount;
-
-    double result = 0;
-    tbb::parallel_for(tbb::blocked_range<int>(1, N),
-        [&](tbb::blocked_range<int>& r) {
-        for (int i = r.begin(), int i_end = r.end(); i < i_end; i++) {
-            double x = bounds[0].first + h * i;
-            result += h * f({x});
-        }
-    });
-
-    result += (h/2.0) * (f({bounds[0].first}) + f({bounds[0].second}));
-
-    return result;
-}
-
-double d2_method_Openmp(
-    double (*f)(std::vector<double>),
-    const std::vector<std::pair<double, double>>& bounds,
-    int N) {
-    double doubleStepsCount = N;
-
-    double h_for_x = (bounds[0].second - bounds[0].first)/doubleStepsCount;
-    double h_for_y = (bounds[1].second - bounds[1].first)/doubleStepsCount;
+    double h_for_x = (bounds[0].second - bounds[0].first) / N;
+    double h_for_y = (bounds[1].second - bounds[1].first) / N;
+    double h_for_z = (bounds[2].second - bounds[2].first) / N;
 
     double result = 0;
 
-    double firsLoopRes = 0;
-    double secondLoopRes = 0;
+    tbb::parallel_for(tbb::blocked_range3d<int>(0, N, 0, N, 0, N),
+            [&](tbb::blocked_range3d<int> r) {
+        int i_end = r.pages().end();
+        int j_end = r.rows().end();
+        int s_end = r.cols().end();
 
-    tbb::parallel_for(tbb::blocked_range<int>(1, N),
-        [&](tbb::blocked_range<int>& r) {
-        for (int i = r.begin() , int i_end = r.end(); i < i_end; i++) {
-            double x = bounds[0].first + h_for_x * i;
-            double y = bounds[1].first + h_for_y * i;
+        for (int i = r.pages().begin(); i < i_end; i++) {
+            for (int j = r.rows().begin(); j < j_end; j++) {
+                for (int s = r.cols().begin(); s < s_end; s++) {
+                    double x_start = bounds[0].first + i * h_for_x;
+                    double x_end = bounds[0].first + (i + 1) * h_for_x;
 
-                firsLoopRes += 0.5 * (f({x, bounds[1].first}) +
-                f({x, bounds[1].second}));
+                    double y_start = bounds[1].first + j * h_for_y;
+                    double y_end = bounds[1].first + (j + 1) * h_for_y;
 
-                firsLoopRes += 0.5 * (f({bounds[0].first, y}) +
-                f({bounds[0].second, y}));
-        }
-    });
+                    double z_start = bounds[2].first + s * h_for_z;
+                    double z_end = bounds[2].first + (s + 1)* h_for_z;
 
-    tbb::parallel_for(tbb::blocked_range2d<int>(1, N, 1, N),
-        [&](tbb::blocked_range2d<int>& r) {
-        for (int i = r.rows().begin(), int i_end = r.rows().end(); i < i_end; i++) {
-            for (int j = r.cols().begin(), int j_end = r.cols().end(); j < j_end; j++) {
-                double x = bounds[0].first + h_for_x * i;
-                double y = bounds[1].first + h_for_y * j;
-
-                    secondLoopRes += f({x, y});
-            }
-        }
-    });
-
-    result = secondLoopRes + firsLoopRes;
-
-    result += 0.25 *
-    (f({bounds[0].first, bounds[1].first}) +
-    f({bounds[0].second, bounds[1].second}) +
-    f({bounds[0].first, bounds[1].second}) +
-    f({bounds[0].second, bounds[1].first}));
-
-    result = result * h_for_x * h_for_y;
-
-    return result;
-}
-
-double d3_method_Openmp(
-    double (*f)(std::vector<double>),
-    const std::vector<std::pair<double, double>>& bounds,
-    int N) {
-    double doubleStepsCount = N;
-
-    double h_for_x = (bounds[0].second - bounds[0].first)/doubleStepsCount;
-    double h_for_y = (bounds[1].second - bounds[1].first)/doubleStepsCount;
-    double h_for_z = (bounds[2].second - bounds[2].first)/doubleStepsCount;
-
-    double result = 0;
-
-    double firstLoopRes = 0;
-    double secondLoopRes = 0;
-    double thirdLoopRes = 0;
-
-    tbb::parallel_for(tbb::blocked_range<int>(1, N),
-        [&](tbb::blocked_range<int>& r) {
-        for (int i = r.begin(), int i_end = r.end(); i < i_end; i++) {
-            double x = bounds[0].first + h_for_x * i;
-            double y = bounds[1].first + h_for_y * i;
-            double z = bounds[2].first + h_for_z * i;
-
-                firstLoopRes += 0.25 *
-                (f({x, bounds[1].first, bounds[2].first}) +
-                f({x, bounds[1].second, bounds[2].second}));
-
-                firstLoopRes += 0.25 *
-                (f({bounds[0].first, y, bounds[2].first}) +
-                f({bounds[0].second, y, bounds[2].second}));
-
-                firstLoopRes += 0.25 *
-                (f({bounds[0].first, bounds[1].first, z}) +
-                f({bounds[0].second, bounds[1].second, z}));
-        }
-    });
-
-    tbb::parallel_for(tbb::blocked_range2d<int>(1, N, 1, N),
-        [&](tbb::blocked_range2d<int>& r) {
-        for (int i = r.rows().begin(), int i_end = r.rows().end(); i < i_end; i++) {
-            for (int j = r.cols().begin(), int j_end = r.cols().end(); j < j_end; j++) {
-                double x = bounds[0].first + h_for_x * i;
-                double y = bounds[1].first + h_for_y * i;
-                double z = bounds[2].first + h_for_z * j;
-
-                secondLoopRes += 0.5 * (f({x, bounds[1].first, z}) +
-                f({x, bounds[1].second, z}));
-
-                y = bounds[1].first + h_for_y * i;
-
-                secondLoopRes += 0.5 * (f({bounds[0].first, y, z}) +
-                f({bounds[0].second, y, z}));
-
-                y = bounds[1].first + h_for_y * j;
-
-                secondLoopRes += 0.5 * (f({x, y, bounds[2].first}) +
-                f({x, y, bounds[2].second}));
-            }
-        }
-    });
-
-    tbb::parallel_for(tbb::blocked_range3d<int>(1, N, 1, N, 1, N),
-        [&](tbb::blocked_range3d<int>& r) {
-        for (int i = r.pages().begin(), int i_end = r.pages().end(); i_end; i++) {
-            for (int j = r.rows().begin(), int j_end = r.rows().end(); j < j_end; j++) {
-                for (int s = r.cols().begin(), int s_end = r.cols().end(); s < s_end; s++) {
-                    double x = bounds[0].first + h_for_x * i;
-                    double z = bounds[2].first + h_for_z * s;
-                    double y = bounds[1].first + h_for_y * j;
-
-                    thirdLoopRes += f({x, y, z});
+                    result +=
+                    0.5 * (x_end - x_start) *
+                    (y_end - y_start) *
+                    (z_end - z_start) *
+                    (f({x_start, y_start, z_start}) + f({x_end, y_end, z_end}));
                 }
             }
         }
     });
-
-    result = firstLoopRes + secondLoopRes + thirdLoopRes;
-
-    result += 0.125 *
-    (f({bounds[0].first, bounds[1].first, bounds[2].first}) +
-    f({bounds[0].first, bounds[1].second, bounds[2].first}) +
-    f({bounds[0].first, bounds[1].first, bounds[2].second}) +
-    f({bounds[0].first, bounds[1].second, bounds[2].second}) +
-    f({bounds[0].second, bounds[1].first, bounds[2].first}) +
-    f({bounds[0].second, bounds[1].second, bounds[2].first}) +
-    f({bounds[0].second, bounds[1].first, bounds[2].second}) +
-    f({bounds[0].second, bounds[1].second, bounds[2].second}));
-
-    result = result * h_for_x * h_for_y * h_for_z;
-
     return result;
-}
-
-double trapezoid_method(
-    double (*f)(std::vector<double>),
-    const std::vector<std::pair<double, double>>& bounds,
-    int dimensions,
-    int N) {
-    if (dimensions != bounds.size()) {
-        throw R"(The number of boundaries does not
-        match the number of dimensions)";
-    }
-
-    if (dimensions == 1) {
-        return d1_method_Openmp(f, bounds, N);
-    }
-    if (dimensions == 2) {
-        return d2_method_Openmp(f, bounds, N);
-    }
-    if (dimensions == 3) {
-        return d3_method_Openmp(f, bounds, N);
-    }
-    return 0;
 }

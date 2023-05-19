@@ -16,7 +16,6 @@
 double trapezoid_method(
     double (*f)(std::vector<double>),
     const std::vector<std::pair<double, double>>& bounds,
-    int dimensions,
     int N);
 
 #endif  // MODULES_TASK_3_MIRONOV_N_TRAPEZOID_METHOD_TBB_TRAPEZOID_H_
