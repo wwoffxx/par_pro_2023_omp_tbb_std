@@ -8,9 +8,8 @@ double f1(std::vector<double> values) {
 }
 
 double f2(std::vector<double> values) {
-    double x = values[0];
     double y = values[1];
-    return x*y;
+    return y;
 }
 
 double f3(std::vector<double> values) {
@@ -27,7 +26,12 @@ double f4(std::vector<double> values) {
     return sqrt((x*x) + y - z);
 }
 
-TEST(trapezoid, d1_test_omp) {
+double f5(std::vector<double> values) {
+    double x = values[0];
+    return x*x;
+}
+
+TEST(trapezoid, d1_test_1_omp) {
     std::vector<std::pair<double, double>> bounds(3);
     bounds[0] = {1, 3};
     bounds[1] = {1, 3};
@@ -35,6 +39,19 @@ TEST(trapezoid, d1_test_omp) {
     int dimensions = 1;
     double integration_result = 104.0/3.0;
     double method_result = trapezoid_method(f1, bounds, 100);
+    double tolerance = 0.15;
+
+    ASSERT_NEAR(method_result, integration_result, tolerance);
+}
+
+TEST(trapezoid, d1_test_2_omp) {
+    std::vector<std::pair<double, double>> bounds(3);
+    bounds[0] = {1, 3};
+    bounds[1] = {1, 3};
+    bounds[2] = {1, 3};
+    int dimensions = 1;
+    double integration_result = 16;
+    double method_result = trapezoid_method(f5, bounds, 100);
     double tolerance = 0.15;
 
     ASSERT_NEAR(method_result, integration_result, tolerance);
