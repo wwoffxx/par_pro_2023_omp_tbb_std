@@ -10,9 +10,9 @@ double d1_method_Openmp(
     double h = (bounds[0].second - bounds[0].first)/doubleStepsCount;
 
     double result = 0;
-    tbb::parallel_for(tbb::blocked_range<int>(1, N+1),
+    tbb::parallel_for(tbb::blocked_range<int>(1, N),
         [&](tbb::blocked_range<int>& r) {
-        for (int i = r.begin(); i < r.end(); i++) {
+        for (int i = r.begin(), int i_end = r.end(); i < i_end; i++) {
             double x = bounds[0].first + h * i;
             result += h * f({x});
         }
@@ -37,9 +37,9 @@ double d2_method_Openmp(
     double firsLoopRes = 0;
     double secondLoopRes = 0;
 
-    tbb::parallel_for(tbb::blocked_range<int>(1, N+1),
+    tbb::parallel_for(tbb::blocked_range<int>(1, N),
         [&](tbb::blocked_range<int>& r) {
-        for (int i = r.begin(); i < r.end(); i++) {
+        for (int i = r.begin() , int i_end = r.end(); i < i_end; i++) {
             double x = bounds[0].first + h_for_x * i;
             double y = bounds[1].first + h_for_y * i;
 
@@ -51,10 +51,10 @@ double d2_method_Openmp(
         }
     });
 
-    tbb::parallel_for(tbb::blocked_range2d<int>(1, N+1, 1, N+1),
+    tbb::parallel_for(tbb::blocked_range2d<int>(1, N, 1, N),
         [&](tbb::blocked_range2d<int>& r) {
-        for (int i = r.rows().begin(); i < r.rows().end(); i++) {
-            for (int j = r.cols().begin(); j < r.cols().end(); j++) {
+        for (int i = r.rows().begin(), int i_end = r.rows().end(); i < i_end; i++) {
+            for (int j = r.cols().begin(), int j_end = r.cols().end(); j < j_end; j++) {
                 double x = bounds[0].first + h_for_x * i;
                 double y = bounds[1].first + h_for_y * j;
 
@@ -92,9 +92,9 @@ double d3_method_Openmp(
     double secondLoopRes = 0;
     double thirdLoopRes = 0;
 
-    tbb::parallel_for(tbb::blocked_range<int>(1, N+1),
+    tbb::parallel_for(tbb::blocked_range<int>(1, N),
         [&](tbb::blocked_range<int>& r) {
-        for (int i = r.begin(); i < r.end(); i++) {
+        for (int i = r.begin(), int i_end = r.end(); i < i_end; i++) {
             double x = bounds[0].first + h_for_x * i;
             double y = bounds[1].first + h_for_y * i;
             double z = bounds[2].first + h_for_z * i;
@@ -113,10 +113,10 @@ double d3_method_Openmp(
         }
     });
 
-    tbb::parallel_for(tbb::blocked_range2d<int>(1, N+1, 1, N+1),
+    tbb::parallel_for(tbb::blocked_range2d<int>(1, N, 1, N),
         [&](tbb::blocked_range2d<int>& r) {
-        for (int i = r.rows().begin(); i < r.rows().end(); i++) {
-            for (int j = r.cols().begin(); j < r.cols().end(); j++) {
+        for (int i = r.rows().begin(), int i_end = r.rows().end(); i < i_end; i++) {
+            for (int j = r.cols().begin(), int j_end = r.cols().end(); j < j_end; j++) {
                 double x = bounds[0].first + h_for_x * i;
                 double y = bounds[1].first + h_for_y * i;
                 double z = bounds[2].first + h_for_z * j;
@@ -137,11 +137,11 @@ double d3_method_Openmp(
         }
     });
 
-    tbb::parallel_for(tbb::blocked_range3d<int>(1, N+1, 1, N+1, 1, N+1),
+    tbb::parallel_for(tbb::blocked_range3d<int>(1, N, 1, N, 1, N),
         [&](tbb::blocked_range3d<int>& r) {
-        for (int i = r.pages().begin(); i < r.pages().end(); i++) {
-            for (int j = r.rows().begin(); j < r.rows().end(); j++) {
-                for (int s = r.cols().begin(); s < r.cols().end(); s++) {
+        for (int i = r.pages().begin(), int i_end = r.pages().end(); i_end; i++) {
+            for (int j = r.rows().begin(), int j_end = r.rows().end(); j < j_end; j++) {
+                for (int s = r.cols().begin(), int s_end = r.cols().end(); s < s_end; s++) {
                     double x = bounds[0].first + h_for_x * i;
                     double z = bounds[2].first + h_for_z * s;
                     double y = bounds[1].first + h_for_y * j;
