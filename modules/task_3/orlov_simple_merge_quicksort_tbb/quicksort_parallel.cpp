@@ -2,7 +2,7 @@
 
 #include "../../../modules/task_3/orlov_m_simple_merge_quicksort/quicksort_parallel.h"
 
-int quicksortPartition(double* arr, int& start, int& finish) {
+int quicksortPartition(double* arr, int start, int finish) {
     int pivot = finish - 1;
     int largeElem = start;
     for (int i = start; i < finish; i++) {
@@ -35,26 +35,9 @@ void quicksortSequential(double* arr, int n) {
     quicksortSequentialRecursive(arr, 0, n);
 }
 
-struct Borders {
-    int start;
-    int finish;
-};
-
-void push(Borders* stack, int* size, Borders elem) {
-#pragma omp critical(push)
-    stack[(*size)++] = elem;
-}
-
-Borders pop(Borders* stack, int* size) {
-    Borders res;
-#pragma omp critical(pop)
-    res = stack[--(*size)];
-    return res;
-}
-
 void quicksortTBBRecursive(double* arr, int start, int finish) {
     int pivotPos = quicksortPartition(arr, start, finish);
-    task_group g;
+    tbb::task_group g;
     if (pivotPos > start + 1) g.run([&]() {quicksortTBBRecursive(arr, start, pivotPos); });
     if (finish > pivotPos + 2) g.run([&]() {quicksortTBBRecursive(arr, pivotPos + 1, finish); });
     g.wait();

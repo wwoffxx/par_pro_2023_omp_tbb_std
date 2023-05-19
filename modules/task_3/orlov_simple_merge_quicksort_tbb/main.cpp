@@ -39,13 +39,13 @@ TEST(orlov_quicksort_TBB, can_sort_array3) {
         arr2[i] = arr1[i];
         arr3[i] = arr1[i];
     }
-    tick_count t0 = tick_count::now();
+    tick_count t0 = tbb::tick_count::now();
     quicksortSequential(arr3, n);
-    tick_count t1 = tick_count::now();
+    tick_count t1 = tbb::tick_count::now();
     double sequential_time = (t1 - t0).seconds();
-    tick_count t2 = tick_count::now();
+    tick_count t2 = tbb::tick_count::now();
     quicksortTBB(arr1, n);
-    tick_count t3 = tick_count::now();
+    tick_count t3 = tbb::tick_count::now();
     double TBB_time = (t3 - t2).seconds();
     std::cout << "Sequential time: " << sequential_time << std::endl << \
         "TBB time: " << TBB_time << std::endl << \
