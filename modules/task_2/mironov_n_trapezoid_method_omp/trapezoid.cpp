@@ -15,7 +15,7 @@ double trapezoid_method(
     #pragma omp parallel for reduction(+: result)
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                for (int s = 0; s < N; m++) {
+                for (int s = 0; s < N; s++) {
                     double x_start = bounds[0].first + i * h_for_x;
                     double x_end = bounds[0].first + (i + 1) * h_for_x;
 
