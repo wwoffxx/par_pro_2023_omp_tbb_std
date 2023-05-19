@@ -27,6 +27,9 @@ TEST(orlov_quicksort_sequential, can_sort_array2) {
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array3) {
+    int n = 5000;
+    double* arr1 = new double[n];
+    double* arr2 = new double[n];
     std::mt19937 gen;
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
     for (int i = 0; i < n; i++) {
