@@ -36,35 +36,18 @@ void quicksortSequential(double* arr, int n) {
     quicksortSequentialRecursive(arr, 0, n);
 }
 
-struct Borders {
-    int start;
-    int finish;
-};
-
-void push(Borders* stack, int* size, Borders elem) {
-#pragma omp critical(push)
-    stack[(*size)++] = elem;
-}
-
-Borders pop(Borders* stack, int* size) {
-    Borders res;
-#pragma omp critical(pop)
-    res = stack[--(*size)];
-    return res;
-}
-
 void quicksortParallelRecursive(double* arr, int start, int finish) {
     if (finish <= start + 1) return;
     int pivotPos = quicksortPartition(arr, start, finish);
-#pragma omp parallel sections firstprivate(arr)
+#pragma omp parallel sections
     {
 #pragma omp section
         {
-            quicksortParallelRecursive(arr, start, pivotPos);
+            if (pivotPos > start + 1) quicksortParallelRecursive(arr, start, pivotPos);
         }
 #pragma omp section
         {
-            quicksortParallelRecursive(arr, pivotPos + 1, finish);
+            if (finish > pivotPos + 2) quicksortParallelRecursive(arr, pivotPos + 1, finish);
         }
     }
 }
