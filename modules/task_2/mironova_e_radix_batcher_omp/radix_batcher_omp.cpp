@@ -81,7 +81,7 @@ std::vector<double> batcherMerge(const std::vector<double>& firstPart, const std
 std::vector<double> fullRadixSort(std::vector<double> unsortedData) {
     std::vector<double> negativePart, nonNegativePart;
     for (int i = 0; i < unsortedData.size(); i++) {
-        if (unsortedData[i] >= 0){
+        if (unsortedData[i] >= 0) {
             nonNegativePart.push_back(unsortedData[i]);
         } else {
             negativePart.push_back(unsortedData[i]);
