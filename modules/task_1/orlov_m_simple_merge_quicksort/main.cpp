@@ -10,6 +10,7 @@
 TEST(orlov_quicksort_sequential, incorrect_number_of_elements) {
     double* pd = new double;
     EXPECT_ANY_THROW(quicksortSequential(pd, 0));
+    delete pd;
 }
 
 TEST(orlov_quicksort_sequential, can_sort_array1) {
