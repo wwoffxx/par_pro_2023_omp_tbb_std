@@ -12,15 +12,11 @@ double trapezoid_method(
 
     double result = 0;
 
-    tbb::parallel_for(tbb::blocked_range3d<int>(0, N, 0, N, 0, N),
-            [&](tbb::blocked_range3d<int> r) {
-        int i_end = r.pages().end();
-        int j_end = r.rows().end();
-        int s_end = r.cols().end();
-
-        for (int i = r.pages().begin(); i < i_end; i++) {
-            for (int j = r.rows().begin(); j < j_end; j++) {
-                for (int s = r.cols().begin(); s < s_end; s++) {
+    result = tbb::parallel_reduce(tbb::blocked_range3d<int>(0, N, 0, N, 0, N), 0.0,
+            [&](tbb::blocked_range3d<int> r, double res) {
+        for (int i = r.pages().begin(); i < r.pages().end();; i++) {
+            for (int j = r.rows().begin(); j < r.rows().end(); j++) {
+                for (int s = r.cols().begin(); s < r.cols().end(); s++) {
                     double x_start = bounds[0].first + i * h_for_x;
                     double x_end = bounds[0].first + (i + 1) * h_for_x;
 
@@ -30,7 +26,7 @@ double trapezoid_method(
                     double z_start = bounds[2].first + s * h_for_z;
                     double z_end = bounds[2].first + (s + 1)* h_for_z;
 
-                    result +=
+                    res +=
                     0.5 * (x_end - x_start) *
                     (y_end - y_start) *
                     (z_end - z_start) *
@@ -38,6 +34,7 @@ double trapezoid_method(
                 }
             }
         }
-    });
+        return res;
+    }, std::plus<double>());
     return result;
 }
