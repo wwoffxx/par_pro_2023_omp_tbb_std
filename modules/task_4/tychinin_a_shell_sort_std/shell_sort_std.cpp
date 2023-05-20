@@ -2,6 +2,7 @@
 
 #include "shell_sort_std.h"  // NOLINT
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <utility>
 #include "../../../3rdparty/unapproved/unapproved.h"
@@ -30,7 +31,7 @@ namespace task4 {
         size_t interval = vec.size() / partitions_n;
         size_t residue = vec.size() % partitions_n;
         size_t start = 0, finish = 0;
-        for (size_t i = 0; i < std::min(partitions_n, vec.size()); ++i) {
+        for (size_t i = 0; i < std::fmin(partitions_n, vec.size()); ++i) {
             finish += (residue > 0) ? (interval + !!(residue--)) : interval;
             res.emplace_back(vec.begin() + start, vec.begin() + finish);
             start = finish;
