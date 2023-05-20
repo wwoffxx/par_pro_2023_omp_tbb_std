@@ -9,8 +9,8 @@ TEST(Nikitin_test, NaiveMultiplication) {
   double a[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
   double b[16] = {2, 0, 1, 2, 1, 2, 1, 0, 0, 1, 2, 1, 2, 1, 0, 2};
 
-  double expected[16] = {10, 5,  6,  10, 26, 13, 18, 26,
-                         42, 21, 30, 42, 58, 29, 42, 58};
+  double expected[16] = {12, 11, 9,  13, 32, 27, 25, 33,
+                         52, 43, 41, 53, 72, 59, 57, 73};
 
   double c[16];
 
@@ -27,8 +27,8 @@ TEST(Nikitin_test, StrassenMultiplication) {
   double a[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
   double b[16] = {2, 0, 1, 2, 1, 2, 1, 0, 0, 1, 2, 1, 2, 1, 0, 2};
 
-  double expected[16] = {10, 5,  6,  10, 26, 13, 18, 26,
-                         42, 21, 30, 42, 58, 29, 42, 58};
+  double expected[16] = {12, 11, 9,  13, 32, 27, 25, 33,
+                         52, 43, 41, 53, 72, 59, 57, 73};
 
   double c[16];
 
@@ -41,33 +41,12 @@ TEST(Nikitin_test, StrassenMultiplication) {
   }
 }
 
-TEST(Nikitin_test, NonPowerOf2Size) {
-  double a[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+TEST(Nikitin_test, NegativeElements) {
+  double a[16] = {-1, -2,  -3,  -4,  -5,  -6,  -7,  -8,
+                  -9, -10, -11, -12, -13, -14, -15, -16};
   double b[16] = {2, 0, 1, 2, 1, 2, 1, 0, 0, 1, 2, 1, 2, 1, 0, 2};
-
-  double expected[16] = {10, 5,  6,  10, 26, 13, 18, 26,
-                         42, 21, 30, 42, 58, 29, 42, 58};
-
-  double c[16];
-
-  int size = 4;
-
-  size = 3;
-
-  double expectedNonPowerOf2[9] = {5, 5, 5, 11, 11, 11, 17, 17, 17};
-
-  strassen(a, b, c, size);
-
-  for (int i = 0; i < size * size; i++) {
-    EXPECT_EQ(c[i], expectedNonPowerOf2[i]);
-  }
-}
-
-TEST(Nikitin_test, ProvidedData) {
-  double a[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-  double b[16] = {2, 0, 1, 2, 1, 2, 1, 0, 0, 1, 2, 1, 2, 1, 0, 2};
-  double expected[16] = {10, 5,  6,  10, 26, 13, 18, 26,
-                         42, 21, 30, 42, 58, 29, 42, 58};
+  double expected[16] = {-12, -11, -9,  -13, -32, -27, -25, -33,
+                         -52, -43, -41, -53, -72, -59, -57, -73};
   double c[16];
 
   strassen(a, b, c, 4);
@@ -75,6 +54,17 @@ TEST(Nikitin_test, ProvidedData) {
   for (int i = 0; i < 16; i++) {
     EXPECT_EQ(c[i], expected[i]);
   }
+}
+
+TEST(Nikitin_test, OneRowOneColumn) {
+  double a[1] = {2};
+  double b[1] = {3};
+  double expected[1] = {6};
+  double c[1];
+
+  strassen(a, b, c, 1);
+
+  EXPECT_EQ(c[0], expected[0]);
 }
 
 TEST(Nikitin_test, ZeroMatrix) {
