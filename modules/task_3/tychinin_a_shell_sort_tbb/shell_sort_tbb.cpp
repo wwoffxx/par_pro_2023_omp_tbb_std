@@ -3,6 +3,7 @@
 #include "shell_sort_tbb.h"  // NOLINT
 #include <tbb/tbb.h>
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <utility>
 
@@ -30,7 +31,7 @@ namespace task3 {
         size_t interval = vec.size() / partitions_n;
         size_t residue = vec.size() % partitions_n;
         size_t start = 0, finish = 0;
-        for (size_t i = 0; i < std::min(partitions_n, vec.size()); ++i) {
+        for (size_t i = 0; i < std::fmin(partitions_n, vec.size()); ++i) {
             finish += (residue > 0) ? (interval + !!(residue--)) : interval;
             res.emplace_back(vec.begin() + start, vec.begin() + finish);
             start = finish;
