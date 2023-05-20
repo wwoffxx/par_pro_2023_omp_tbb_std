@@ -3,8 +3,8 @@
 #include "shell_sort_std.h"  // NOLINT
 #include <algorithm>
 #include <iostream>
-#include <thread>
 #include <utility>
+#include "../../../3rdparty/unapproved/unapproved.h"
 
 namespace task4 {
     using std::vector;
