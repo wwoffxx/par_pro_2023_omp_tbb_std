@@ -1,7 +1,7 @@
 // Copyright 2023 Yarakhtin Anton
 #include <tbb/tbb.h>
+#include <cmath>
 #include "../../../modules/task_3/yarakhtin_a_simpson_method_tbb/simpson_method_tbb.h"
-#include<cmath>
 
 double simpson_method(std::vector<std::tuple<double, double, int>> scopes,
     std::function<double(const std::vector<double>&)> func) {
