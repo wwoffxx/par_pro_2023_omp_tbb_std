@@ -14,7 +14,7 @@ double trapezoid_method(
 
     result = tbb::parallel_reduce(tbb::blocked_range3d<int>(0, N, 0, N, 0, N), 0.0,
             [&](tbb::blocked_range3d<int> r, double res) {
-        for (int i = r.pages().begin(); i < r.pages().end();; i++) {
+        for (int i = r.pages().begin(); i < r.pages().end(); i++) {
             for (int j = r.rows().begin(); j < r.rows().end(); j++) {
                 for (int s = r.cols().begin(); s < r.cols().end(); s++) {
                     double x_start = bounds[0].first + i * h_for_x;
