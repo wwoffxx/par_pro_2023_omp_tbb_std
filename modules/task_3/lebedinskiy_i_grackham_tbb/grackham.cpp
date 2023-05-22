@@ -87,8 +87,7 @@ std::vector<std::pair<double, double>> gen_dots(int vectorSize) {
 std::vector<std::pair<double, double>> grackham_tbb(
     std::vector<std::pair<double, double>>::iterator beg,
     std::vector<std::pair<double, double>>::iterator end,
-    std::size_t n_threads)
-{
+    std::size_t n_threads){
     if (n_threads == 0) {
         throw "incorrect number of threads";
     }
@@ -109,8 +108,7 @@ std::vector<std::pair<double, double>> grackham_tbb(
                     last_points.push_back(local_scan[j]);
                 }
             }
-        }
-    );
+        });
 
     auto local_scan = grackham_seq(beg + step * (n_threads - 1), end);
     for (std::size_t j = 0; j < local_scan.size(); ++j) {
