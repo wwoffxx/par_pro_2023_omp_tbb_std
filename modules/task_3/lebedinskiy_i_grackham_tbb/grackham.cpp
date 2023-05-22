@@ -95,8 +95,6 @@ std::vector<std::pair<double, double>> grackham_tbb(
     int step = (end - beg) / n_threads;
 
     tbb::spin_mutex mutex;
-
-    tbb::task_scheduler_init init(static_cast<int>(n_threads));
     tbb::task_group gruppe;
 
     for (std::size_t i = 0; i < n_threads - 1; ++i) {
