@@ -1,4 +1,5 @@
 // Copyright 2023 Lebedinskiy Ilya
+#include <tbb/tbb.h>
 #include "../../../modules/task_3/lebedinskiy_i_grackham_tbb/grackham.h"
 std::pair<double, double> p0;
 
@@ -86,7 +87,8 @@ std::vector<std::pair<double, double>> gen_dots(int vectorSize) {
 std::vector<std::pair<double, double>> grackham_tbb(
     std::vector<std::pair<double, double>>::iterator beg,
     std::vector<std::pair<double, double>>::iterator end,
-    std::size_t n_threads) {
+    std::size_t n_threads)
+{
     if (n_threads == 0) {
         throw "incorrect number of threads";
     }
@@ -95,31 +97,26 @@ std::vector<std::pair<double, double>> grackham_tbb(
     int step = (end - beg) / n_threads;
 
     tbb::spin_mutex mutex;
-    tbb::task_group gruppe;
 
-    for (std::size_t i = 0; i < n_threads - 1; ++i) {
-        gruppe.run([&last_points, &mutex, i, beg, step]() {
-            auto left = beg + step * i;
-            auto right = beg + step * (i + 1);
-            auto local_scan = grackham_seq(left, right);
-            for (std::size_t j = 0; j < local_scan.size(); ++j) {
-                tbb::spin_mutex::scoped_lock lock;
-                lock.acquire(mutex);
-                last_points.push_back(local_scan[j]);
-                lock.release();
+    tbb::parallel_for(tbb::blocked_range<std::size_t>(0, n_threads - 1),
+        [&](const tbb::blocked_range<std::size_t>& range) {
+            for (std::size_t i = range.begin(); i < range.end(); ++i) {
+                auto left = beg + step * i;
+                auto right = beg + step * (i + 1);
+                auto local_scan = grackham_seq(left, right);
+                for (std::size_t j = 0; j < local_scan.size(); ++j) {
+                    tbb::spin_mutex::scoped_lock lock(mutex);
+                    last_points.push_back(local_scan[j]);
+                }
             }
-            });
-    }
-    gruppe.run([&last_points, beg, end, step, n_threads, &mutex]() {
-        auto local_scan = grackham_seq(beg + step * (n_threads - 1), end);
-        for (std::size_t j = 0; j < local_scan.size(); ++j) {
-            tbb::spin_mutex::scoped_lock lock;
-            lock.acquire(mutex);
-            last_points.push_back(local_scan[j]);
-            lock.release();
         }
-        });
-    gruppe.wait();
+    );
+
+    auto local_scan = grackham_seq(beg + step * (n_threads - 1), end);
+    for (std::size_t j = 0; j < local_scan.size(); ++j) {
+        tbb::spin_mutex::scoped_lock lock(mutex);
+        last_points.push_back(local_scan[j]);
+    }
 
     return grackham_seq(last_points.begin(), last_points.end());
 }
