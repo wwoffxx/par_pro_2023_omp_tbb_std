@@ -87,7 +87,7 @@ std::vector<std::pair<double, double>> gen_dots(int vectorSize) {
 std::vector<std::pair<double, double>> grackham_tbb(
     std::vector<std::pair<double, double>>::iterator beg,
     std::vector<std::pair<double, double>>::iterator end,
-    std::size_t n_threads){
+    std::size_t n_threads) {
     if (n_threads == 0) {
         throw "incorrect number of threads";
     }
