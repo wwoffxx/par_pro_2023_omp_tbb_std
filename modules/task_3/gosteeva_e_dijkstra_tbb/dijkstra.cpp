@@ -33,8 +33,8 @@ std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
 std::vector<int> DijkstraParallel(std::vector<int> graph,
     int source, int size) {
 
-    std::vector dist(size, INT_MAX);
-    std::vector visited(size, false);
+    std::vector<int> dist(size, INT_MAX);
+    std::vector<int> visited(size, false);
     dist.at(source) = 0;
     int min = INT_MAX, index;
 
@@ -51,7 +51,7 @@ std::vector<int> DijkstraParallel(std::vector<int> graph,
                 }
             }
 
-            visited[minIndex] = true;
+            visited.at(minIndex) = true;
 
             for (int j = 0; j < size; ++j) {
                 if (!visited.at(j) && graph.at(minIndex * size + j) &&
@@ -63,5 +63,6 @@ std::vector<int> DijkstraParallel(std::vector<int> graph,
             }
         }
     });
+
     return dist;
 }
