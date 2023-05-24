@@ -13,6 +13,7 @@ TEST(Gauss_Filter_Seq, Test1_3x3) {
     ASSERT_EQ(par, seq);
 }
 
+
 TEST(Gauss_Filter_Seq, Test2_10x5) {
     Image origin(10, 5);
     origin.FillRandom();
