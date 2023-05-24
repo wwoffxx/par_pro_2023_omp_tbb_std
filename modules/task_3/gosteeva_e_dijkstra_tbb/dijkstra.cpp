@@ -33,44 +33,28 @@ std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
 std::vector<int> DijkstraParallel(std::vector<int> graph,
     int source, int size) {
 
-    std::vector<int> dist(size);
-    std::vector<int> visited(size);
+    std::vector dist(size, INT_MAX);
+    std::vector visited(size, false);
+    dist[source] = 0;
     int min = INT_MAX, index;
-
-    #pragma omp parallel for
-    for (int i = 0; i < size; i++) {
-        dist.at(i) = INT_MAX;
-        visited.at(i) = false;
-    }
-
-    dist.at(source) = 0;
-
+    tbb::queuing_mutex mutex;
     for (int i = 0; i < size; i++) {
         min = INT_MAX;
-
-        #pragma omp parallel for
-        for (int j = 0; j < size; j++) {
+        tbb::parallel_for(0, size, [&](int j) {
+            tbb::queuing_mutex::scoped_lock lock(mutex);
             if (visited.at(j) == false && dist.at(j) <= min) {
-                #pragma omp critical
-                if (dist.at(j) <= min) {
-                    min = dist.at(j);
-                    index = j;
-                }
+            min = dist.at(j);
+            index = j;
             }
-        }
-
+        });
         visited.at(index) = true;
-
-        #pragma omp parallel for
-        for (int k = 0; k < size; k++) {
-            if (!visited.at(k) && graph.at(index * size + k) && dist.at(index) != INT_MAX
-                && dist.at(index) + graph.at(index * size + k) < dist.at(k)) {
-                #pragma omp critical
-                if (dist.at(index) + graph.at(index * size + k) < dist.at(k)) {
-                    dist.at(k) = dist.at(index) + graph.at(index * size + k);
-                }
-            }
+        tbb::parallel_for(0, size, [&](int j) {
+        tbb::queuing_mutex::scoped_lock lock(mutex);
+        if (!visited.at(j) && graph.at(index * size + j) && dist.at(index) != INT_MAX
+        && dist.at(index) + graph.at(index * size + j) < dist.at(j)) {
+        dist.at(j) = dist.at(index) + graph.at(index * size + j);
         }
+        });
     }
     return dist;
 }

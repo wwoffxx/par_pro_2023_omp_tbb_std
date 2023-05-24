@@ -1,6 +1,6 @@
 // Copyright 2023 Gosteeva Ekaterina
 #include <gtest/gtest.h>
-#include "../../../modules/task_2/gosteeva_e_dijkstra_omp/dijkstra.h"
+#include "../../../modules/task_3/gosteeva_e_dijkstra_tbb/dijkstra.h"
 
 TEST(Dijkstra, Test1) {
     std::vector<int> graph = {
