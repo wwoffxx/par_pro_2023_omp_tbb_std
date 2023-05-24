@@ -3,7 +3,6 @@
 #define MODULES_TASK_3_GOSTEEVA_E_DIJKSTRA_TBB_DIJKSTRA_H_
 
 #include <tbb/tbb.h>
-#include <tbb/mutex.h>
 #include <queue>
 #include <climits>
 #include <vector>

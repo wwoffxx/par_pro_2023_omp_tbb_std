@@ -1,6 +1,7 @@
 // Copyright 2023 Gosteeva Ekaterina
 
 #include "../../../modules/task_3/gosteeva_e_dijkstra_tbb/dijkstra.h"
+#include <tbb>
 
 std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
     std::vector<int> dist(size);
