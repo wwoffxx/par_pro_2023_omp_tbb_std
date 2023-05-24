@@ -1,8 +1,6 @@
 // Copyright 2023 Anoschenkova Anna
 #ifndef MODULES_TASK_2_ANOSCHENKOVA_A_CANNON_CANNON_H_
 #define MODULES_TASK_2_ANOSCHENKOVA_A_CANNON_CANNON_H_
-
-#include <tbb/tbb.h>
 #include <vector>
 #include <iostream>
 #include <cmath>

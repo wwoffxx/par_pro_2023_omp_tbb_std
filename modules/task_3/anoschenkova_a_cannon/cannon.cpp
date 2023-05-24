@@ -6,6 +6,7 @@
 #include <vector>
 #include "../../../modules/task_3/anoschenkova_a_cannon/cannon.h"
 
+
 matrix RandomMat(const int n) {
     std::mt19937 generator;
     std::random_device device;
@@ -33,7 +34,7 @@ matrix NaiveMult(const matrix &A, const matrix &B) {
     for (size_t i = 0; i < m; i++)
         for (size_t j = 0; j < l; j++)
             for (size_t k = 0; k < n; k++)
-                res[i][j] += A[i][k] * B[k][j];
+                res[i][j] += A[i][k]*B[k][j];
 
     return res;
 }
@@ -71,22 +72,23 @@ matrix BlockMult(const matrix &A, const matrix &B, const int &blockSize) {
     int jjMin, kkMin;
     matrix res(n, std::vector<double>(n, 0));
 
+
     for (int jj = 0; jj < n; jj += blockSize) {
         jjMin = std::min(jj + blockSize, n);
-        for (int kk = 0; kk < n; kk += blockSize) {
-            kkMin = std::min(kk + blockSize, n);
+       for (int kk = 0; kk < n; kk += blockSize) {
+           kkMin = std::min(kk+ blockSize, n);
 
             tbb::parallel_for(tbb::blocked_range<int>(0, n, 2),
-                              [&](tbb::blocked_range<int> range) {
-                                  for (int i = range.begin(); i < range.end();
-                                       i++) {
-                                      for (int k = kk; k < kkMin; k++) {
-                                          for (int j = jj; j < jjMin; j++) {
-                                              res[i][j] += A[i][k] * B[k][j];
-                                          }
-                                      }
-                                  }
-                              });
+                [&](tbb::blocked_range<int> range) {
+                for (int i = range.begin(); i < range.end(); i++) {
+                    for (int k = kk; k < kkMin; k++) {
+                        for (int j = jj; j < jjMin; j++) {
+                            res[i][j]  +=  A[i][k] * B[k][j];
+                        }
+                    }
+                }
+            });
+
         }
     }
 
