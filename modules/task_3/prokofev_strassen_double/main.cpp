@@ -10,7 +10,7 @@ TEST(first_test, first_test) {
     std::vector<double> c = { 7.0, 10.0, 15.0, 22.0 };
 
 
-    EXPECT_EQ(sMult(a, b, 2), c);
+    EXPECT_EQ(sMult_tbb(a, b, 2), c);
 }
 
 TEST(test2, test2) {
@@ -36,7 +36,7 @@ TEST(test4, test4) {
     std::vector<double> b = rndMat(4);
 
 
-    EXPECT_EQ(sMult(a, b, 4), rMult(a, b, 4));
+    EXPECT_EQ(sMult_tbb(a, b, 4), rMult(a, b, 4));
 }
 
 TEST(test5, test5) {
