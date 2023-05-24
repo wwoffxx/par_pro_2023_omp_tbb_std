@@ -35,26 +35,33 @@ std::vector<int> DijkstraParallel(std::vector<int> graph,
 
     std::vector dist(size, INT_MAX);
     std::vector visited(size, false);
-    dist[source] = 0;
+    dist.at(source) = 0;
     int min = INT_MAX, index;
-    tbb::queuing_mutex mutex;
-    for (int i = 0; i < size; i++) {
-        min = INT_MAX;
-        tbb::parallel_for(0, size, [&](int j) {
-            tbb::queuing_mutex::scoped_lock lock(mutex);
-            if (visited.at(j) == false && dist.at(j) <= min) {
-            min = dist.at(j);
-            index = j;
+
+    tbb::parallel_for(tbb::blocked_range<int>(0, size),
+        [&](const tbb::blocked_range<int>& r) {
+        for (int i = r.begin(); i != r.end(); ++i) {
+            int minDist = INT_MAX;
+            int minIndex = 0;
+
+            for (int j = 0; j < size; ++j) {
+                if (!visited.at(j) && dist.at(j) <= minDist) {
+                    minDist = dist.at(j);
+                    minIndex = j;
+                }
             }
-        });
-        visited.at(index) = true;
-        tbb::parallel_for(0, size, [&](int j) {
-        tbb::queuing_mutex::scoped_lock lock(mutex);
-        if (!visited.at(j) && graph.at(index * size + j) && dist.at(index) != INT_MAX
-        && dist.at(index) + graph.at(index * size + j) < dist.at(j)) {
-        dist.at(j) = dist.at(index) + graph.at(index * size + j);
+
+            visited[minIndex] = true;
+
+            for (int j = 0; j < size; ++j) {
+                if (!visited.at(j) && graph.at(minIndex * size + j) &&
+                    dist.at(minIndex) != INT_MAX &&
+                    dist.at(minIndex) + graph.at(minIndex * size + j) <
+                    dist.at(j)) {
+                    dist.at(j) = dist.at(minIndex) + graph.at(minIndex * size + j);
+                }
+            }
         }
-        });
-    }
+    });
     return dist;
 }
