@@ -16,6 +16,7 @@ TEST(Mult_rare_matrix_parallel, Test_1_2x2_and_2x2) {
     EXPECT_EQ(res.Equal(resPar), true);
 }
 
+
 TEST(Mult_rare_matrix_parallel, Test_2_3x5_and_5x3) {
     MatrixCRS matr(3, 5);
     matr.FillRandom(2);
