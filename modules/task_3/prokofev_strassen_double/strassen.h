@@ -1,6 +1,6 @@
 // Copyright 2023 Prokofev Denis
-#ifndef MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H
-#define MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H
+#ifndef MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H_
+#define MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H_
 
 #include <vector>
 
@@ -21,4 +21,4 @@ std::vector<double> toPowerOfTwoSize(const std::vector<double>& mtx, unsigned* p
 std::vector<double> toPowerOfTwoSize(const std::vector<double>& mtx, unsigned int sz);
 std::vector<double> matrixReduce(const std::vector<double>& mtx, unsigned int sz);
 
-#endif  // MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H
+#endif  // MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H_
