@@ -66,15 +66,15 @@ void mergeMatrix(std::vector<double> *mat, const std::vector<double> &a, const s
   unsigned int siz = size / 2;
   for (unsigned int i = 0; i < siz; i++) {
     for (unsigned int j = i * siz; j < i * siz + siz; j++)
-      mat->push_back(a[j]);
+      mat->push_back(round(a[j] * 100) / 100);
     for (unsigned int j = i * siz; j < i * siz + siz; j++)
-      mat->push_back(b[j]);
+      mat->push_back(round(b[j] * 100) / 100);
   }
   for (unsigned int i = 0; i < siz; i++) {
     for (unsigned int j = i * siz; j < i * siz + siz; j++)
-      mat->push_back(c[j]);
+      mat->push_back(round(c[j] * 100) / 100);
     for (unsigned int j = i * siz; j < i * siz + siz; j++)
-      mat->push_back(d[j]);
+      mat->push_back(round(d[j] * 100) / 100);
   }
 }
 
