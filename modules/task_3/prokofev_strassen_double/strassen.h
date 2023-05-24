@@ -1,18 +1,15 @@
-// Copyright 2020 Kriukov Dmitry
-#ifndef MODULES_TASK_3_KRIUKOV_STRASSEN_ALGORITHM_STRASSEN_ALGORITHM_H_
-#define MODULES_TASK_3_KRIUKOV_STRASSEN_ALGORITHM_STRASSEN_ALGORITHM_H_
+// Copyright 2023 Prokofev Denis
+#ifndef MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H
+#define MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H
 
 #include <vector>
 
-std::vector<double> getRandomMatrix(int  sz);
-std::vector<double> regularMultiplication(const std::vector<double> &a, const std::vector<double> &b, unsigned int sz);
-std::vector<double> strassenMultiplication_tbb(const std::vector<double> &a,
+std::vector<double> rndMat(int  sz);
+std::vector<double> rMult(const std::vector<double> &a, const std::vector<double> &b, unsigned int sz);
+std::vector<double> sMult_tbb(const std::vector<double> &a,
                                                const std::vector<double> &b, unsigned int sz);
-std::vector<double> strassenMultiplication_NoCastToPowerOfTwo_tbb(const std::vector<double>& a,
+std::vector<double> sMult_NoTwo(const std::vector<double>& a,
                                                               const std::vector<double>& b, unsigned int sz);
-std::vector<double> strassenMultiplication(const std::vector<double>& a, const std::vector<double>& b, unsigned int sz);
-std::vector<double> strassenMultiplication_NoCastToPowerOfTwo(const std::vector<double>& a,
-  const std::vector<double>& b, unsigned int sz);
 std::vector<double> sum(const std::vector<double> &a, const std::vector<double> &b, unsigned int sz);
 std::vector<double> diff(const std::vector<double> &a, const std::vector<double> &b, unsigned int sz);
 void splitMatrix(const std::vector<double> &mtx, std::vector<double> *a,
@@ -24,4 +21,4 @@ std::vector<double> toPowerOfTwoSize(const std::vector<double>& mtx, unsigned* p
 std::vector<double> toPowerOfTwoSize(const std::vector<double>& mtx, unsigned int sz);
 std::vector<double> matrixReduce(const std::vector<double>& mtx, unsigned int sz);
 
-#endif  // MODULES_TASK_3_KRIUKOV_STRASSEN_ALGORITHM_STRASSEN_ALGORITHM_H_
+#endif  // MODULES_TASK_3_PROKOFEV_STRASSEN_DOUBLE_STRASSEN_H
