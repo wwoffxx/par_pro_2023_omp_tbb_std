@@ -101,13 +101,11 @@ std::vector<double> radixBatcherSort(const std::vector<double>& base) {
     for (int tid = 0; tid < tc; tid++) {
         futures[tid] = promises[tid].get_future();
         threads[tid] = std::thread([&](int localTid, std::promise<std::vector<double>> promise) {
-
             const int rightShift = std::min(step * (localTid + 1), static_cast<int>(base.size()));
             std::vector<double> local(base.begin() + step * localTid, base.begin() + rightShift);
 
             radixSort(&local);
             promise.set_value(std::move(local));
-
             }, tid, std::move(promises[tid]));
     }
 
