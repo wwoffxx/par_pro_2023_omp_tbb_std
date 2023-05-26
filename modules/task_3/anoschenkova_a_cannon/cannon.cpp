@@ -62,7 +62,6 @@ bool CompareMatrices(const matrix &A, const matrix &B) {
 
 int MIN(int a, int b)  { return (((a) < (b)) ? (a) : (b)); }
 
-
 matrix BlockMult(const matrix &A, const matrix &B, const int &blockSize) {
     if (A[0].size() != B.size())
         throw std::invalid_argument("Different values for col and row");
