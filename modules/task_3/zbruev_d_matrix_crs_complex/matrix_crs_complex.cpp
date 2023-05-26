@@ -137,7 +137,7 @@ SparseMatrix SparseMatrix::operator*(const SparseMatrix & a) {
     return ans;
 }
 
-SparseMatrix SparseMatrix::openMPMultiplication(const SparseMatrix & a) {
+/*SparseMatrix SparseMatrix::openMPMultiplication(const SparseMatrix& a) {
     if (size != a.getSize()) {
         throw(std::string)"Wrong matrix sizes";
     }
@@ -195,7 +195,7 @@ SparseMatrix SparseMatrix::openMPMultiplication(const SparseMatrix & a) {
         ans.pointers.emplace_back(static_cast<int>(ans.cols.size()));
     }
     return ans;
-}
+}*/
 
 SparseMatrix SparseMatrix::TBBMultiplication(const SparseMatrix & a,
                                              const int threads) {

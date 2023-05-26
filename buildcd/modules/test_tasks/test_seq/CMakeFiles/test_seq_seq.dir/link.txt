@@ -1,1 +1,0 @@
-/usr/bin/c++  -fopenmp CMakeFiles/test_seq_seq.dir/main.cpp.o -o ../../../bin/test_seq_seq   -L/mnt/c/Users/Lenovo/par_pro_2023_omp_tbb_std/buildcd/googletest-install/lib  -Wl,-rpath,/mnt/c/Users/Lenovo/par_pro_2023_omp_tbb_std/buildcd/googletest-install/lib ../../../arch/libtest_seq_seq_lib.a -lgtest -lgtest_main 

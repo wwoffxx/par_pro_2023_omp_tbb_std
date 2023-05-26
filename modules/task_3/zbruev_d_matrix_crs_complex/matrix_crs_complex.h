@@ -24,7 +24,7 @@ class SparseMatrix {
     void setPointers(const std::vector<int> & pointers);
     std::vector<std::complex<double>> getDenseMatrix() const;
     SparseMatrix transposition() const;
-    SparseMatrix openMPMultiplication(const SparseMatrix & a);
+    // SparseMatrix openMPMultiplication(const SparseMatrix & a);
     SparseMatrix TBBMultiplication(const SparseMatrix & a, const int threads);
  private:
     int size;
