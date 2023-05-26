@@ -16,6 +16,6 @@ matrix BlockMult(const matrix &A, const matrix &B, const int &blockSize);
 bool CompareMatrices(const matrix &A, const matrix &B);
 bool IsNear(const double &a, const double &b);
 
-int Min(int a, int b) { return (((a) < (b)) ? (a) : (b)); }
+int MIN(int a, int b) { return (((a) < (b)) ? (a) : (b)); }
 
 #endif  // MODULES_TASK_3_ANOSCHENKOVA_A_CANNON_CANNON_H_
