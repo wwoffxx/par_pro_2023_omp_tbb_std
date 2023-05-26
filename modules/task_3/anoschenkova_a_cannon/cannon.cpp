@@ -72,9 +72,9 @@ matrix BlockMult(const matrix &A, const matrix &B, const int &blockSize) {
     matrix res(n, std::vector<double>(n, 0));
 
     for (int jj = 0; jj < n; jj += blockSize) {
-        jjMin = std::min(jj + blockSize, n);
+        jjMin = Min(jj + blockSize, n);
         for (int kk = 0; kk < n; kk += blockSize) {
-            kkMin = std::min(kk + blockSize, n);
+            kkMin = Min(kk + blockSize, n);
 
             tbb::parallel_for(tbb::blocked_range<int>(0, n, 2),
                               [&](tbb::blocked_range<int> range) {
