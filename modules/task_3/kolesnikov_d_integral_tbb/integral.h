@@ -3,9 +3,9 @@
 #define MODULES_TASK_3_KOLESNIKOV_D_INTEGRAL_TBB_INTEGRAL_H_
 
 #include <tbb/tbb.h>
-#include <time.h>
-#include <functional>
 #include <iostream>
+#include <utility>
+#include <vector>
 
 double integral(const std::vector<std::pair<double, double>>& bounds,
  int n, double (*func)(std::vector<double>));
