@@ -6,24 +6,32 @@
 #include "../../../modules/task_3/bugrov_a_bin_marking/bin_marking.h"
 
 bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
-                   int n, int m) {
+                   int n, int m, bool show = false) {
+  bool res = true;
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
       if (a[i][j] != b[i][j]) {
-        return false;
+        //return false;
+        res = false;
       }
     }
   }
-  return true;
-}
-void print_matr(const vector<vector<int>>& matr, int n, int m) {
-  if (n < 21)
+  if (show) {
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < m; j++) {
-        std::cout << matr[n][m] << " ";
+        std::cout << a[i][j] << " ";
       }
-      std::cout << "\n";
     }
+    std::cout << "\n";
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        std::cout << b[i][j] << " ";
+      }
+    }
+    std::cout << "\n";
+  }
+  return res;
+  //return true;
 }
 
 bool CheckMarking(int N, const vector<vector<int>>& image,
@@ -40,7 +48,7 @@ bool CheckMarking(int N, const vector<vector<int>>& image,
     }
   }
   par_marking(image, N, N, &marks, k_unnamed);
-  return are_matrix_eq(marks, etalon, N, N);
+  return are_matrix_eq(marks, etalon, N, N, false);
 }
 
 TEST(bin_marking, can_mark_empty_image) {
@@ -132,8 +140,8 @@ TEST(bin_marking, can_mark_staggered_image) {
 }
 
 //TEST(bin_marking, hpc) {
-//  const int n = 2000;  // 1001;
-//  const int m = 2000;  // 999;
+//  const int n = 20;
+//  const int m = 20;
 //  const int k_unnamed = 0;
 //  vector<vector<int>> image(n);
 //  vector<vector<int>> marks(n);
@@ -146,7 +154,7 @@ TEST(bin_marking, can_mark_staggered_image) {
 //  mt19937 engine(time(NULL));
 //  for (int i = 0; i < n; i++) {
 //    for (int j = 0; j < m; j++) {
-//      image[i][j] = engine() % 2;
+//      image[i][j] = (i + j) % 2;
 //      marks[i][j] = k_unnamed;
 //      par_marks[i][j] = k_unnamed;
 //    }
@@ -155,13 +163,12 @@ TEST(bin_marking, can_mark_staggered_image) {
 //  seq_marking(image, n, m, &marks, k_unnamed);
 //  double t2 = omp_get_wtime();
 //  double seq_time = t2 - t1;
-//  print_matr(image, n, m);
-//  print_matr(marks, n, m);
 //  t1 = omp_get_wtime();
 //  par_marking(image, n, m, &par_marks, k_unnamed);
 //  t2 = omp_get_wtime();
-//  print_matr(par_marks, n, m);
 //  double par_time = t2 - t1;
+//  std::cout << "seq time = " << seq_time << "\n";
+//  std::cout << "par time = " << par_time << "\n";
 //  std::cout << "\nSeq time/Par time: " << seq_time / par_time << "\n";
-//  ASSERT_EQ(true, are_matrix_eq(marks, par_marks, n, m));
+//  ASSERT_EQ(true, are_matrix_eq(marks, par_marks, n, m, true));
 //}

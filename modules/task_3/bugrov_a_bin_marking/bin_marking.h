@@ -1,7 +1,8 @@
 // Copyright 2023 Bugrov Andrey
 #pragma once
-#include <omp.h>   // OpenMP
-#include <time.h>  // rand seed
+#include <omp.h>      // OpenMP
+#include <tbb/tbb.h>  // tbb
+#include <time.h>     // rand seed
 
 #include <algorithm>  // min
 #include <iostream>   // checksk
@@ -9,7 +10,6 @@
 #include <queue>      // queue for Depth-first search
 #include <random>     // mt19937
 #include <vector>     // vector
-#include <tbb/tbb.h> // tbb
 using std::min;
 using std::mt19937;
 using std::pair;

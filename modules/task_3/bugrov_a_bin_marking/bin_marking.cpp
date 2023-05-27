@@ -54,7 +54,6 @@ void seq_marking(const vector<vector<int>>& image, const int n, const int m,
 // +
 void first_par_pass(const vector<vector<int>>& p_image, CardR* card, int n,
                     int m, const int k_back) {
-#pragma omp parallel for shared(p_image, card) /*private(i, j)*/
   for (int i = 0; i < n; i++) {
     size_t R_n = 0;
     R tmp;
@@ -128,19 +127,6 @@ void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
             (*card)[i * w + j].L_next_right =
                 (*card)[to_find_adjacent_segment - 1].L;
           }
-          // omp_set_lock(&lock);
-          // if (neighbour < i) {
-          //  std::cout << "prev"
-          //            << "\n";
-          //} else {
-          //  std::cout << "next"
-          //            << "\n";
-          //}
-          // std::cout << "(neighbour+1)*w = " << (neighbour + 1) * w << "\n";
-          // std::cout << "to_find_adjacent_segment = " <<
-          // to_find_adjacent_segment
-          //          << "\n";
-          // omp_unset_lock(&lock);
         }
       } else {
         // if it was not in while cycle, it means that there is no other
@@ -156,26 +142,12 @@ void second_par_pass(CardR* card, int n, int m) {
   const int w = m / 2 + 1;  // width of (*card)
   bool right_exists = false;
   bool was_in_while = false;
-#pragma omp parallel for shared(card, n, m, w, was_in_while)
   for (int i = 0; i < n; i++) {
     int j = 0;
     // finding all segments in row
     for (int j = 0; j < w && (*card)[i * w + j].L != 0; j++) {
       find_neighbours(card, i, j, n, m, i - 1);
       find_neighbours(card, i, j, n, m, i + 1);
-      /*if (w == 6 && i * w + j == 56) {
-        omp_set_lock(&lock);
-        std::cout << "L = " << (*card)[i * w + j].L << "\n";
-        std::cout << "i = " << i << " j = " << j << "\n";
-        std::cout << "index = " << i * w + j << "\n";
-        std::cout << "p_left = " << (*card)[i * w + j].p_left << "\n";
-        std::cout << "p_right = " << (*card)[i * w + j].p_right << "\n";
-        std::cout << "prev_left = " << (*card)[i * w + j].L_prev_left << "\n";
-        std::cout << "prev_right = " << (*card)[i * w + j].L_prev_right << "\n";
-        std::cout << "next_left = " << (*card)[i * w + j].L_next_left << "\n";
-        std::cout << "next_right = " << (*card)[i * w + j].L_next_right << "\n";
-        omp_unset_lock(&lock);
-      }*/
     }
   }
 }
@@ -189,7 +161,6 @@ void third_par_pass(CardR* card, int n, int m) {
   do {
     been_changed = false;
     // labels - private
-#pragma omp parallel for shared(been_changed, card, w)
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < w && (*card)[i * w + j].L > 0; j++) {
         int cur_id = i * w + j;
@@ -251,7 +222,6 @@ void forth_par_pass(CardR* card, int n, int m) {
   size_t w = m / 2 + 1;
   omp_lock_t lock;
   omp_init_lock(&lock);
-#pragma omp parallel for shared(card, n, m, w)
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < w; j++) {
       size_t L = (*card)[i * w + j].L;
@@ -290,7 +260,6 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
     return;
   }
   // renumbering
-  //#pragma omp parallel for shared(w,*card,real_numbers)
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < w; j++) {
       if ((*card)[i * w + j].L == 0) {
@@ -308,7 +277,6 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
       }
     }
   }
-#pragma omp parallel for shared(n, m, card, p_marks, w)
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < w; j++) {
       if ((*card)[i * w + j].L == 0) {
@@ -343,16 +311,8 @@ struct TBBFunctor {
   }
 };
 
-/// TO DO:
-/// Create functor
-/// write using init
-/// add tbb libraries
-
 void par_marking(const vector<vector<int>>& image, const int n, const int m,
                  vector<vector<int>>* marks, const int k_unnamed) {
-  int cur_mark = 1;
-  omp_lock_t lock;  ///////////////////////////////////////////////////
-  omp_init_lock(&lock);
   size_t size = image.size() * image[0].size();
   tbb::parallel_for(tbb::blocked_range<int>(0, size),
                     TBBFunctor(&image, n, m, marks, k_unnamed));
