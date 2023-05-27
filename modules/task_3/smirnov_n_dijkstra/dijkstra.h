@@ -17,7 +17,7 @@ using std::vector;
 using tbb::blocked_range;
 using tbb::parallel_for;
 
-const int INF = std::numeric_limits<int>::max();
+const int INF = 2147483647;
 
 class DijkstraFunctor {
  public:
