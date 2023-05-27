@@ -8,6 +8,7 @@
 #include <tbb/tbb.h>
 
 #include <numeric>
+#include <limits>
 #include <random>
 #include <vector>
 
@@ -19,7 +20,7 @@ using tbb::parallel_for;
 const int INF = std::numeric_limits<int>::max();
 
 class DijkstraFunctor {
-   public:
+ public:
     const vector<vector<int>>& graph;
     int start;
     vector<int>* distances;
