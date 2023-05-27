@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "../../../modules/task_2/bugrov_a_bin_marking/bin_marking.h"
+#include "../../../modules/task_3/bugrov_a_bin_marking/bin_marking.h"
 
 bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
                    int n, int m) {
@@ -15,6 +15,15 @@ bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
     }
   }
   return true;
+}
+void print_matr(const vector<vector<int>>& matr, int n, int m) {
+  if (n < 21)
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < m; j++) {
+        std::cout << matr[n][m] << " ";
+      }
+      std::cout << "\n";
+    }
 }
 
 bool CheckMarking(int N, const vector<vector<int>>& image,
@@ -31,15 +40,6 @@ bool CheckMarking(int N, const vector<vector<int>>& image,
     }
   }
   par_marking(image, N, N, &marks, k_unnamed);
-  /*if (N < 20) {
-    std::cout << "\n total:\n";
-    for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N; j++) {
-        std::cout << marks[i][j] << " ";
-      }
-      std::cout << "\n";
-    }
-  }*/
   return are_matrix_eq(marks, etalon, N, N);
 }
 
@@ -86,66 +86,33 @@ TEST(bin_marking, can_mark_image_with_many_central_components) {
   ASSERT_EQ(true, CheckMarking(n, image, etalon));
 }
 
-TEST(bin_marking, can_mark_general_image) {
-  const int n = 5;
-  vector<vector<int>> image = {{
-                                   1,
-                                   1,
-                                   1,
-                                   0,
-                                   1,
-                               },
-                               {
-                                   0,
-                                   0,
-                                   1,
-                                   0,
-                                   0,
-                               },
-                               {
-                                   1,
-                                   0,
-                                   1,
-                                   1,
-                                   1,
-                               },
-                               {
-                                   0,
-                                   1,
-                                   0,
-                                   0,
-                                   1,
-                               },
-                               {1, 1, 0, 1, 0}};
-  const vector<vector<int>> etalon = {{0, 0, 0, 1, 0},
-                                      {2, 2, 0, 1, 1},
-                                      {0, 2, 0, 0, 0},
-                                      {3, 0, 4, 4, 0},
-                                      {0, 0, 4, 0, 5}};
+TEST(bin_marking, can_mark_image_with_many_situations) {
+  const int n = 10;
+  vector<vector<int>> image = {
+      {0, 1, 0, 1, 1, 0, 0, 1, 0, 1}, {1, 0, 1, 0, 1, 0, 1, 1, 0, 0},
+      {0, 0, 0, 0, 0, 0, 0, 1, 1, 1}, {0, 1, 0, 1, 0, 0, 0, 1, 1, 0},
+      {1, 1, 1, 1, 1, 1, 1, 1, 1, 0}, {0, 0, 1, 0, 1, 0, 1, 0, 1, 0},
+      {0, 0, 1, 0, 1, 1, 1, 0, 1, 0}, {1, 1, 1, 0, 0, 0, 0, 0, 1, 1},
+      {1, 0, 0, 1, 1, 0, 0, 1, 1, 1}, {0, 0, 1, 1, 0, 0, 0, 1, 0, 1}};
+  const vector<vector<int>> etalon = {
+      {1, 0, 2, 0, 0, 3, 3, 0, 4, 0}, {0, 3, 0, 3, 0, 3, 0, 0, 4, 4},
+      {3, 3, 3, 3, 3, 3, 3, 0, 0, 0}, {3, 0, 3, 0, 3, 3, 3, 0, 0, 5},
+      {0, 0, 0, 0, 0, 0, 0, 0, 0, 5}, {6, 6, 0, 7, 0, 8, 0, 7, 0, 5},
+      {6, 6, 0, 7, 0, 0, 0, 7, 0, 5}, {0, 0, 0, 7, 7, 7, 7, 7, 0, 0},
+      {0, 9, 9, 0, 0, 7, 7, 0, 0, 0}, {9, 9, 0, 0, 7, 7, 7, 0, 10, 0}};
+  vector<vector<int>> marks(n);
+  for (int i = 0; i < n; i++) {
+    marks[i].resize(n);
+  }
+  const int k_unnamed = 0;
+
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+      marks[i][j] = k_unnamed;
+    }
+  }
   ASSERT_EQ(true, CheckMarking(n, image, etalon));
 }
-
-// TEST(bin_marking, all_situations) {
-//  const int n = 10;
-//  vector<vector<int>> image = {
-//      {0, 1, 0, 1, 1, 0, 0, 1, 0, 1}, {1, 0, 1, 0, 1, 0, 1, 1, 0, 0},
-//      {0, 0, 0, 0, 0, 0, 0, 1, 1, 1}, {0, 1, 0, 1, 0, 0, 0, 1, 1, 0},
-//      {1, 1, 1, 1, 1, 1, 1, 1, 1, 0}, {0, 0, 1, 0, 1, 0, 1, 0, 1, 0},
-//      {0, 0, 1, 0, 1, 1, 1, 0, 1, 0}, {1, 1, 1, 0, 0, 0, 0, 0, 1, 1},
-//      {1, 0, 0, 1, 1, 0, 0, 1, 1, 1}, {0, 0, 1, 1, 0, 0, 0, 1, 0, 1}};
-//  vector<vector<int>> marks(n);
-//  for (int i = 0; i < n; i++) {
-//    marks[i].resize(n);
-//  }
-//  const int k_unnamed = 0;
-//
-//  for (int i = 0; i < n; i++) {
-//    for (int j = 0; j < n; j++) {
-//      marks[i][j] = k_unnamed;
-//    }
-//  }
-//  par_marking(image, n, n, marks, k_unnamed);
-//}
 
 TEST(bin_marking, can_mark_staggered_image) {
   const int n = 8;
@@ -164,9 +131,9 @@ TEST(bin_marking, can_mark_staggered_image) {
   ASSERT_EQ(true, CheckMarking(n, image, etalon));
 }
 
-// TEST(bin_marking, hpc) {
-//  const int n = 3583;  // prime number
-//  const int m = 4729;  // prime number
+//TEST(bin_marking, hpc) {
+//  const int n = 2000;  // 1001;
+//  const int m = 2000;  // 999;
 //  const int k_unnamed = 0;
 //  vector<vector<int>> image(n);
 //  vector<vector<int>> marks(n);
@@ -188,10 +155,13 @@ TEST(bin_marking, can_mark_staggered_image) {
 //  seq_marking(image, n, m, &marks, k_unnamed);
 //  double t2 = omp_get_wtime();
 //  double seq_time = t2 - t1;
+//  print_matr(image, n, m);
+//  print_matr(marks, n, m);
 //  t1 = omp_get_wtime();
-//  par_marking(image, n, m, par_marks, k_unnamed);
+//  par_marking(image, n, m, &par_marks, k_unnamed);
 //  t2 = omp_get_wtime();
+//  print_matr(par_marks, n, m);
 //  double par_time = t2 - t1;
-//  std::cout << "\nTime: "<< seq_time / par_time << "\n";
+//  std::cout << "\nSeq time/Par time: " << seq_time / par_time << "\n";
 //  ASSERT_EQ(true, are_matrix_eq(marks, par_marks, n, m));
 //}

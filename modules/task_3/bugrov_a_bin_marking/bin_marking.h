@@ -9,6 +9,7 @@
 #include <queue>      // queue for Depth-first search
 #include <random>     // mt19937
 #include <vector>     // vector
+#include <tbb/tbb.h> // tbb
 using std::min;
 using std::mt19937;
 using std::pair;
@@ -66,14 +67,10 @@ struct CardR {
     return *this;
   }
 };
-
-// void first_par_pass(int** p_image, CardR& card, int n, int m, const int
-// k_back); void second_par_pass(CardR& card, int n, int m); void
-// third_par_pass(CardR& card, int n, int m);
-
-// struct EqLabel {
-//  size_t label;
-//
-// public:
-//  EqLabel(size_t label_ = 0) : label(label_) {}
-// };
+void first_par_pass(const vector<vector<int>>& p_image, CardR* card, int n,
+                    int m, const int k_back);
+void second_par_pass(CardR* card, int n, int m);
+void third_par_pass(CardR* card, int n, int m);
+void forth_par_pass(CardR* card, int n, int m);
+void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m);
+void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour);

@@ -1,7 +1,5 @@
 // Copyright 2023 Bugrov Andrey
-#include "../../../modules/task_2/bugrov_a_bin_marking/bin_marking.h"
-
-// matrixes can be both vectors and arrays
+#include "../../../modules/task_3/bugrov_a_bin_marking/bin_marking.h"
 
 // matrixes can be both vectors and arrays
 void seq_marking(const vector<vector<int>>& image, const int n, const int m,
@@ -77,8 +75,81 @@ void first_par_pass(const vector<vector<int>>& p_image, CardR* card, int n,
   }
 }
 
-//-
-// prev or next left != prev or next right
+void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
+  bool was_in_while = false;
+  const int w = m / 2 + 1;  // width of (*card)
+  int to_find_adjacent_segment = neighbour * w;
+  int bound;
+  if (neighbour > i) {
+    bound = n - 1;
+  } else {
+    bound = 0;
+  }
+
+  omp_lock_t lock;  ///////////////////////////////////////////////////
+  omp_init_lock(&lock);
+  if (i != bound) {
+    // finding left neighbour
+    while (to_find_adjacent_segment < (neighbour + 1) * w &&
+           (*card)[to_find_adjacent_segment].L != 0 &&
+           (*card)[to_find_adjacent_segment].p_right % m <
+               (*card)[i * w + j].p_left % m) {
+      to_find_adjacent_segment++;
+    }
+    if (to_find_adjacent_segment < (neighbour + 1) * w &&
+        (*card)[to_find_adjacent_segment].L != 0 &&
+        (*card)[to_find_adjacent_segment].p_left % m <=
+            (*card)[i * w + j].p_right % m) {
+      if (neighbour < i) {
+        (*card)[i * w + j].L_prev_left = (*card)[to_find_adjacent_segment].L;
+      } else {
+        (*card)[i * w + j].L_next_left = (*card)[to_find_adjacent_segment].L;
+      }
+      to_find_adjacent_segment++;
+      // finding right neighbour
+      while ((*card)[to_find_adjacent_segment].L != 0 &&
+             to_find_adjacent_segment < (neighbour + 1) * w &&
+             (*card)[to_find_adjacent_segment].p_left % m <=
+                 (*card)[i * w + j].p_right % m) {
+        to_find_adjacent_segment++;
+        was_in_while = true;
+      }
+      if (was_in_while) {
+        if (to_find_adjacent_segment - 1 < (neighbour + 1) * w) {
+          // it is not nesessary to check
+          // (*card)[to_find_adjacent_segment-1].L != 0 and or not because at
+          // least one iteration (with  to_find_adjacent_segment-1) was
+          // performed
+
+          if (neighbour < i) {
+            (*card)[i * w + j].L_prev_right =
+                (*card)[to_find_adjacent_segment - 1].L;
+          } else {
+            (*card)[i * w + j].L_next_right =
+                (*card)[to_find_adjacent_segment - 1].L;
+          }
+          // omp_set_lock(&lock);
+          // if (neighbour < i) {
+          //  std::cout << "prev"
+          //            << "\n";
+          //} else {
+          //  std::cout << "next"
+          //            << "\n";
+          //}
+          // std::cout << "(neighbour+1)*w = " << (neighbour + 1) * w << "\n";
+          // std::cout << "to_find_adjacent_segment = " <<
+          // to_find_adjacent_segment
+          //          << "\n";
+          // omp_unset_lock(&lock);
+        }
+      } else {
+        // if it was not in while cycle, it means that there is no other
+        // neighbours which left pixel is less than right one of this segment
+      }
+    }
+  }
+}
+//+
 void second_par_pass(CardR* card, int n, int m) {
   omp_lock_t lock;  ///////////////////////////////////////////////////
   omp_init_lock(&lock);
@@ -89,144 +160,27 @@ void second_par_pass(CardR* card, int n, int m) {
   for (int i = 0; i < n; i++) {
     int j = 0;
     // finding all segments in row
-    while (j < w && (*card)[i * w + j].L != 0) {
-      int to_find_adjacent_segment = (i - 1) * w;
-      // finding left neighbour in (i-1)-th row
-      while (i > 0 && to_find_adjacent_segment < i * w &&
-             (*card)[to_find_adjacent_segment].L != 0 &&
-             (*card)[to_find_adjacent_segment].p_right % m <
-                 (*card)[i * w + j].p_left % m) {
-        to_find_adjacent_segment++;
-      }
-      if (i > 0 && to_find_adjacent_segment <= i * w &&
-          (*card)[to_find_adjacent_segment].L > 0 &&
-          (*card)[to_find_adjacent_segment].p_left % m <=
-              (*card)[i * w + j].p_right % m) {
-        (*card)[i * w + j].L_prev_left = (*card)[to_find_adjacent_segment].L;
-        to_find_adjacent_segment++;
-
-        // finding right neighbour in (i-1)-th row
-        while ((*card)[to_find_adjacent_segment].L != 0 &&
-               to_find_adjacent_segment < i * w &&
-               (*card)[to_find_adjacent_segment].p_left % m <=
-                   (*card)[i * w + j].p_right % m) {
-          to_find_adjacent_segment++;
-          was_in_while = true;
-        }
-        if (was_in_while) {
-          if (to_find_adjacent_segment < i * w + 1) {
-            // it is not nesessary  to check does
-            // (*card)[to_find_adjacent_segment-1].L != 0 or not because at
-            // least one iteration (with  to_find_adjacent_segment-1 was
-            // performed
-            (*card)[i * w + j].L_prev_right =
-                (*card)[to_find_adjacent_segment - 1].L;
-          }
-        } else {
-          if ((*card)[to_find_adjacent_segment].p_left % m <=
-                  (*card)[i * w + j].p_right % m &&
-              (*card)[to_find_adjacent_segment].L != 0 &&
-              to_find_adjacent_segment < i * w) {
-            (*card)[i * w + j].L_prev_right =
-                (*card)[to_find_adjacent_segment].L;
-          }
-        }
-        was_in_while = false;
-      }
-
-      to_find_adjacent_segment = (i + 1) * w;
-
-      // finding left neighbour in (i+1)-th row
-      while (i < n - 1 && to_find_adjacent_segment < (i + 2) * w &&
-             (*card)[to_find_adjacent_segment].L != 0 &&
-             (*card)[to_find_adjacent_segment].p_right % m <
-                 (*card)[i * w + j].p_left % m) {
-        to_find_adjacent_segment++;
-      }
-      if (i < n - 1 && to_find_adjacent_segment <= (i + 2) * w &&
-          (*card)[to_find_adjacent_segment].L != 0 &&
-          (*card)[to_find_adjacent_segment].p_left % m <=
-              (*card)[i * w + j].p_right % m) {
-        (*card)[i * w + j].L_next_left = (*card)[to_find_adjacent_segment].L;
-        to_find_adjacent_segment++;
-        // finding right neighbour in (i+1)-th row
-        while ((*card)[to_find_adjacent_segment].L != 0 &&
-               (*card)[to_find_adjacent_segment].p_left % m <=
-                   (*card)[i * w + j].p_right % m) {
-          to_find_adjacent_segment++;
-          was_in_while = true;
-        }
-        if ((*card)[to_find_adjacent_segment].L != 0 &&
-            to_find_adjacent_segment < (i + 2) * w) {
-          if (was_in_while) {
-            if ((*card)[to_find_adjacent_segment - 1].p_left % m <=
-                (*card)[i * w + j].p_right % m) {
-              (*card)[i * w + j].L_next_right =
-                  (*card)[to_find_adjacent_segment - 1].L;
-            }
-          } else {
-            if ((*card)[to_find_adjacent_segment].p_left % m <=
-                (*card)[i * w + j].p_right % m) {
-              (*card)[i * w + j].L_next_right =
-                  (*card)[to_find_adjacent_segment].L;
-            }
-          }
-          was_in_while = false;
-        }
-      }
-      // if ((*card)[i * w + j].L_prev_left == (*card)[i * w + j].L_prev_right
-      // &&
-      //    (*card)[i * w + j].L_prev_right != 0) {
-      //  omp_set_lock(&lock);
-      //  std::cout << "PREV\n";
-      //  std::cout << "L = " << (*card)[i * w + j].L << "\n";
-      //  std::cout << "i = " << i << " j = " << j << "\n";
-      //  std::cout << "p_left = " << (*card)[i * (m / 2 + 1) + j].p_left <<
-      //  "\n"; std::cout << "p_right = " << (*card)[i * (m / 2 + 1) +
-      //  j].p_right <<
-      //  "\n"; std::cout << "prev_left = " << (*card)[i * (m / 2 + 1) +
-      //  j].L_prev_left
-      //            << "\n";
-      //  std::cout << "prev_right = " << (*card)[i * (m / 2 + 1) +
-      //  j].L_prev_right
-      //            << "\n";
-      //  std::cout << "next_left = " << (*card)[i * (m / 2 + 1) +
-      //  j].L_next_left
-      //            << "\n";
-      //  std::cout << "next_right = " << (*card)[i * (m / 2 + 1) +
-      //  j].L_next_right
-      //            << "\n";
-      //  omp_unset_lock(&lock);
-      //} else {
-      //  if ((*card)[i * w + j].L_next_left == (*card)[i * w + j].L_next_right
-      //  &&
-      //      (*card)[i * w + j].L_next_right != 0) {
-      //    omp_set_lock(&lock);
-      //    std::cout << "L = " << (*card)[i * w + j].L << "\n";
-      //    std::cout << "i = " << i << " j = " << j << "\n";
-      //    std::cout << "p_left = " << (*card)[i * (m / 2 + 1) + j].p_left <<
-      //    "\n"; std::cout << "p_right = " << (*card)[i * (m / 2 + 1) +
-      //    j].p_right
-      //              << "\n";
-      //    std::cout << "prev_left = " << (*card)[i * (m / 2 + 1) +
-      //    j].L_prev_left
-      //              << "\n";
-      //    std::cout << "prev_right = " << (*card)[i * (m / 2 + 1) +
-      //    j].L_prev_right
-      //              << "\n";
-      //    std::cout << "next_left = " << (*card)[i * (m / 2 + 1) +
-      //    j].L_next_left
-      //              << "\n";
-      //    std::cout << "next_right = " << (*card)[i * (m / 2 + 1) +
-      //    j].L_next_right
-      //              << "\n";
-      //    omp_unset_lock(&lock);
-      //  }
-      //}
-      j++;
+    for (int j = 0; j < w && (*card)[i * w + j].L != 0; j++) {
+      find_neighbours(card, i, j, n, m, i - 1);
+      find_neighbours(card, i, j, n, m, i + 1);
+      /*if (w == 6 && i * w + j == 56) {
+        omp_set_lock(&lock);
+        std::cout << "L = " << (*card)[i * w + j].L << "\n";
+        std::cout << "i = " << i << " j = " << j << "\n";
+        std::cout << "index = " << i * w + j << "\n";
+        std::cout << "p_left = " << (*card)[i * w + j].p_left << "\n";
+        std::cout << "p_right = " << (*card)[i * w + j].p_right << "\n";
+        std::cout << "prev_left = " << (*card)[i * w + j].L_prev_left << "\n";
+        std::cout << "prev_right = " << (*card)[i * w + j].L_prev_right << "\n";
+        std::cout << "next_left = " << (*card)[i * w + j].L_next_left << "\n";
+        std::cout << "next_right = " << (*card)[i * w + j].L_next_right << "\n";
+        omp_unset_lock(&lock);
+      }*/
     }
   }
 }
+
+//+
 void third_par_pass(CardR* card, int n, int m) {
   bool been_changed = false;
   omp_lock_t lock;
@@ -239,15 +193,42 @@ void third_par_pass(CardR* card, int n, int m) {
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < w && (*card)[i * w + j].L > 0; j++) {
         int cur_id = i * w + j;
-        size_t labels[4] = {
-            (*card)[cur_id].L_prev_left, (*card)[cur_id].L_prev_right,
-            (*card)[cur_id].L_next_left, (*card)[cur_id].L_next_right};
+        size_t labels[4];
+        if ((*card)[cur_id].L_prev_left != 0) {
+          labels[0] = (*card)[(*card)[cur_id].L_prev_left - 1].L;
+        } else {
+          labels[0] = UINT64_MAX;
+        }
+        if ((*card)[cur_id].L_prev_right != 0) {
+          labels[1] = (*card)[(*card)[cur_id].L_prev_right - 1].L;
+        } else {
+          labels[1] = UINT64_MAX;
+        }
+        if ((*card)[cur_id].L_next_left != 0) {
+          labels[2] = (*card)[(*card)[cur_id].L_next_left - 1].L;
+        } else {
+          labels[2] = UINT64_MAX;
+        }
+        if ((*card)[cur_id].L_next_right != 0) {
+          labels[3] = (*card)[(*card)[cur_id].L_next_right - 1].L;
+        } else {
+          labels[3] = UINT64_MAX;
+        }
+        /*if (cur_id == 56) {
+          omp_set_lock(&lock);
+          for (int p = 0; p < 4; p++) {
+            std::cout << "labels [ " << p << " ] = " << labels[p] << "\n";
+          }
+          omp_unset_lock(&lock);
+        }*/
+
         size_t cur_min = UINT64_MAX;
         for (int p = 0; p < 4; p++) {
           if (labels[p] != 0 && labels[p] < cur_min) {
             cur_min = labels[p];
           }
         }
+
         if (cur_min < (*card)[cur_id].L) {
           (*card)[cur_id].L = min((*card)[(*card)[cur_id].L - 1].L, cur_min);
           been_changed = true;
@@ -255,15 +236,17 @@ void third_par_pass(CardR* card, int n, int m) {
       }
     }
   } while (been_changed);
-  /*std::cout << "L" << (*card)[20].L << "\n";
-  std::cout << "prev_left = " << (*card)[20].L_prev_left << "\n";
-  std::cout << "prev_right = " << (*card)[20].L_prev_right << "\n";
-  std::cout << "next_left = " << (*card)[20].L_next_left << "\n";
-  std::cout << "next_right = " << (*card)[20].L_next_right << "\n";*/
+  /*int p = 56;
+  std::cout << "L" << (*card)[p].L << "\n";
+  std::cout << "p_left = " << (*card)[p].p_left << "\n";
+  std::cout << "p_right = " << (*card)[p].p_right << "\n";
+  std::cout << "prev_left = " << (*card)[p].L_prev_left << "\n";
+  std::cout << "prev_right = " << (*card)[p].L_prev_right << "\n";
+  std::cout << "next_left = " << (*card)[p].L_next_left << "\n";
+  std::cout << "next_right = " << (*card)[p].L_next_right << "\n";*/
 }
 
 //+
-// TO DO: make a documentation
 void forth_par_pass(CardR* card, int n, int m) {
   size_t w = m / 2 + 1;
   omp_lock_t lock;
@@ -274,9 +257,6 @@ void forth_par_pass(CardR* card, int n, int m) {
       size_t L = (*card)[i * w + j].L;
       if (L > 0) {
         size_t L_i = (*card)[L - 1].L;
-        /*omp_set_lock(&lock);
-        std::cout << "L = " << L << "\n";
-        omp_unset_lock(&lock);*/
         while (L_i != L) {
           L_i = (*card)[L_i - 1].L;
           L = (*card)[L - 1].L;
@@ -287,11 +267,11 @@ void forth_par_pass(CardR* card, int n, int m) {
   }
 }
 
-//-
-// TO DO: make a documentation
+//+
 void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
   size_t w = m / 2 + 1;
-  // real_numbers[counter] = label of component which should be named as counter
+  // real_numbers[counter] = label of component which should be named as
+  // counter
   vector<size_t> real_numbers;
   real_numbers.resize(n * w + 1);
   size_t counter = 1;
@@ -299,6 +279,7 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
   omp_lock_t lock;
   omp_init_lock(&lock);
   int p = 0;
+  // finding first component to init renumbering
   for (; p < n; p++) {
     if ((*card)[p * w].L != 0) {
       real_numbers[(*card)[p * w].L] = 1;
@@ -308,6 +289,8 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
   if ((*card)[p * w].L == 0) {
     return;
   }
+  // renumbering
+  //#pragma omp parallel for shared(w,*card,real_numbers)
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < w; j++) {
       if ((*card)[i * w + j].L == 0) {
@@ -325,29 +308,7 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
       }
     }
   }
-
-  // for (int i = 0; i < n; i++) {
-  //  for (int j = 0; j < w; j++) {
-  //    if ((*card)[i * w + j].L != 0)
-  //      if (real_numbers[counter - 1] == (*card)[i * w + j].L) {
-  //        (*card)[i * w + j].L = counter;
-  //      } else {
-  //        if (real_numbers[counter - 1] == 0 && counter == 1) {
-  //          real_numbers[counter - 1] = (*card)[i * w + j].L;
-  //          (*card)[i * w + j].L = counter;
-  //        } else {
-  //          std::cout << "(*card)[i*w+j].L = " << (*card)[i * w + j].L <<
-  //          "\n"; std::cout << "real_num[counter-1] = " <<
-  //          real_numbers[counter - 1]
-  //                    << "\n";
-  //          counter++;
-  //          (*card)[i * w + j].L = counter;
-  //        }
-  //      }
-  //  }
-  //}
-
-  // #pragma omp parallel for shared(n, m, (*card), p_marks, w)
+#pragma omp parallel for shared(n, m, card, p_marks, w)
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < w; j++) {
       if ((*card)[i * w + j].L == 0) {
@@ -363,211 +324,36 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
     }
   }
 }
+struct TBBFunctor {
+  const vector<vector<int>>* image;
+  vector<vector<int>>* marks;
+  TBBFunctor(const vector<vector<int>>* image_, const int n_, const int m_,
+             vector<vector<int>>* marks_, const int k_unnamed_)
+      : image(image_), marks(marks_) {}
+  void operator()(const tbb::blocked_range<int>& range) const {
+    const int n = image->size();
+    const int m = image->operator[](0).size();
+    const int k_back = 1;
+    CardR card(m, n);
+    first_par_pass(*image, &card, n, m, k_back);
+    second_par_pass(&card, n, m);
+    third_par_pass(&card, n, m);
+    forth_par_pass(&card, n, m);
+    mark_assign_pass(&card, marks, n, m);
+  }
+};
+
+/// TO DO:
+/// Create functor
+/// write using init
+/// add tbb libraries
 
 void par_marking(const vector<vector<int>>& image, const int n, const int m,
                  vector<vector<int>>* marks, const int k_unnamed) {
   int cur_mark = 1;
-  const int k_back = 1;  // backround of image (white color)
-  // int** p_image = new int*[n];
   omp_lock_t lock;  ///////////////////////////////////////////////////
   omp_init_lock(&lock);
-  /*for (int i = 0; i < n; i++) {
-    p_image[i] = new int[m];
-    p_image[i] = *image[i].data();
-  }*/
-  /*int** p_marks = new int*[n];
-  for (int i = 0; i < n; i++) {
-    p_marks[i] = new int[m];
-    p_marks[i] = marks[i].data();
-  }
-  if (p_image[0][0] != k_back) {
-    p_marks[0][0] = cur_mark;
-  }*/
-  CardR card(m, n);
-  /* if (n < 20)
-    for (int i = 0; i < (m / 2 + 1) * n; i++) {
-      (*card)[i].L = 0;
-    }*/
-  // std::cout << "m/2+1=" << m / 2 + 1 << "\n";
-  first_par_pass(image, &card, n, m, k_back);
-  second_par_pass(&card, n, m);
-  third_par_pass(&card, n, m);
-  forth_par_pass(&card, n, m);
-  /*
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m / 2 + 1; j++) {
-      std::cout << (*card)[i * (m / 2 + 1) + j].L << " ";
-    }
-    std::cout << "\n";
-  }
-  */
-  mark_assign_pass(&card, marks, n, m);
-  /* for (int i = 0; i < n; i++) {
-    for (int j = 0; j < m / 2 + 1; j++) {
-      std::cout << (*card)[i * (m / 2 + 1) + j].L << " ";
-    }
-    std::cout << "\n";
-  }
-  */
+  size_t size = image.size() * image[0].size();
+  tbb::parallel_for(tbb::blocked_range<int>(0, size),
+                    TBBFunctor(&image, n, m, marks, k_unnamed));
 }
-
-// void first_eq_pass(int** image, EqLabel* labels, const int n, const int m,
-//                   const int k_back) {
-// #pragma omp parallel for shared(n, m, k_back, labels, image)
-//  for (int i = 0; i < n; i++) {
-//    for (int j = 0; j < m; j++) {
-//      if (image[i][j] != k_back) {
-//        labels[i * m + j].label = i * m + j + 1;
-//      }
-//    }
-//  }
-// }
-// void second_eq_pass(EqLabel* labels, const int n, const int m) {
-//  size_t up_left_right_down[4];
-//  for (int i = 0; i < 4; i++) {
-//    up_left_right_down[i] = UINT64_MAX;
-//  }
-//  bool changed;
-//  omp_lock_t lock;
-//  omp_init_lock(&lock);
-//  do {
-//    changed = false;
-// #pragma omp parallel for shared(n, m, labels)
-// firstprivate(up_left_right_down)
-//    for (int i = 0; i < n; i++) {
-//      for (int j = 0; j < m; j++) {
-//        for (int t = 0; t < 4; t++) {
-//          up_left_right_down[t] = UINT64_MAX;
-//        }
-//        if (i > 0) {
-//          up_left_right_down[0] = labels[(i - 1) * m + j].label;
-//        }
-//        if (i < n - 1) {
-//          up_left_right_down[3] = labels[(i + 1) * m + j].label;
-//        }
-//        if (j > 0) {
-//          up_left_right_down[1] = labels[i * m + j - 1].label;
-//        }
-//        if (j < m - 1) {
-//          up_left_right_down[2] = labels[i * m + j + 1].label;
-//        }
-//        omp_set_lock(&lock);
-//        size_t min_neighbour =
-//            min(min(up_left_right_down[0], up_left_right_down[1]),
-//                min(up_left_right_down[2], up_left_right_down[3]));
-//        if (min_neighbour < labels[i * m + j].label) {
-//          labels[i * m + j].label = min_neighbour;
-//          changed = true;
-//        }
-//        omp_unset_lock(&lock);
-//      }
-//    }
-//  } while (changed);
-// }
-// void third_eq_pass(EqLabel* labels, const int n, const int m, int** marks) {
-//  size_t counter = 0;
-//  size_t cur_label = 1;
-//  for (int i = 0; i < n; i++) {
-//    for (int j = 0; j < m; j++) {
-//      ////////////////////////////////////////////////////////////////////////////////////if
-//      ///()
-//      if (labels[i * m + j].label > cur_label) {
-//        cur_label++;
-//        labels[i * m + j] = cur_label;
-//      }
-//    }
-//  }
-//  for (int i = 0; i < n; i++) {
-//    for (int j = 0; j < m; j++) {
-//      marks[i][j] = labels[i * m + j].label;
-//    }
-//  }
-// }
-
-// void par_marking(vector<vector<int>>& image, const int n, const int m,
-//                 vector<vector<int>>& marks, const int k_unnamed = 0) {
-//  int cur_mark = 1;
-//  const int k_back = 1;  // backround of image (white color)
-//  int** p_image = new int*[n];
-//  omp_lock_t lock;  ///////////////////////////////////////////////////
-//  omp_init_lock(&lock);
-//  for (int i = 0; i < n; i++) {
-//    p_image[i] = new int[m];
-//    p_image[i] = image[i].data();
-//  }
-//  int** p_marks = new int*[n];
-//  for (int i = 0; i < n; i++) {
-//    p_marks[i] = new int[m];
-//    p_marks[i] = marks[i].data();
-//  }
-//  if (p_image[0][0] != k_back) {
-//    p_marks[0][0] = cur_mark;
-//  }
-//  EqLabel* labels = new EqLabel[n * m];
-//  first_eq_pass(p_image, labels, n, m, k_back);
-//  second_eq_pass(labels, n, m);
-//  third_eq_pass(labels, n, m, p_marks);
-// }
-
-// void par_marking(vector<vector<int>>& image, const int n, const int m,
-//                 vector<vector<int>>& marks, const int k_unnamed = 0) {
-//  int cur_mark = 0;
-//  const int k_back = 1;
-//  queue<pair<int, int>> cur_queue;
-//    omp_lock_t lock;  ///////////////////////////////////////////////////
-//  omp_init_lock(&lock);
-// #pragma omp parallel for shared(image, marks,k_back,cur_mark)
-//  for (int i = 0; i < n; i++) {
-//    for (int j = 0; j < m; j++) {
-//      if (image[i][j] != k_back && (marks)[i][j] == k_unnamed) {
-//        cur_mark += 1;
-//        (marks)[i][j] = cur_mark;
-//        omp_set_lock(&lock);
-//        cur_queue.push(pair<int, int>(i, j));
-//        omp_unset_lock(&lock);
-//        while (!cur_queue.empty()) {
-//          omp_set_lock(&lock);
-//          pair<int, int> tmp = cur_queue.front();
-//          cur_queue.pop();
-//          omp_unset_lock(&lock);
-//          if (tmp.first - 1 >= 0) {
-//            if ((marks)[tmp.first - 1][tmp.second] == k_unnamed &&
-//                image[tmp.first - 1][tmp.second] != k_back) {
-//              (marks)[tmp.first - 1][tmp.second] = cur_mark;
-//              omp_set_lock(&lock);
-//              cur_queue.push(pair<int, int>(tmp.first - 1, tmp.second));
-//              omp_unset_lock(&lock);
-//            }
-//          }
-//          if (tmp.second - 1 >= 0) {
-//            if ((marks)[tmp.first][tmp.second - 1] == k_unnamed &&
-//                image[tmp.first][tmp.second - 1] != k_back) {
-//              (marks)[tmp.first][tmp.second - 1] = cur_mark;
-//              omp_set_lock(&lock);
-//              cur_queue.push(pair<int, int>(tmp.first, tmp.second - 1));
-//              omp_unset_lock(&lock);
-//            }
-//          }
-//          if (tmp.first + 1 < n) {
-//            if ((marks)[tmp.first + 1][tmp.second] == k_unnamed &&
-//                image[tmp.first + 1][tmp.second] != k_back) {
-//              (marks)[tmp.first + 1][tmp.second] = cur_mark;
-//              omp_set_lock(&lock);
-//              cur_queue.push(pair<int, int>(tmp.first + 1, tmp.second));
-//              omp_unset_lock(&lock);
-//            }
-//          }
-//          if (tmp.second + 1 < m) {
-//            if ((marks)[tmp.first][tmp.second + 1] == k_unnamed &&
-//                image[tmp.first][tmp.second + 1] != k_back) {
-//              (marks)[tmp.first][tmp.second + 1] = cur_mark;
-//              omp_set_lock(&lock);
-//              cur_queue.push(pair<int, int>(tmp.first, tmp.second + 1));
-//              omp_unset_lock(&lock);
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }
-// }
