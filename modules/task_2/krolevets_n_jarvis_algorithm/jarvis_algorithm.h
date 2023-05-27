@@ -1,14 +1,20 @@
 // Copyright 2023 me
-#ifndef MODULES_TASK_1_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
-#define MODULES_TASK_1_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
+#ifndef MODULES_TASK_2_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
+#define MODULES_TASK_2_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
+
+#include <omp.h>
 
 #include <algorithm>
-#include <atomic>
 #include <cassert>
+#include <functional>
 #include <iostream>
 #include <limits>
+#include <random>
+#include <set>
 #include <utility>
 #include <vector>
+
+enum class point_orientation { colliniar, clockwise, counterclockwsise };
 
 struct Point {
   int x = 0;
@@ -27,7 +33,9 @@ struct Point {
   }
   bool operator!=(const Point& other) const { return !(*this == other); }
 };
-int orientation(Point p, Point q, Point r);
-std::vector<Point> get_convex_hull(const std::vector<Point>& points);
+point_orientation orientation(const Point&, const Point&, const Point&);
+std::vector<Point> get_convex_hull(const std::vector<Point>&);
+std::vector<Point> get_convex_hull_omp(const std::vector<Point>&);
+double dist2(const Point&, const Point&);
 
-#endif  // MODULES_TASK_1_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
+#endif  // MODULES_TASK_2_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_"
