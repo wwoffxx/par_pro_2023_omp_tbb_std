@@ -11,17 +11,8 @@ point_orientation orientation(const Point& p, const Point& q, const Point& r) {
 double dist2(const Point& a, const Point& b) {
   int dx = b.x - a.x;
   int dy = b.y - a.y;
-  return dx * dx + dy * dy;
-}
 
-void thread_func(int begin, int end, int current,
-                 const std::vector<Point>& points, int& per_thread_next) {
-  for (int i = begin; i < end; ++i) {
-    if (orientation(points[current], points[per_thread_next], points[i]) ==
-        point_orientation::counterclockwsise) {
-      per_thread_next = i;
-    }
-  }
+  return dx * dx + dy * dy;
 }
 
 struct MyFunctor {
