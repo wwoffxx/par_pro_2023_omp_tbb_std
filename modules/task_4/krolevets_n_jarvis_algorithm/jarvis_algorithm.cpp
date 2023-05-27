@@ -15,11 +15,11 @@ double dist2(const Point& a, const Point& b) {
 }
 
 void thread_func(int begin, int end, int current,
-                 const std::vector<Point>& points, int& per_thread_next) {
+                 const std::vector<Point>& points, int* per_thread_next) {
   for (int i = begin; i < end; ++i) {
-    if (orientation(points[current], points[per_thread_next], points[i]) ==
+    if (orientation(points[current], points[*per_thread_next], points[i]) ==
         point_orientation::counterclockwsise) {
-      per_thread_next = i;
+      *per_thread_next = i;
     }
   }
 }
@@ -51,7 +51,7 @@ std::vector<Point> get_convex_hull_std(const std::vector<Point>& points,
       threads.push_back(
           std::thread(thread_func, operations_per_thread * i,
                       std::min(operations_per_thread * (i + 1), uint64_t(n)),
-                      current, std::ref(points), std::ref(per_thread_next[i])));
+                      current, std::ref(points), &per_thread_next[i]));
     }
     for (uint64_t i = 0; i < thread_num; ++i) {
       threads[i].join();
