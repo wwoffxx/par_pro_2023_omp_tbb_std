@@ -5,6 +5,7 @@
 #include <omp.h>
 #include <vector>
 #include <utility>
+#include "../../../3rdparty/unapproved/unapproved.h"
 
 double integral(
   double f(std::vector<double>),

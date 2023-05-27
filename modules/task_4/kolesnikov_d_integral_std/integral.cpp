@@ -1,6 +1,7 @@
-#include <vector>
-#include <utility>
-#include <thread>
+// Copyright 2023 Kolesnikov Denis
+
+
+#include "../../../modules/task_4/kolesnikov_d_integral_std/integral.h"
 
 double integral_worker(
   double (*f)(std::vector<double>),
@@ -55,8 +56,7 @@ double integral(
       [&](int i, int start_i, int end_i) {
         results[i] = integral_worker(f, bounds, n, start_i, end_i);
       },
-      i, start_i, end_i
-    );
+      i, start_i, end_i);
   }
 
   for (int i = 0; i < num_threads; i++) {
