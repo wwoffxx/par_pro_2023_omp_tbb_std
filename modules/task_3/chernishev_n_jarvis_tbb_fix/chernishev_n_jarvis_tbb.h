@@ -1,7 +1,7 @@
 // Copyright 2023 Chernishev Nikita
 
-#ifndef MODULES_TASK_3_CHERNISHEV_N_JARVIS_TBB_CHERNISHEV_N_JARVIS_TBB_H_
-#define MODULES_TASK_3_CHERNISHEV_N_JARVIS_TBB_CHERNISHEV_N_JARVIS_TBB_H_
+#ifndef MODULES_TASK_3_CHERNISHEV_N_JARVIS_TBB_FIX_CHERNISHEV_N_JARVIS_TBB_H_
+#define MODULES_TASK_3_CHERNISHEV_N_JARVIS_TBB_FIX_CHERNISHEV_N_JARVIS_TBB_H_
 #include <cmath>
 #include <random>
 #include <vector>
@@ -53,4 +53,4 @@ std::vector<dot> JarvisSeq(std::vector<dot> Dots);
 std::vector<dot> JarvisTBB(const std::vector<dot>& Dots, int threadsNom);
 bool isEqual(const std::vector<dot>& lhs, const std::vector<dot>& rhs);
 
-#endif  // MODULES_TASK_3_CHERNISHEV_N_JARVIS_TBB_CHERNISHEV_N_JARVIS_TBB_H_
+#endif  // MODULES_TASK_3_CHERNISHEV_N_JARVIS_TBB_FIX_CHERNISHEV_N_JARVIS_TBB_H_"

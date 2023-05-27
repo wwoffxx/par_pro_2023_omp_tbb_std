@@ -63,6 +63,7 @@ std::vector<dot> JarvisTBB(const std::vector<dot>& Dots, int threadsNom) {
     std::vector<dot> res;
 
     tbb::task_arena arena(threadsNom);
+
     std::vector<std::vector<dot>> localResults(threadsNom);
     arena.execute([&]() {
         tbb::parallel_for(
