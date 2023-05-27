@@ -3,7 +3,7 @@
 
 #include <tbb/blocked_range2d.h>
 #include <tbb/parallel_for.h>
-#include <tbb/tbb.h>
+//#include <tbb/tbb.h>
 
 #include <algorithm>
 #include <map>
@@ -38,7 +38,7 @@ void marking(std::vector<std::vector<int>>* img) {
       else
         C = (*img)[i - 1][j];
       if ((B == 0 && C != 0) || (C == 0 && B != 0)) {
-        (*img)[i][j] = max(B, C);
+        (*img)[i][j] = std::max(B, C);
       } else if (B == 0 && C == 0) {
         label++;
         (*img)[i][j] = label;
@@ -46,8 +46,8 @@ void marking(std::vector<std::vector<int>>* img) {
         if (B == C) {
           (*img)[i][j] = C;
         } else {
-          (*img)[i][j] = min(B, C);
-          change(&eq, max(B, C), min(B, C));
+          (*img)[i][j] = std::min(B, C);
+          change(&eq, std::max(B, C),std::min(B, C));
         }
       }
     }
