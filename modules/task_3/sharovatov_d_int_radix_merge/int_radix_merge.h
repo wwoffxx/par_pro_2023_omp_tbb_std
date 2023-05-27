@@ -14,7 +14,7 @@ void radixSortForExp(std::vector<int>* vec, int exp);
 
 void radixSort(std::vector<int>* vec);
 
-std::vector<int> radixMerge(std::vector<int>& firstVec, std::vector<int>& secondVec);
+std::vector<int> radixMerge(const td::vector<int>& firstVec, const std::vector<int>& secondVec);
 
 std::vector<int> radixSortMerge(std::vector<int>* vec);
 

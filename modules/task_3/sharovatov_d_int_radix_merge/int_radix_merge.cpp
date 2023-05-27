@@ -44,7 +44,7 @@ void radixSort(std::vector<int>* vec) {
   }
 }
 
-std::vector<int> radixMerge(std::vector<int>& firstVec, std::vector<int>& secondVec) {
+std::vector<int> radixMerge(const std::vector<int>& firstVec, const std::vector<int>& secondVec) {
   std::vector<int> temp(firstVec.size() + secondVec.size());
   std::merge(firstVec.begin(), firstVec.end(), secondVec.begin(),
              secondVec.end(), temp.begin());
