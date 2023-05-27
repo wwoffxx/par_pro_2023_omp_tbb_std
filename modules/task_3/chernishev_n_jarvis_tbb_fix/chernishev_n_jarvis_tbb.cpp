@@ -1,6 +1,6 @@
 // Copyright 2023 Chernishev Nikita
 
-#include "../../../modules/task_3/chernishev_n_jarvis_tbb/chernishev_n_jarvis_tbb.h"
+#include "../../../modules/task_3/chernishev_n_jarvis_tbb_fix/chernishev_n_jarvis_tbb.h"
 #include <tbb/tbb.h>
 
 std::vector<dot> JarvisSeq(std::vector<dot> Dots) {
