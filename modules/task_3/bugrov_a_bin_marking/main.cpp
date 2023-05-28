@@ -126,33 +126,33 @@ TEST(bin_marking, can_mark_staggered_image) {
   ASSERT_EQ(true, CheckMarking(n, image, etalon));
 }
 
-// TEST(bin_marking, hpc) {
-//  const int n = 100;
-//  const int m = 100;
-//  const int k_unnamed = 0;
-//  vector<vector<int>> image(n);
-//  vector<vector<int>> marks(n);
-//  vector<vector<int>> par_marks(n);
-//  for (int i = 0; i < n; i++) {
-//    image[i].resize(m);
-//    marks[i].resize(m);
-//    par_marks[i].resize(m);
-//  }
-//  mt19937 engine(time(NULL));
-//  for (int i = 0; i < n; i++) {
-//    for (int j = 0; j < m; j++) {
-//      image[i][j] = (i + j) % 2;
-//      marks[i][j] = k_unnamed;
-//      par_marks[i][j] = k_unnamed;
-//    }
-//  }
-//  double t1 = omp_get_wtime();
-//  seq_marking(image, n, m, &marks, k_unnamed);
-//  double t2 = omp_get_wtime();
-//  double seq_time = t2 - t1;
-//  t1 = omp_get_wtime();
-//  par_marking(image, n, m, &par_marks, k_unnamed);
-//  t2 = omp_get_wtime();
-//  double par_time = t2 - t1;
-//  ASSERT_EQ(true, are_matrix_eq(marks, par_marks, n, m));
-//}
+ TEST(bin_marking, hpc) {
+  const int n = 100;
+  const int m = 100;
+  const int k_unnamed = 0;
+  vector<vector<int>> image(n);
+  vector<vector<int>> marks(n);
+  vector<vector<int>> par_marks(n);
+  for (int i = 0; i < n; i++) {
+    image[i].resize(m);
+    marks[i].resize(m);
+    par_marks[i].resize(m);
+  }
+  mt19937 engine(time(NULL));
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      image[i][j] = (i + j) % 2;
+      marks[i][j] = k_unnamed;
+      par_marks[i][j] = k_unnamed;
+    }
+  }
+  double t1 = omp_get_wtime();
+  seq_marking(image, n, m, &marks, k_unnamed);
+  double t2 = omp_get_wtime();
+  double seq_time = t2 - t1;
+  t1 = omp_get_wtime();
+  par_marking(image, n, m, &par_marks, k_unnamed);
+  t2 = omp_get_wtime();
+  double par_time = t2 - t1;
+  ASSERT_EQ(true, are_matrix_eq(marks, par_marks, n, m));
+}
