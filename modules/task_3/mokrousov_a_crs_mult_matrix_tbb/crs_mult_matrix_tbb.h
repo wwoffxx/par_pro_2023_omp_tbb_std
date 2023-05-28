@@ -1,6 +1,6 @@
 // Copyright 2023 Mokrousov Artem
-#ifndef MODULES_TASK_3_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_H_
-#define MODULES_TASK_3_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_H_
+#ifndef MODULES_TASK_3_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_CRS_MULT_MATRIX_TBB_H_
+#define MODULES_TASK_3_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_CRS_MULT_MATRIX_TBB_H_
 
 #include <gtest/gtest.h>
 #include <tbb/tbb.h>
@@ -11,7 +11,7 @@
 #include <vector>
 
 class CRSMatrix {
-   public:
+ public:
     int nRows;
     int nColumns;
 
@@ -37,4 +37,4 @@ std::vector<std::vector<double>> mulMatrix(std::vector<std::vector<double>> A,
                                             std::vector<std::vector<double>> B);
 
 std::vector<std::vector<double>> zerpMatrix(int cols, int rows);
-#endif  // MODULES_TASK_3_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_H_
+#endif  // MODULES_TASK_3_MOKROUSOV_A_CRS_MULT_MATRIX_TBB_CRS_MULT_MATRIX_TBB_H_
