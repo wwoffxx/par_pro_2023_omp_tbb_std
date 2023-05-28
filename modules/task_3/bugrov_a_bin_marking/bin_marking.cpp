@@ -126,8 +126,6 @@ void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
           }
         }
       } else {
-        //  if it was not in while cycle, it means that there is no other
-        //  neighbours which left pixel is less than right one of this segment
       }
     }
   }
