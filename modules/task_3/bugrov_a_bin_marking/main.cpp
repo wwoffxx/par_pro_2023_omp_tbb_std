@@ -35,20 +35,6 @@ bool CheckMarking(int N, const vector<vector<int>>& image,
     }
   }
   par_marking(image, N, N, &marks, k_unnamed);
-  if (N < 100) {
-    for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N; j++) {
-        std::cout << etalon[i][j] << " ";
-      }
-      std::cout << "\n";
-    }
-    for (int i = 0; i < N; i++) {
-      for (int j = 0; j < N; j++) {
-        std::cout << marks[i][j] << " ";
-      }
-      std::cout << "\n";
-    }
-  }
   return are_matrix_eq(marks, etalon, N, N);
 }
 
