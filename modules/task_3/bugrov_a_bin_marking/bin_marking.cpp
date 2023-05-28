@@ -287,7 +287,7 @@ struct TBBFunctor {
 
 void par_marking(const vector<vector<int>>& image, const int n, const int m,
                  vector<vector<int>>* marks, const int k_unnamed) {
-  size_t size = image.size();// * image[0].size();
+  size_t size = image.size();  // * image[0].size();
   tbb::parallel_for(tbb::blocked_range<int>(0, size),
                     TBBFunctor(&image, n, m, marks, k_unnamed));
 }
