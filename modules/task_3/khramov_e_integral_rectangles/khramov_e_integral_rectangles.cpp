@@ -1,10 +1,10 @@
 // Copyright 2023 Khramov Egor
+#include <tbb/parallel_reduce.h>
+#include <tbb/blocked_range3d.h>
 #include <vector>
 #include <string>
 #include <random>
 #include <iostream>
-#include <tbb/parallel_reduce.h>
-#include <tbb/blocked_range3d.h>
 #include "../../../modules/task_3/khramov_e_integral_rectangles/khramov_e_integral_rectangles.h"
 
 
@@ -22,7 +22,7 @@ struct IntegrateBody {
         }
     }
 
-    IntegrateBody(IntegrateBody& other, tbb::split) :
+    IntegrateBody(const IntegrateBody& other, tbb::split) :
         func(other.func), result(0.0) {
         for (int i = 0; i < 3; i++) {
             this->a[i] = other.a[i];
