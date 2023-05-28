@@ -1,0 +1,9 @@
+// Copyright 2023 Kuleva Anna
+#ifndef MODULES_TASK_4_KULEVA_A_RADIX_DOUBLE_BATCHER_STD_RADIX_DOUBLE_BATCHER_STD_H_
+#define MODULES_TASK_4_KULEVA_A_RADIX_DOUBLE_BATCHER_STD_RADIX_DOUBLE_BATCHER_STD_H_
+
+#include <vector>
+
+std::vector<double> radixBatcherSort(const std::vector<double>& base);
+
+#endif  // MODULES_TASK_4_KULEVA_A_RADIX_DOUBLE_BATCHER_STD_RADIX_DOUBLE_BATCHER_STD_H_
