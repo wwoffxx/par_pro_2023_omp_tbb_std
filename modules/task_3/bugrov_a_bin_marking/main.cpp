@@ -11,8 +11,9 @@ bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
       if (a[i][j] != b[i][j]) {
-        //return false;
+        // return false;
         res = false;
+        break;
       }
     }
   }
@@ -31,7 +32,7 @@ bool are_matrix_eq(const vector<vector<int>>& a, const vector<vector<int>>& b,
     std::cout << "\n";
   }
   return res;
-  //return true;
+  // return true;
 }
 
 bool CheckMarking(int N, const vector<vector<int>>& image,
@@ -139,7 +140,7 @@ TEST(bin_marking, can_mark_staggered_image) {
   ASSERT_EQ(true, CheckMarking(n, image, etalon));
 }
 
-//TEST(bin_marking, hpc) {
+// TEST(bin_marking, hpc) {
 //  const int n = 20;
 //  const int m = 20;
 //  const int k_unnamed = 0;
