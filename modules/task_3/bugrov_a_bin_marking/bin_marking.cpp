@@ -84,9 +84,6 @@ void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
   } else {
     bound = 0;
   }
-
-  omp_lock_t lock;  ///////////////////////////////////////////////////
-  omp_init_lock(&lock);
   if (i != bound) {
     // finding left neighbour
     while (to_find_adjacent_segment < (neighbour + 1) * w &&
