@@ -7,7 +7,6 @@ void seq_marking(const vector<vector<int>>& image, const int n, const int m,
   int cur_mark = 0;
   const int k_back = 1;
   queue<pair<int, int>> cur_queue;
-
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < m; j++) {
       if (image[i][j] != k_back && (*marks)[i][j] == k_unnamed) {
@@ -116,7 +115,6 @@ void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
           // (*card)[to_find_adjacent_segment-1].L != 0 and or not because at
           // least one iteration (with  to_find_adjacent_segment-1) was
           // performed
-
           if (neighbour < i) {
             (*card)[i * w + j].L_prev_right =
                 (*card)[to_find_adjacent_segment - 1].L;
@@ -125,9 +123,6 @@ void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
                 (*card)[to_find_adjacent_segment - 1].L;
           }
         }
-      } else {
-        // if it was not in while cycle, it means that there is no other
-        // neighbours which left pixel is less than right one of this segment
       }
     }
   }
@@ -287,7 +282,7 @@ struct TBBFunctor {
 
 void par_marking(const vector<vector<int>>& image, const int n, const int m,
                  vector<vector<int>>* marks, const int k_unnamed) {
-  size_t size = image.size() * image[0].size();
+  size_t size = image.size();  // * image[0].size();
   tbb::parallel_for(tbb::blocked_range<int>(0, size),
                     TBBFunctor(&image, n, m, marks, k_unnamed));
 }
