@@ -137,8 +137,8 @@ void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
 }
 //+
 void second_par_pass(CardR* card, int n, int m) {
-  omp_lock_t lock;  ///////////////////////////////////////////////////
-  omp_init_lock(&lock);
+  // omp_lock_t lock;
+  // omp_init_lock(&lock);
   const int w = m / 2 + 1;  // width of (*card)
   bool right_exists = false;
   bool was_in_while = false;
@@ -155,8 +155,6 @@ void second_par_pass(CardR* card, int n, int m) {
 //+
 void third_par_pass(CardR* card, int n, int m) {
   bool been_changed = false;
-  omp_lock_t lock;
-  omp_init_lock(&lock);
   int w = m / 2 + 1;
   do {
     been_changed = false;
@@ -185,14 +183,6 @@ void third_par_pass(CardR* card, int n, int m) {
         } else {
           labels[3] = UINT64_MAX;
         }
-        /*if (cur_id == 56) {
-          omp_set_lock(&lock);
-          for (int p = 0; p < 4; p++) {
-            std::cout << "labels [ " << p << " ] = " << labels[p] << "\n";
-          }
-          omp_unset_lock(&lock);
-        }*/
-
         size_t cur_min = UINT64_MAX;
         for (int p = 0; p < 4; p++) {
           if (labels[p] != 0 && labels[p] < cur_min) {
@@ -207,21 +197,11 @@ void third_par_pass(CardR* card, int n, int m) {
       }
     }
   } while (been_changed);
-  /*int p = 56;
-  std::cout << "L" << (*card)[p].L << "\n";
-  std::cout << "p_left = " << (*card)[p].p_left << "\n";
-  std::cout << "p_right = " << (*card)[p].p_right << "\n";
-  std::cout << "prev_left = " << (*card)[p].L_prev_left << "\n";
-  std::cout << "prev_right = " << (*card)[p].L_prev_right << "\n";
-  std::cout << "next_left = " << (*card)[p].L_next_left << "\n";
-  std::cout << "next_right = " << (*card)[p].L_next_right << "\n";*/
 }
 
 //+
 void forth_par_pass(CardR* card, int n, int m) {
   size_t w = m / 2 + 1;
-  omp_lock_t lock;
-  omp_init_lock(&lock);
   for (int i = 0; i < n; i++) {
     for (int j = 0; j < w; j++) {
       size_t L = (*card)[i * w + j].L;
@@ -245,9 +225,6 @@ void mark_assign_pass(CardR* card, vector<vector<int>>* p_marks, int n, int m) {
   vector<size_t> real_numbers;
   real_numbers.resize(n * w + 1);
   size_t counter = 1;
-
-  omp_lock_t lock;
-  omp_init_lock(&lock);
   int p = 0;
   // finding first component to init renumbering
   for (; p < n; p++) {
