@@ -13,4 +13,4 @@ void countingSortPar(std::vector<int> * array, int l, int r, int place);
 void radSortSeq(std::vector<int> * vec);
 std::vector<int> radSortParMerge(std::vector<int> * vec);
 std::vector<int> getRndVector(int size);
-std::vector<int> merge(std::vector<int> * v1, std::vector<int> * v2);
+std::vector<int> merge(const std::vector<int> * v1, const std::vector<int> * v2);
