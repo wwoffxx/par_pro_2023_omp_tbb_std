@@ -206,7 +206,7 @@ void compExch(double** part1, double** part2, double** tmpPart1, double** tmpPar
 }
 
 // all "numParts" parts must be sorted and the same size "sizePart"
-void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numParts, int sizePart) {
+void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, const int numParts, const int sizePart) {
     if ((*buf).size() != numParts * sizePart)
         return;
     std::vector<double*> partsPtrs;
@@ -232,8 +232,7 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
         tbb::parallel_for(tbb::blocked_range<size_t>(0, steps[i].size() * 2), [&](const tbb::blocked_range<size_t>& r) {
             for (size_t j = r.begin(); j != r.end(); j++)
                 compExch(&(partsPtrs[steps[i][j/2].part1]), &(partsPtrs[steps[i][j/2].part2]),
-                            &(tmpPartsPtrs[steps[i][j/2].part1]), &(tmpPartsPtrs[steps[i][j/2].part2]),
-                                                                                                sizePart, j%2);
+                            &(tmpPartsPtrs[steps[i][j/2].part1]), &(tmpPartsPtrs[steps[i][j/2].part2]), sizePart, j%2);
                 // compare-exchange for each set of comparators from the sorting network
         });
         for (int j = 0; j < steps[i].size(); ++j) {
