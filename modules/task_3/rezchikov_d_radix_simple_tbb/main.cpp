@@ -3,21 +3,21 @@
 #include "../../../modules/task_3/rezchikov_d_radix_simple_tbb/ops.h"
 
 
-TEST(OMP, Test_Size_0) {
+TEST(TBB, Test_Size_0) {
     std::vector<int> v{};
     std::vector<int> ref{};
     v = radSortParMerge(&v);
     ASSERT_EQ(v, ref);
 }
 
-TEST(OMP, Test_Size_1) {
+TEST(TBB, Test_Size_1) {
     std::vector<int> v{1};
     std::vector<int> ref{1};
     v = radSortParMerge(&v);
     ASSERT_EQ(v, ref);
 }
 
-TEST(OMP, Test_Size_100) {
+TEST(TBB, Test_Size_100) {
     const int N = 100;
     auto vec = getRndVector(N);
     auto ref = std::vector<int>(vec);
@@ -27,7 +27,7 @@ TEST(OMP, Test_Size_100) {
     ASSERT_EQ(vec, ref);
 }
 
-TEST(OMP, Test_Size_1000) {
+TEST(TBB, Test_Size_1000) {
     const int N = 1000;
     auto vec = getRndVector(N);
     auto ref = std::vector<int>(vec);
@@ -37,7 +37,7 @@ TEST(OMP, Test_Size_1000) {
     ASSERT_EQ(vec, ref);
 }
 
-TEST(OMP, Test_Size_100000) {
+TEST(TBB, Test_Size_100000) {
     const int N = 100000;
     auto vec = getRndVector(N);
     auto ref = std::vector<int>(vec);
