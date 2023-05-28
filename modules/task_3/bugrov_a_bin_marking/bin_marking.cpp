@@ -125,7 +125,6 @@ void find_neighbours(CardR* card, int i, int j, int n, int m, int neighbour) {
                 (*card)[to_find_adjacent_segment - 1].L;
           }
         }
-      } else {
       }
     }
   }
