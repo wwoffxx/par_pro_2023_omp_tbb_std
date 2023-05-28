@@ -13,7 +13,7 @@ class tbb_functor{
     tbb_functor(const tbb_functor& src, tbb::split) {}
 
     void operator()(const tbb::blocked_range<std::vector<int>::iterator>& range) {
-        std::copy(range.begin(), range.end(), res.begin());
+        std::copy(range.begin(), range.end(), std::back_inserter(res));
         radSortSeq(&res);
     }
 
