@@ -1,6 +1,6 @@
 // Copyright 2023 Rezchikov Dmitrii
 #include <gtest/gtest.h>
-#include "../../../modules/task_2/rezchikov_d_radix_simple_omp/ops.h"
+#include "../../../modules/task_3/rezchikov_d_radix_simple_tbb/ops.h"
 
 
 TEST(OMP, Test_Size_0) {
