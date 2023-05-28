@@ -10,7 +10,6 @@
 #include <cstring>
 #include "tbb/info.h"
 #include "tbb/tick_count.h"
-#include "tbb/task_arena.h"
 #include "tbb/parallel_for.h"
 #include "../../../modules/task_3/bataev_i_rdx_srt_dbl_odd_evn/rdx_srt_dbl_odd_evn.h"
 
@@ -230,16 +229,12 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
 
     // use this network to merge these parts
     for (int i = 0; i < steps.size(); ++i) {
-        tbb::task_arena arena(numParts);
-        arena.execute([&]{
-            tbb::parallel_for(tbb::blocked_range<size_t>(0, steps[i].size() * 2),
-                                                [&](const tbb::blocked_range<size_t>& r) {
-                for (size_t j = r.begin(); j != r.end(); j++)
-                    compExch(&(partsPtrs[steps[i][j/2].part1]), &(partsPtrs[steps[i][j/2].part2]),
-                                &(tmpPartsPtrs[steps[i][j/2].part1]), &(tmpPartsPtrs[steps[i][j/2].part2]),
-                                                                                                    sizePart, j%2);
-                    // compare-exchange for each set of comparators from the sorting network
-            });
+        tbb::parallel_for(tbb::blocked_range<size_t>(0, steps[i].size() * 2), [&](const tbb::blocked_range<size_t>& r) {
+            for (size_t j = r.begin(); j != r.end(); j++)
+                compExch(&(partsPtrs[steps[i][j/2].part1]), &(partsPtrs[steps[i][j/2].part2]),
+                            &(tmpPartsPtrs[steps[i][j/2].part1]), &(tmpPartsPtrs[steps[i][j/2].part2]),
+                                                                                                sizePart, j%2);
+                // compare-exchange for each set of comparators from the sorting network
         });
         for (int j = 0; j < steps[i].size(); ++j) {
             std::swap(tmpPartsPtrs[steps[i][j].part1], partsPtrs[steps[i][j].part1]);
@@ -256,7 +251,6 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, int numP
 void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
     tbb::tick_count start = tbb::tick_count::now();
 
-    std::cout << tbb::info::default_concurrency() << "\n";
     if (numParts == -1)  // if numParts is not specified
         numParts = tbb::info::default_concurrency();
 
@@ -269,14 +263,11 @@ void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
     std::vector<double> tmpBuf((*buf).size());
     int sizePart = (*buf).size()/numParts;
 
-    tbb::task_arena arena(numParts);
-    arena.execute([&]{
-        // sort each part separately with radix sort
-        tbb::parallel_for(tbb::blocked_range<size_t>(0, numParts), [&](const tbb::blocked_range<size_t>& r) {
-            for (size_t i = r.begin(); i != r.end(); i++)
-                dblRdxSrt(reinterpret_cast<uint8_t*>((*buf).data() + i * sizePart),
-                            reinterpret_cast<uint8_t*>(tmpBuf.data() + i * sizePart), sizePart*sizeof(double));
-        });
+    // sort each part separately with radix sort
+    tbb::parallel_for(tbb::blocked_range<size_t>(0, numParts), [&](const tbb::blocked_range<size_t>& r) {
+        for (size_t i = r.begin(); i != r.end(); i++)
+            dblRdxSrt(reinterpret_cast<uint8_t*>((*buf).data() + i * sizePart),
+                        reinterpret_cast<uint8_t*>(tmpBuf.data() + i * sizePart), sizePart*sizeof(double));
     });
 
     // merging parts together
