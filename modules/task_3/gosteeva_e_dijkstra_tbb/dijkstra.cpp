@@ -1,7 +1,6 @@
 // Copyright 2023 Gosteeva Ekaterina
 
 #include "../../../modules/task_3/gosteeva_e_dijkstra_tbb/dijkstra.h"
-#include <tbb>
 
 std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
     std::vector<int> dist(size);
@@ -33,35 +32,42 @@ std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
 
 std::vector<int> DijkstraParallel(std::vector<int> graph,
     int source, int size) {
-    int cur_vertex;
-    int cur_dist;
-    tbb::mutex mutex;
+
     std::vector<int> dist(size, INT_MAX);
-    std::priority_queue<std::pair<int, int>> queue;
+    std::vector<bool> visited(size, false);
 
     dist.at(source) = 0;
-    queue.push(std::make_pair(0, source));
-    while (!queue.empty()) {
-        cur_vertex = queue.top().second;
-        cur_dist = (-1) * queue.top().first;
-        queue.pop();
-        if (cur_dist > dist.at(cur_vertex)) continue;
+    tbb::spin_mutex mtx;
 
-        tbb::parallel_for(
-            tbb::blocked_range<int>(0, size),
-            [&](const tbb::blocked_range<int>& r) {
-            for (int v = r.begin(); v != r.end(); ++v) {
-                int dist_curV_V = graph.at(cur_vertex * size + v);
-                if (dist.at(cur_vertex) + dist_curV_V < dist.at(v)) {
-                dist.at(v) = dist.at(cur_vertex) + dist_curV_V;
-                std::pair<int, int> pair = std::make_pair((-1) * dist[v], v);
-                mutex.lock();
-                queue.push(pair);
-                mutex.unlock();
+    tbb::parallel_for(tbb::blocked_range<int>(0, size),
+        [&](const tbb::blocked_range<int>& r) {
+        for (int i = r.begin(); i != r.end(); ++i) {
+            int minDist = INT_MAX;
+            int minIndex = 0;
+
+            for (int j = 0; j < size; ++j) {
+                {
+                    tbb::spin_mutex::scoped_lock lock(mtx);
+                    if (!visited.at(j) && dist.at(j) <= minDist) {
+                        minDist = dist.at(j);
+                        minIndex = j;
+                    }
                 }
             }
-            });
-    }
+            visited[minIndex] = true;
 
+            for (int j = 0; j < size; ++j) {
+                {
+                    tbb::spin_mutex::scoped_lock lock(mtx);
+                    if (!visited.at(j) && graph.at(minIndex * size + j) &&
+                        dist.at(minIndex) != INT_MAX &&
+                        dist.at(minIndex) + graph.at(minIndex * size + j) <
+                        dist.at(j)) {
+                        dist.at(j) = dist.at(minIndex) + graph.at(minIndex * size + j);
+                    }
+                }
+            }
+        }
+    });
     return dist;
 }
