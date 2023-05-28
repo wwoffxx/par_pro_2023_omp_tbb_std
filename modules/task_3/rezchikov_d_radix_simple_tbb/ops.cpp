@@ -1,24 +1,23 @@
 // Copyright 2023 Rezchikov Dmitrii
 
 #include <omp.h>
-#include "../../../modules/task_3/rezchikov_d_radix_simple_tbb/ops.h"
 #include <tbb/tbb.h>
+#include "../../../modules/task_3/rezchikov_d_radix_simple_tbb/ops.h"
 
 
 class tbb_functor{
-public:
-
+ public:
     std::vector<int> res;
 
     tbb_functor() = default;
-    tbb_functor(const tbb_functor& src, tbb::split){}
+    tbb_functor(const tbb_functor& src, tbb::split) {}
 
-    void operator()(const tbb::blocked_range<int>& range){
+    void operator()(const tbb::blocked_range<int>& range) {
         std::copy(range.begin(), range.end(), res.begin());
         radSortSeq(&res);
     }
 
-    void join(tbb_functor& rhs){
+    void join(const tbb_functor& rhs) {
         res = merge(&res, &rhs.res);
     }
 };
@@ -107,12 +106,16 @@ std::vector<int> radSortParMerge(std::vector<int> * vec) {
     tbb_functor func;
     std::vector<int> result;
 
-    tbb::parallel_reduce(tbb::blocked_range<std::vector<int>::iterator>(vec->begin(), vec->end()), func );
+    tbb::parallel_reduce(
+        tbb::blocked_range<std::vector<int>::iterator>(
+            vec->begin(), vec->end())
+        , func);
     return func.res;
 }
 
 
-std::vector<int> merge(std::vector<int> * v1, std::vector<int> * v2) {
+std::vector<int> merge(const std::vector<int> * v1,
+                        const std::vector<int> * v2) {
     std::vector<int> res(v1->size() + v2->size());
     std::merge(v1->begin(), v1->end(), v2->begin(), v2->end(), res.begin());
     return res;
