@@ -3,6 +3,7 @@
 #define MODULES_TASK_1_KROLEVETS_N_JARVIS_ALGORITHM_JARVIS_ALGORITHM_H_
 
 #include <algorithm>
+#include <atomic>
 #include <cassert>
 #include <iostream>
 #include <limits>
