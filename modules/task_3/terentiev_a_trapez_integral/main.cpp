@@ -11,7 +11,6 @@ TEST(Trapez_Integral, Test2_seq) {
     ASSERT_TRUE(Testing(1, 1, 1, 2, 2, 2, Func1, 3.375));
 }
 
-
 TEST(Trapez_Integral, Test3_seq) {
     ASSERT_TRUE(Testing(5, 0, 1, 7, 3, 2, Func1, 81));
 }
