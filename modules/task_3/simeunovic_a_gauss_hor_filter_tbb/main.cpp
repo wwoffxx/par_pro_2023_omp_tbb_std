@@ -1,6 +1,5 @@
 // Copyright 2023 Simeunovic Aleksandar
 #include <gtest/gtest.h>
-#include <omp.h>
 
 #include "./gauss_hor_filter_tbb.h"
 
