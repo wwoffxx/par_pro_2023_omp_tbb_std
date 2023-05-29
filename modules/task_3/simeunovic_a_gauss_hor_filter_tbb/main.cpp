@@ -56,16 +56,10 @@ TEST(GAUSS_HORIZONTAL_TBB, TEST_5) {
   const int width = 100, height = 100;
   img image = getRandomImage(width, height);
 
-  double time_start, t1, t2;
-
-  time_start = omp_get_wtime();
   img new_image_omp = getGauss(image, width, height);
-  t1 = omp_get_wtime() - time_start;
-
-  time_start = omp_get_wtime();
   img new_image = getGaussTBB(image, width, height);
-  t2 = omp_get_wtime() - time_start;
 
-  std::cout << "Seq.: " << t1 << " Par.: " << t2 << " Speed: " << t1 / t2
-            << std::endl;
+  for (int i = 0; i < static_cast<int>(new_image.size()); i++) {
+    ASSERT_EQ(new_image[i], new_image_omp[i]);
+  }
 }
