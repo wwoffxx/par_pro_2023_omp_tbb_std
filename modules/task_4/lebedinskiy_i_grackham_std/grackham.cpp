@@ -1,6 +1,5 @@
 // Copyright 2023 Lebedinskiy Ilya
 #include <algorithm>
-#include <mutex>
 #include "../../../3rdparty/unapproved/unapproved.h"
 #include "../../../modules/task_4/lebedinskiy_i_grackham_std/grackham.h"
 std::pair<double, double> p0;
