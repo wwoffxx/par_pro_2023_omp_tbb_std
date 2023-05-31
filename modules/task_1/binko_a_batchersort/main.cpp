@@ -1,6 +1,8 @@
 // Copyright 2023 Binko Alexandr
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 #include "./batcher_mergesort.h"
 
 TEST(binko_a_batchersort, genRandVec) {

@@ -2,6 +2,7 @@
 #ifndef MODULES_TASK_1_BINKO_A_BATCHERSORT_BATCHER_MERGESORT_H_
 #define MODULES_TASK_1_BINKO_A_BATCHERSORT_BATCHER_MERGESORT_H_
 
+#include <algorithm>
 #include <vector>
 
 using vector_d = std::vector<double>;
