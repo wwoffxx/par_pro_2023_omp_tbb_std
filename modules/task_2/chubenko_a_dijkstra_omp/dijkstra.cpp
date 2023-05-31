@@ -38,7 +38,7 @@ std::vector<int> get_dists_dijkstra_parallel(std::vector<int> graph,
                 int size, int start) {
     std::vector<int> dists(size, INT_MAX);
     std::vector<bool> used(size, false);
-    dists[start] = 0;    
+    dists[start] = 0;
     for (int i = 0; i < size; i++) {
         int min_dist = INT_MAX;
         int min_vertex = -1;
