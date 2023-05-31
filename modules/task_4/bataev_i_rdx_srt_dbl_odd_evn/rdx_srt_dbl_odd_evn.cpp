@@ -247,7 +247,6 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, const in
 }
 
 void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
-
     if (numParts == -1)  // if numParts is not specified
         numParts = std::thread::hardware_concurrency();
 
@@ -274,6 +273,5 @@ void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
     // delete temp elems
     while ((*buf).size() - size)
         (*buf).pop_back();
-
 }
 
