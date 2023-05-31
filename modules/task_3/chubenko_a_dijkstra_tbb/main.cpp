@@ -12,7 +12,7 @@ TEST(Dijkstra_Sequential, Test_Count_5) {
                               0, 0, 1, 8, 0
     };
     std::vector<int> dists = get_dists_dijkstra(graph, size, 0);
-    for ( int i = 0; i < 10000; i++){
+    for ( int i = 0; i < 10000; i++ ) {
       std::vector<int> distsPar = get_dists_dijkstra_parallel(graph, size, 0);
       ASSERT_EQ(dists, distsPar);
     }
