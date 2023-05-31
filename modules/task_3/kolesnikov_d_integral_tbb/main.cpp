@@ -17,7 +17,7 @@ double f3(std::vector<double> par) {
   double x = par[0];
   double y = par[1];
   double z = par[2];
-  return (x*y*z);
+  return (sqrt(x));
 }
 double f4(std::vector<double> par) {
   double x = par[0];
@@ -57,11 +57,11 @@ TEST(TBB, test_2) {
 
 TEST(TBB, test_3) {
   std::vector<std::pair<double, double>> bounds(3);
-  bounds[0] = {0, 5};
-  bounds[1] = {1, 3};
-  bounds[2] = {1, 3};
-  double res = 200;
-  double tolerance = 0.5;
+  bounds[0] = {1, 2};
+  bounds[1] = {1, 2};
+  bounds[2] = {1, 2};
+  double res = 1.21;
+  double tolerance = 0.05;
 
   double calc_res = integral(bounds, 150, f3);
   ASSERT_NEAR(calc_res, res, tolerance);
