@@ -1,4 +1,5 @@
 // Copyright 2023 Bataev Ivan
+#include <omp.h>
 #include <iostream>
 #include <vector>
 #include <cstdint>
@@ -226,20 +227,19 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, const in
     // printVector(steps, "\nSteps: ");
 
     // use this network to merge these parts
-    std::thread *threads = new std::thread[numParts];
     for (int i = 0; i < steps.size(); ++i) {
+        std::vector<std::thread> ths;
         for (int j = 0; j < steps[i].size() * 2; j++)
-            threads[j] = std::thread(compExch, &(partsPtrs[steps[i][j/2].part1]), &(partsPtrs[steps[i][j/2].part2]),
-                        &(tmpPartsPtrs[steps[i][j/2].part1]), &(tmpPartsPtrs[steps[i][j/2].part2]), sizePart, j%2);
+            ths.push_back(std::thread(compExch, &(partsPtrs[steps[i][j/2].part1]), &(partsPtrs[steps[i][j/2].part2]),
+                        &(tmpPartsPtrs[steps[i][j/2].part1]), &(tmpPartsPtrs[steps[i][j/2].part2]), sizePart, j%2));
                         // compare-exchange for each set of comparators from the sorting network
         for (int j = 0; j < steps[i].size(); ++j) {
-            threads[j*2].join();
-            threads[j*2+1].join();
+            ths[j*2].join();
+            ths[j*2+1].join();
             std::swap(tmpPartsPtrs[steps[i][j].part1], partsPtrs[steps[i][j].part1]);
             std::swap(tmpPartsPtrs[steps[i][j].part2], partsPtrs[steps[i][j].part2]);
         }
     }
-    delete []threads;
 
     // if partPtr points to part of tmpBuf copy this part to buf
     for (int i = 0; i < numParts; i++)
@@ -247,11 +247,8 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, const in
             std::memcpy((*buf).data() + i*sizePart, (*tmpBuf).data() + i*sizePart, sizePart*sizeof(double));
 }
 
-using _clock_t = std::chrono::high_resolution_clock;
-using _second_t = std::chrono::duration<double, std::ratio<1> >;
-
 void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
-    std::chrono::time_point<_clock_t> start = _clock_t::now();
+    double start = omp_get_wtime();
 
     if (numParts == -1)  // if numParts is not specified
         numParts = std::thread::hardware_concurrency();
@@ -266,13 +263,12 @@ void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
     int sizePart = (*buf).size()/numParts;
 
     // sort each part separately with radix sort
-    std::thread *threads = new std::thread[numParts];
+    std::vector<std::thread> ths;
     for (int i = 0; i < numParts; i++)
-        threads[i] = std::thread(dblRdxSrt, reinterpret_cast<uint8_t*>((*buf).data() + i * sizePart),
-                    reinterpret_cast<uint8_t*>(tmpBuf.data() + i * sizePart), sizePart*sizeof(double));
-    for (int i = 0; i < numParts; i++)
-        threads[i].join();
-    delete []threads;
+        ths.push_back(std::thread(dblRdxSrt, reinterpret_cast<uint8_t*>((*buf).data() + i * sizePart),
+                    reinterpret_cast<uint8_t*>(tmpBuf.data() + i * sizePart), sizePart*sizeof(double)));
+    for (auto &th : ths)
+        th.join();
 
     // merging parts together
     oddEvnMerge(buf, &tmpBuf, numParts, sizePart);
@@ -281,7 +277,7 @@ void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
     while ((*buf).size() - size)
         (*buf).pop_back();
 
-    std::chrono::time_point<_clock_t> finish = _clock_t::now();
-    std::cout << "time: " << std::chrono::duration_cast<_second_t>(finish - start).count() << std::endl;
+    double finish = omp_get_wtime();
+    std::cout << "time: " << finish - start << std::endl;
 }
 
