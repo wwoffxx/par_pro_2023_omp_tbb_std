@@ -33,25 +33,25 @@ std::vector<int> DijkstraSeq(std::vector<int> graph, int source, int size) {
 std::vector<int> DijkstraParallel(std::vector<int> graph, int source, int size) {
     std::vector<int> dist(size, INT_MAX);
     std::vector<bool> visited(size, false);
-    dist.at(source) = 0;
+    dist[source] = 0;
 
     auto processNode = [&](int start, int end) {
         for (int i = start; i < end; i++) {
             int min = INT_MAX;
             int index = -1;
             for (int j = 0; j < size; j++) {
-                if (!visited.at(j) && dist.at(j) <= min) {
-                    min = dist.at(j);
+                if (!visited[j] && dist[j] <= min) {
+                    min = dist[j];
                     index = j;
                 }
             }
             if (index == -1)
                 break;
-            visited.at(index) = true;
+            visited[index] = true;
             for (int j = 0; j < size; j++) {
-                if (!visited.at(j) && graph.at(index * size + j) && dist.at(index) != INT_MAX
-                    && dist.at(index) + graph.at(index * size + j) < dist.at(j)) {
-                    dist.at(j) = dist.at(index) + graph.at(index * size + j);
+                if (!visited[j] && graph[index * size + j] && dist[index] != INT_MAX
+                    && dist[index] + graph[index * size + j] < dist[j]) {
+                    dist[j] = dist[index] + graph[index * size + j];
                 }
             }
         }
@@ -69,13 +69,13 @@ std::vector<int> DijkstraParallel(std::vector<int> graph, int source, int size) 
             end += remainder;
         }
 
-        threads.at(i) = std::thread(processNode, start, end);
+        threads[i] = std::thread(processNode, start, end);
         start = end;
         end += chunkSize;
     }
 
     for (int i = 0; i < numThreads; i++) {
-        threads.at(i).join();
+        threads[i].join();
     }
 
     return dist;
