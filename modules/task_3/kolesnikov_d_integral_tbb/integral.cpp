@@ -28,9 +28,9 @@ class MyFunctor {
         int j = r.rows().begin(), j_end = r.rows().end();
         int m = r.cols().begin(), m_end = r.cols().end();
 
-        for (i = r.pages().begin(); i < i_end; i++) {
-          for (j = r.rows().begin(); j < j_end; j++) {
-            for (m = r.cols().begin(); m < m_end; m++) {
+        for (i = r.pages().begin(); i < i_end; ++i) {
+          for (j = r.rows().begin(); j < j_end; ++j) {
+            for (m = r.cols().begin(); m < m_end; ++m) {
               const double x1 = a + i*hx;
               const double x2 = a + (i+1)*hx;
               const double y1 = b + j*hy;
@@ -62,8 +62,10 @@ double integral(
     double a = bounds[0].first;
     double b = bounds[1].first;
     double c = bounds[2].first;
+    double result = 0.0;
 
     MyFunctor ftr(hx, hy, hz, a, b, c, func);
     tbb::parallel_reduce(tbb::blocked_range3d<int>(0, n, 0, n, 0, n), ftr);
-    return ftr.result();
+    result =  ftr.result();
+    return result;
 }
