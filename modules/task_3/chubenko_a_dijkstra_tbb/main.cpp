@@ -1,7 +1,7 @@
 // Copyright 2023 Chubenko Andrey
 #include <gtest/gtest.h>
 #include <vector>
-#include "../../../modules/task_3/chubenko_a_dijkstra_omp/dijkstra.h"
+#include "../../../modules/task_3/chubenko_a_dijkstra_tbb/dijkstra.h"
 
 TEST(Dijkstra_Sequential, Test_Count_5) {
     const int size = 5;
