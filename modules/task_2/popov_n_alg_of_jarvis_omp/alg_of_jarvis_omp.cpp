@@ -18,7 +18,7 @@ std::vector<Point> get_convex_body_omp(const std::vector<Point>& p_arr) {
   int size = p_arr.size();
   if (size < 3)
     return std::vector<Point>();
-  else if (n == 3)
+  else if (size == 3)
     return std::vector<Point>(p_arr);
 
   std::set<Point> body;
@@ -69,7 +69,7 @@ std::vector<Point> get_convex_body_omp(const std::vector<Point>& p_arr) {
           }
         }
         to_push_by_each_thread.clear();
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < size; i++) {
           if (check_orientation(p_arr[cu], p_arr[ne], p_arr[i]) ==
               point_or::colliniar) {
             body.insert(p_arr[i]);
