@@ -5,6 +5,8 @@
 #include <functional>
 #include <utility>
 
+using std::size_t;
+
 double calcIntegral(const std::vector<std::pair<double, double>>& scope,
         std::function<double(const std::vector<double>)> f,
         size_t accurancy = 100, size_t level = 0,
