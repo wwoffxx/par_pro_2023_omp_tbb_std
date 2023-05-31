@@ -89,7 +89,7 @@ void floatRadixSort(vector_d* source_vec) {
 void evenSplitter(vector_d* res_vec, const vector_d& first_vec,
                   const vector_d& second_vec) {
   size_t index_a = 0;
-  size_t index_b = 0;
+  size_t index_b = 0;  // plus
   size_t i = 0;
 
   auto first_size = first_vec.size();
@@ -106,7 +106,7 @@ void evenSplitter(vector_d* res_vec, const vector_d& first_vec,
     i += 2;
   }
 
-  if (index_a >= first_size) {
+  if (index_a >= first_size) {  // _
     for (size_t j = index_b; j < second_size && i < first_size + second_size;
          j += 2, i += 2)
       (*res_vec)[i] = second_vec[j];
