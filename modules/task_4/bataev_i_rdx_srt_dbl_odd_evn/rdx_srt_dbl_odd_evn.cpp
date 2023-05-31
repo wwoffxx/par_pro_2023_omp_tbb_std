@@ -246,11 +246,7 @@ void oddEvnMerge(std::vector<double>* buf, std::vector<double>* tmpBuf, const in
             std::memcpy((*buf).data() + i*sizePart, (*tmpBuf).data() + i*sizePart, sizePart*sizeof(double));
 }
 
-using _clock_t = std::chrono::high_resolution_clock;
-using _second_t = std::chrono::duration<double, std::ratio<1> >;
-
 void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
-    std::chrono::time_point<_clock_t> start = _clock_t::now();
 
     if (numParts == -1)  // if numParts is not specified
         numParts = std::thread::hardware_concurrency();
@@ -279,7 +275,5 @@ void parRdxSrt(std::vector<double>* buf, const int size, int numParts) {
     while ((*buf).size() - size)
         (*buf).pop_back();
 
-    std::chrono::time_point<_clock_t> finish = _clock_t::now();
-    std::cout << "time: " << std::chrono::duration_cast<_second_t>(finish - start).count() << std::endl;
 }
 
