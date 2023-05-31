@@ -1,6 +1,6 @@
 // Copyright 2023 Chubenko Andrey
 
-#include "../../../modules/task_3/chubenko_a_dijkstra_omp/dijkstra.h"
+#include "../../../modules/task_3/chubenko_a_dijkstra_tbb/dijkstra.h"
 
 
 std::vector<int> get_dists_dijkstra(std::vector<int> graph,
@@ -38,9 +38,7 @@ std::vector<int> get_dists_dijkstra_parallel(std::vector<int> graph,
     std::vector<int> dists(size, INT_MAX);
     std::vector<bool> used(size, false);
     dists[start] = 0;
-
-    
-    for (int i = 0; i < size; i++) {
+ for (int i = 0; i < size; i++) {
         int min_dist = INT_MAX;
         int min_vertex = -1;
 
