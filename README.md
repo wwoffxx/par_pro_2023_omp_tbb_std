@@ -1,6 +1,6 @@
 ![Build application](https://github.com/allnes/par_pro_2023_omp_tbb_std/workflows/Build%20application/badge.svg?branch=master)
 
-# Parallel Programming Course
+# Parallel Programming Course - 2023
 
 The following parallel programming technologies are considered in practice:
   * `MPI`
