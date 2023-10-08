@@ -1,7 +1,7 @@
-// Copyright 2022 Kolesnikov Ilya
+// Copyright 2023 Binko Alexandr
 #include "../../../modules/task_2/binko_a_kanon/kanon.h"
 
-void Matrix::generateMatrix(double num) {
+void Matrix::fillNewMatrix(double num) {
   for (int i = 0; i < size; ++i) {
     for (int j = 0; j < size; ++j) {
       matrix[i][j] = i * num;
@@ -9,7 +9,7 @@ void Matrix::generateMatrix(double num) {
   }
 }
 
-void Matrix::shiftLeft(std::vector<std::vector<double>> *matr, int pos,
+void Matrix::toLeftSide(std::vector<std::vector<double>> *matr, int pos,
                        int block_count, int skew) {
   std::vector<std::vector<double>> tmp_matr;
 
@@ -75,12 +75,12 @@ void Matrix::mutiplyByBlock(std::vector<std::vector<double>> block1,
             block2[k + skew * shift_l][j + skew * shift_r];
 }
 
-std::vector<std::vector<double>> Matrix::cannonAlgorithmSeq(
+std::vector<std::vector<double>> Matrix::seqKanAlg(
     Matrix matrix2, std::vector<std::vector<double>> res_matrix, int block_size,
     int block_count) {
   for (int i = 1; i < block_count; ++i) {
     for (int j = 0; j < i; ++j) {
-      shiftLeft(&this->matrix, i, block_count, block_size);
+      toLeftSide(&this->matrix, i, block_count, block_size);
       shiftUp(&matrix2.matrix, i, block_count, block_size);
     }
   }
@@ -92,14 +92,14 @@ std::vector<std::vector<double>> Matrix::cannonAlgorithmSeq(
       }
     }
     for (int l = 0; l < block_count; ++l) {
-      shiftLeft(&this->matrix, l, block_count, block_size);
+      toLeftSide(&this->matrix, l, block_count, block_size);
       shiftUp(&matrix2.matrix, l, block_count, block_size);
     }
   }
   return res_matrix;
 }
 
-std::vector<std::vector<double>> Matrix::cannonAlgorithmOMP(
+std::vector<std::vector<double>> Matrix::ompKanAlg(
     Matrix matrix2, int thread_nums,
     std::vector<std::vector<double>> res_matrix, int block_size,
     int block_count) {
@@ -110,7 +110,7 @@ std::vector<std::vector<double>> Matrix::cannonAlgorithmOMP(
 #pragma omp for schedule(static)
     for (i = 1; i < block_count; ++i) {
       for (j = 0; j < i; ++j) {
-        shiftLeft(&this->matrix, i, block_count, block_size);
+        toLeftSide(&this->matrix, i, block_count, block_size);
         shiftUp(&matrix2.matrix, i, block_count, block_size);
       }
     }
@@ -127,7 +127,7 @@ std::vector<std::vector<double>> Matrix::cannonAlgorithmOMP(
       }
 #pragma omp for schedule(static)
       for (l = 0; l < block_count; ++l) {
-        shiftLeft(&this->matrix, l, block_count, block_size);
+        toLeftSide(&this->matrix, l, block_count, block_size);
         shiftUp(&matrix2.matrix, l, block_count, block_size);
       }
     }
