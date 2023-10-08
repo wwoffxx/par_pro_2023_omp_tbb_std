@@ -1,11 +1,13 @@
 // Copyright 2023 Binko Alexandr
 #include "../../../modules/task_2/binko_a_kanon/kanon.h"
 
-#include <omp.h>
-
-#include <algorithm>
-#include <random>
-#include <vector>
+void Matrix::fillNewMatrix(double num) {
+  for (int i = 0; i < size; ++i) {
+    for (int j = 0; j < size; ++j) {
+      matrix[i][j] = i * num;
+    }
+  }
+}
 
 void Matrix::toLeftSide(std::vector<std::vector<double>> *matr, int pos,
                         int block_count, int skew) {
@@ -73,14 +75,6 @@ void Matrix::mutiplyByBlock(std::vector<std::vector<double>> block1,
             block2[k + skew * shift_l][j + skew * shift_r];
 }
 
-void Matrix::fillNewMatrix(double num) {
-  for (int i = 0; i < size; ++i) {
-    for (int j = 0; j < size; ++j) {
-      matrix[i][j] = i * num;
-    }
-  }
-}
-
 std::vector<std::vector<double>> Matrix::seqKanonAlg(
     Matrix matrix2, std::vector<std::vector<double>> res_matrix, int block_size,
     int block_count) {
@@ -122,21 +116,21 @@ std::vector<std::vector<double>> Matrix::ompKanonAlg(
     }
   }
   for (i = 0; i < block_count; ++i) {
-#pragma omp parallel num_threads(num_threads) private(j, k, i, l) \
+#pragma omp parallel num_threads(num_threads) private(j, k, i, l)
     shared(matrix2, res_matrix) {
 #pragma omp for schedule(static)
-    for (j = 0; j < block_count; ++j) {
-      for (k = 0; k < block_count; ++k) {
-        mutiplyByBlock(this->matrix, matrix2.matrix, &res_matrix, j, k,
-                       block_size);
+      for (j = 0; j < block_count; ++j) {
+        for (k = 0; k < block_count; ++k) {
+          mutiplyByBlock(this->matrix, matrix2.matrix, &res_matrix, j, k,
+                         block_size);
+        }
+      }
+#pragma omp for schedule(static)
+      for (l = 0; l < block_count; ++l) {
+        shiftLeft(&this->matrix, l, block_count, block_size);
+        shiftUp(&matrix2.matrix, l, block_count, block_size);
       }
     }
-#pragma omp for schedule(static)
-    for (l = 0; l < block_count; ++l) {
-      toLeftSide(&this->matrix, l, block_count, block_size);
-      shiftUp(&matrix2.matrix, l, block_count, block_size);
-    }
   }
-}
-return res_matrix;
+  return res_matrix;
 }
