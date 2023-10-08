@@ -27,16 +27,16 @@ class Matrix {
   }
   ~Matrix() {}
   std::vector<std::vector<double>> get_matrix() { return matrix; }
-  void fillNewMatrix(double num);
-  std::vector<std::vector<double>> seqKanonAlg(
+  void generateMatrix(double num);
+  std::vector<std::vector<double>> cannonAlgorithmSeq(
       Matrix matrix2, std::vector<std::vector<double>> res_matrix,
       int block_size, int block_count);
-  std::vector<std::vector<double>> ompKanonAlg(
+  std::vector<std::vector<double>> cannonAlgorithmOMP(
       Matrix matrix2, int thread_nums,
       std::vector<std::vector<double>> res_matrix, int block_size,
       int block_count);
-  void toLeftSide(std::vector<std::vector<double>> *matr, int pos,
-                  int block_count, int skew);
+  void shiftLeft(std::vector<std::vector<double>> *matr, int pos,
+                 int block_count, int skew);
   void shiftUp(std::vector<std::vector<double>> *matr, int pos, int block_count,
                int skew);
   void mutiplyByBlock(std::vector<std::vector<double>> block1,

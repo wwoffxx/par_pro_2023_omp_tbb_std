@@ -1,7 +1,7 @@
-// Copyright 2023 Binko Alexandr
+// Copyright 2022 Kolesnikov Ilya
 #include "../../../modules/task_2/binko_a_kanon/kanon.h"
 
-void Matrix::fillNewMatrix(double num) {
+void Matrix::generateMatrix(double num) {
   for (int i = 0; i < size; ++i) {
     for (int j = 0; j < size; ++j) {
       matrix[i][j] = i * num;
@@ -9,8 +9,8 @@ void Matrix::fillNewMatrix(double num) {
   }
 }
 
-void Matrix::toLeftSide(std::vector<std::vector<double>> *matr, int pos,
-                        int block_count, int skew) {
+void Matrix::shiftLeft(std::vector<std::vector<double>> *matr, int pos,
+                       int block_count, int skew) {
   std::vector<std::vector<double>> tmp_matr;
 
   for (int i = 0; i < skew; ++i) {
@@ -75,12 +75,12 @@ void Matrix::mutiplyByBlock(std::vector<std::vector<double>> block1,
             block2[k + skew * shift_l][j + skew * shift_r];
 }
 
-std::vector<std::vector<double>> Matrix::seqKanonAlg(
+std::vector<std::vector<double>> Matrix::cannonAlgorithmSeq(
     Matrix matrix2, std::vector<std::vector<double>> res_matrix, int block_size,
     int block_count) {
   for (int i = 1; i < block_count; ++i) {
     for (int j = 0; j < i; ++j) {
-      toLeftSide(&this->matrix, i, block_count, block_size);
+      shiftLeft(&this->matrix, i, block_count, block_size);
       shiftUp(&matrix2.matrix, i, block_count, block_size);
     }
   }
@@ -92,14 +92,14 @@ std::vector<std::vector<double>> Matrix::seqKanonAlg(
       }
     }
     for (int l = 0; l < block_count; ++l) {
-      toLeftSide(&this->matrix, l, block_count, block_size);
+      shiftLeft(&this->matrix, l, block_count, block_size);
       shiftUp(&matrix2.matrix, l, block_count, block_size);
     }
   }
   return res_matrix;
 }
 
-std::vector<std::vector<double>> Matrix::ompKanonAlg(
+std::vector<std::vector<double>> Matrix::cannonAlgorithmOMP(
     Matrix matrix2, int thread_nums,
     std::vector<std::vector<double>> res_matrix, int block_size,
     int block_count) {
@@ -110,14 +110,14 @@ std::vector<std::vector<double>> Matrix::ompKanonAlg(
 #pragma omp for schedule(static)
     for (i = 1; i < block_count; ++i) {
       for (j = 0; j < i; ++j) {
-        toLeftSide(&this->matrix, i, block_count, block_size);
+        shiftLeft(&this->matrix, i, block_count, block_size);
         shiftUp(&matrix2.matrix, i, block_count, block_size);
       }
     }
   }
   for (i = 0; i < block_count; ++i) {
-#pragma omp parallel num_threads(num_threads) private(j, k, i, l)
-    shared(matrix2, res_matrix) {
+#pragma omp parallel num_threads(num_threads) private(j, k, i, l) shared(matrix2, res_matrix)
+    {
 #pragma omp for schedule(static)
       for (j = 0; j < block_count; ++j) {
         for (k = 0; k < block_count; ++k) {
